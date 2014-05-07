@@ -5,7 +5,8 @@ describe TicTacToe::Computer do
     it "returns a valid move" do
       game = TicTacToe::Game.new
       computer = TicTacToe::Computer.new(game.board)
-      expect(computer.make_move).to eql(0)
+      game.place(0)
+      expect(computer.make_move).to eql(1)
     end
   end
 end
