@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TicTacToe::Messages do
+describe TicTacToe::Stringifier do
   describe '#stringify_board' do
     it "returns a stringified board" do
       game = TicTacToe::Game.new
@@ -13,7 +13,7 @@ describe TicTacToe::Messages do
 -----------
    |   |   
 eos
-      expect(TicTacToe::Messages.stringify_board(game.board)).to eql(stringified_board)
+      expect(TicTacToe::Stringifier.stringify_board(game.board)).to eql(stringified_board)
     end
   end
 end
