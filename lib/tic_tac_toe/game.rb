@@ -4,7 +4,7 @@ module TicTacToe
 
     def initialize
       @board = Array.new(9)
-      @tokens = [:x, :o]
+      @tokens = [:X, :O]
     end
 
     def place(move)

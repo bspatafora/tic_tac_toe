@@ -6,7 +6,7 @@ describe TicTacToe::Game do
 
     it "places a valid move on the board" do
       game.place(0)
-      expect(game.board[0]).to eql(:x)
+      expect(game.board[0]).to eql(:X)
     end
 
     it "doesn't place an invalid move on the board" do

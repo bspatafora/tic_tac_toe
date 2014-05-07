@@ -1,37 +1,20 @@
 module TicTacToe
   module Messages
     def self.stringify_board(board)
-      row_size = 3
+      row_size = Math.sqrt(board.size)
+      rows = board.each_slice(row_size).to_a
       stringified_board = String.new
-      board.each_with_index do |space, index|
-        stringified_board << "\n" if index % row_size == 0
-        if (index + 1) % row_size == 0 && ((board.size - row_size)..(board.size - 1)).include?(index)
-          stringified_board << stringify_bottom_right_space(space)
-        elsif (index + 1) % row_size == 0
-          stringified_board << stringify_right_space(space)
-        elsif ((board.size - row_size)..(board.size - 1)).include? index
-          stringified_board << stringify_bottom_space(space)
-        else
-          stringified_board << stringify_space(space)
-        end
+      rows.each_with_index do |row, index|
+        stringified_board << "\n"
+        stringified_board << stringify_row(row)
+        stringified_board << "\n"
+        stringified_board << "-----------" unless index == row_size - 1
       end
-      stringified_board << "\n"
+      stringified_board
     end
 
-    def self.stringify_space(space)
-      space.nil? ? "___|" : "_#{space}_|"
-    end
-
-    def self.stringify_right_space(space)
-      space.nil? ? "___" : "_#{space}_"
-    end
-
-    def self.stringify_bottom_space(space)
-      space.nil? ? "   |" : " #{space} |"
-    end
-
-    def self.stringify_bottom_right_space(space)
-      space.nil? ? "   " : " #{space} "
+    def self.stringify_row(row)
+      row.map { |space| space.nil? ? "   " : " #{space} " }.join("|")
     end
   end
 end
