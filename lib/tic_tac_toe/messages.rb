@@ -1,5 +1,17 @@
 module TicTacToe
   module Messages
+    def self.stringify_solicit_move
+      "Pick a space."
+    end
+
+    def self.stringify_invalid_move
+      "Invalid move."
+    end
+
+    def self.stringify_game_over(winner)
+      "#{winner} wins!"
+    end
+
     def self.stringify_board(board)
       row_size = Math.sqrt(board.size)
       rows = board.each_slice(row_size).to_a
