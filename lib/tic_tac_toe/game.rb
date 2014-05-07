@@ -10,7 +10,7 @@ module TicTacToe
     def place(move)
       if @board[move].nil? && move < @board.size
         @board[move] = @tokens.first
-        @tokens.reverse!
+        @tokens.rotate!
       else
         raise InvalidMove
       end
