@@ -1,6 +1,6 @@
 module TicTacToe
   module Stringifier
-    def self.stringify_solicit_move
+    def self.stringify_ask_for_move
       "Pick a space."
     end
 
