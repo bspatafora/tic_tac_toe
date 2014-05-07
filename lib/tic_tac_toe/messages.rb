@@ -1,30 +1,24 @@
 module TicTacToe
   module Messages
     def self.stringify_board(board)
+      row_size = 3
       stringified_board = String.new
-      row_starts = [3, 6]
-      regular_spaces = [0, 1, 3, 4]
-      right_spaces = [2, 5]
-      bottom_spaces = [6, 7]
-      bottom_right_space = [8]
-      stringified_board << "\n"
       board.each_with_index do |space, index|
-        stringified_board << "\n" if row_starts.include? index
-        if regular_spaces.include? index
-          stringified_board << stringify_regular_space(space)
-        elsif right_spaces.include? index
-          stringified_board << stringify_right_space(space)
-        elsif bottom_spaces.include? index
-          stringified_board << stringify_bottom_space(space)
-        elsif bottom_right_space.include? index
+        stringified_board << "\n" if index % row_size == 0
+        if (index + 1) % row_size == 0 && ((board.size - row_size)..(board.size - 1)).include?(index)
           stringified_board << stringify_bottom_right_space(space)
+        elsif (index + 1) % row_size == 0
+          stringified_board << stringify_right_space(space)
+        elsif ((board.size - row_size)..(board.size - 1)).include? index
+          stringified_board << stringify_bottom_space(space)
+        else
+          stringified_board << stringify_space(space)
         end
       end
       stringified_board << "\n"
-      stringified_board
     end
 
-    def self.stringify_regular_space(space)
+    def self.stringify_space(space)
       space.nil? ? "___|" : "_#{space}_|"
     end
 
