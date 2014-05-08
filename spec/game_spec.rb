@@ -25,45 +25,57 @@ describe TicTacToe::Game do
     end
   end
 
-  describe '#diagonal_victory?' do
-    it "returns false if a token has not achieved diagonal victory" do
-      expect(game.diagonal_victory?(:X)).to be false
+  describe '#over?' do
+    it "returns false if the game is not over" do
+      generate_board_from("04871263", game)
+      expect(game.over?).to be false
     end
 
-    it "returns true if a token has achieved back diagonal victory" do
-      string = "07468"
-      generate_board_from(string, game)
-      expect(game.diagonal_victory?(:X)).to be true
+    it "returns true if there is a winner" do
+      generate_board_from("706458", game)
+      expect(game.over?).to be true
     end
 
-    it "returns true if a token has achieved front diagonal victory" do
-      string = "20416"
-      generate_board_from(string, game)
-      expect(game.diagonal_victory?(:X)).to be true
-    end
-  end
-
-  describe '#horizonal_victory?' do
-    it "returns false if a token has not achieved horizonatal victory" do
-      expect(game.horizontal_victory?(:X)).to be false
-    end
-
-    it "returns true if a token has achieved horizonatal victory" do
-      string = "08172"
-      generate_board_from(string, game)
-      expect(game.horizontal_victory?(:X)).to be true
+    it "returns true if there is a draw" do
+      generate_board_from("048712635", game)
+      expect(game.over?).to be true
     end
   end
 
-  describe '#vertical_victory?' do
-    it "returns false if a token has not achieved vertical victory" do
-      expect(game.vertical_victory?(:X)).to be false
+  describe '#determine_winner' do
+    it "returns the winning token when there is a winner" do
+      generate_board_from("706458", game)
+      expect(game.determine_winner).to eql(:O)
     end
 
-    it "returns true if a token has achieved horizonatal victory" do
-      string = "08376"
-      generate_board_from(string, game)
-      expect(game.vertical_victory?(:X)).to be true
+    it "returns false if there is not a winner" do
+      expect(game.determine_winner).to be false
+    end
+  end
+
+  describe '#win?' do
+    it "returns false if a token has not won" do
+      expect(game.win?(:X)).to be false
+    end
+
+    it "returns true if a token has achieved a back diagonal win" do
+      generate_board_from("07468", game)
+      expect(game.win?(:X)).to be true
+    end
+
+    it "returns true if a token has achieved a front diagonal win" do
+      generate_board_from("20416", game)
+      expect(game.win?(:X)).to be true
+    end
+
+    it "returns true if a token has achieved a horizonatal win" do
+      generate_board_from("08172", game)
+      expect(game.win?(:X)).to be true
+    end
+
+    it "returns true if a token has achieved a vertical win" do
+      generate_board_from("08376", game)
+      expect(game.win?(:X)).to be true
     end
   end
 
