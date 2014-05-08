@@ -26,6 +26,10 @@ module TicTacToe
       print TicTacToe::Stringifier.stringify_invalid_move
     end
 
+    def say_game_over(winner)
+      print TicTacToe::Stringifier.stringify_game_over(winner)
+    end
+
     def draw_board
       print TicTacToe::Stringifier.stringify_board(@game.board)
     end

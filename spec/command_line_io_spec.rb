@@ -51,6 +51,13 @@ describe TicTacToe::CommandLineIO do
     end
   end
 
+  describe '#say_game_over' do
+    it "asks for a stringified game over message" do
+      expect(stringifier).to receive(:stringify_game_over).with(:O)
+      io.say_game_over(:O)
+    end
+  end
+
   describe '#draw_board' do
     it "asks for a stringified representation of its game's board" do
       expect(stringifier).to receive(:stringify_board).with(game.board)
