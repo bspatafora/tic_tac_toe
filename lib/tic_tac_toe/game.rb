@@ -1,6 +1,6 @@
 module TicTacToe
   class Game
-    attr_reader :board
+    attr_reader :board, :tokens
 
     def initialize
       @board = Array.new(9)

@@ -1,7 +1,7 @@
 module TicTacToe
   class Computer
-    def initialize(board)
-      @board = board
+    def initialize(game)
+      @board = game.board
     end
 
     def make_move

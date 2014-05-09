@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/tic_tac_toe.rb'
+
+game = TicTacToe::Game.new
+computer = TicTacToe::Computer.new(game)
+io = TicTacToe::CommandLineIO.new(game)
+runner = TicTacToe::CommandLineRunner.new(game, computer, io)
+runner.play

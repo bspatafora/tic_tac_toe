@@ -1,15 +1,15 @@
 module TicTacToe
   module Stringifier
     def self.stringify_ask_for_move
-      "Pick a space."
+      "Pick a space.\n"
     end
 
     def self.stringify_invalid_move
-      "Invalid move."
+      "Invalid move.\n"
     end
 
     def self.stringify_game_over(winner)
-      "#{winner} wins!"
+      "#{winner} wins!\n"
     end
 
     def self.stringify_board(board)
@@ -22,7 +22,7 @@ module TicTacToe
         stringified_board << "\n"
         stringified_board << "-----------" unless index == row_size - 1
       end
-      stringified_board
+      stringified_board << "\n"
     end
 
     def self.stringify_row(row)

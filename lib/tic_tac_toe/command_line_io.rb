@@ -15,7 +15,7 @@ module TicTacToe
     end
 
     def solicit_input
-      gets
+      gets.chomp.to_i
     end
 
     def ask_for_move

@@ -12,6 +12,7 @@ describe TicTacToe::Stringifier do
    | X |   
 -----------
    |   |   
+
 eos
       expect(TicTacToe::Stringifier.stringify_board(game.board)).to eql(stringified_board)
     end
