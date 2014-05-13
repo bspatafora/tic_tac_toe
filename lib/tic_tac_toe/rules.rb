@@ -1,7 +1,7 @@
 module TicTacToe
   module Rules
     def self.game_over?(tokens, board)
-      draw = board.board.all? { |space| space != nil }
+      draw = board.spaces.all? { |space| space != nil }
       determine_winner(tokens, board) || draw
     end
 

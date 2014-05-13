@@ -14,7 +14,7 @@ describe TicTacToe::Stringifier do
    |   |   
 
 eos
-      expect(TicTacToe::Stringifier.stringify_board(board.board)).to eql(stringified_board)
+      expect(TicTacToe::Stringifier.stringify_board(board)).to eql(stringified_board)
     end
   end
 end

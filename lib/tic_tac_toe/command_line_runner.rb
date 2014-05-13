@@ -8,8 +8,8 @@ module TicTacToe
 
     def play
       @io.draw_board
-      if @game.over?
-        @io.say_game_over(@game.determine_winner)
+      if Rules.game_over?(@game.tokens, @game.board)
+        @io.say_game_over(Rules.determine_winner(@game.tokens, @game.board))
       else
         @game.tokens.first == :X ? @io.send_move : @game.make_move(@computer.make_move)
         play

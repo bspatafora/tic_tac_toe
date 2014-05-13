@@ -1,28 +1,28 @@
 module TicTacToe
   class Board
-    attr_reader :size, :board
+    attr_reader :size, :spaces
 
     def initialize
       @size = 9
-      @board = Array.new(@size)
+      @spaces = Array.new(@size)
     end
 
     def place(space, token)
-      space_empty = @board[space].nil?
-      on_the_board = (0..(@board.size - 1)).include? space
+      space_empty = @spaces[space].nil?
+      on_the_board = (0..(size - 1)).include? space
       if space_empty && on_the_board
-        @board[space] = token
+        @spaces[space] = token
       else
         raise InvalidMove
       end
     end
 
     def read(position)
-      @board[position]
+      @spaces[position]
     end
 
     def generate_row_slices
-      @board.each_slice(3).to_a
+      @spaces.each_slice(3).to_a
     end
   end
 end

@@ -14,7 +14,7 @@ module TicTacToe
 
     def self.stringify_board(board)
       row_size = Math.sqrt(board.size)
-      rows = board.each_slice(row_size).to_a
+      rows = board.spaces.each_slice(row_size).to_a
       stringified_board = String.new
       rows.each_with_index do |row, index|
         stringified_board << "\n"

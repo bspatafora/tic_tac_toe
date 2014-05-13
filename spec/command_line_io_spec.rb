@@ -61,7 +61,7 @@ describe TicTacToe::CommandLineIO do
 
   describe '#draw_board' do
     it "asks for a stringified representation of its game's board" do
-      expect(stringifier).to receive(:stringify_board).with(board.board)
+      expect(stringifier).to receive(:stringify_board).with(board)
       io.draw_board
     end
   end

@@ -32,7 +32,7 @@ module TicTacToe
     end
 
     def draw_board
-      print TicTacToe::Stringifier.stringify_board(@game.board.board)
+      print TicTacToe::Stringifier.stringify_board(@game.board)
     end
   end
 end
