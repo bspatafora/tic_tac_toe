@@ -21,7 +21,7 @@ module TicTacToe
       @spaces[position]
     end
 
-    def generate_row_slices
+    def generate_rows
       @spaces.each_slice(3).to_a
     end
   end

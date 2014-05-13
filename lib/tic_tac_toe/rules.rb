@@ -20,7 +20,7 @@ module TicTacToe
     def self.diagonal_win?(token, board)
       row_size = Math.sqrt(board.size)
       back_diagonal, front_diagonal = true, true
-      board.generate_row_slices.each_with_index do |row, index|
+      board.generate_rows.each_with_index do |row, index|
         back_diagonal = false if row[index] != token
         front_diagonal = false if row[row_size - (index + 1)] != token
       end
@@ -28,11 +28,11 @@ module TicTacToe
     end
 
     def self.horizontal_win?(token, board)
-      linear_win?(board.generate_row_slices, token)
+      linear_win?(board.generate_rows, token)
     end
 
     def self.vertical_win?(token, board)
-      transposed_rows = board.generate_row_slices.transpose
+      transposed_rows = board.generate_rows.transpose
       linear_win?(transposed_rows, token)
     end
 
