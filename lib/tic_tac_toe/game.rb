@@ -2,23 +2,20 @@ module TicTacToe
   class Game
     attr_reader :board, :tokens
 
-    def initialize
-      @board = Array.new(9)
+    def initialize(board)
+      @board = board
       @row_size = Math.sqrt(@board.size)
       @tokens = [:X, :O]
     end
 
-    def place(move)
-      if @board[move].nil? && move < @board.size
-        @board[move] = @tokens.first
-        @tokens.rotate!
-      else
-        raise InvalidMove
-      end
+    def make_move(space)
+      @board.place(space, @tokens.first)
+      @tokens.rotate!
     end
 
     def over?
-      determine_winner != false || @board.all? { |space| space != nil }
+      tie = @board.board.all? { |space| space != nil }
+      determine_winner || tie
     end
 
     def determine_winner
@@ -39,7 +36,7 @@ module TicTacToe
 
     def diagonal_win?(token)
       back_diagonal, front_diagonal = true, true
-      generate_row_slices.each_with_index do |row, index|
+      @board.generate_row_slices.each_with_index do |row, index|
         back_diagonal = false if row[index] != token
         front_diagonal = false if row[@row_size - (index + 1)] != token
       end
@@ -47,16 +44,12 @@ module TicTacToe
     end
 
     def horizontal_win?(token)
-      linear_win?(generate_row_slices, token)
+      linear_win?(@board.generate_row_slices, token)
     end
 
     def vertical_win?(token)
-      transposed_rows = generate_row_slices.transpose
+      transposed_rows = @board.generate_row_slices.transpose
       linear_win?(transposed_rows, token)
-    end
-
-    def generate_row_slices
-      @board.each_slice(@row_size).to_a
     end
 
     def linear_win?(rows, token)

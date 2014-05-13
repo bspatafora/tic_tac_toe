@@ -1,27 +1,18 @@
 require 'spec_helper'
 
 describe TicTacToe::Game do
-  let(:game) { TicTacToe::Game.new }
+  let(:board) { TicTacToe::Board.new }
+  let(:game) { TicTacToe::Game.new(board) }
 
-  describe '#place' do
-    it "places a valid move" do
-      game.place(0)
-      expect(game.board[0]).to eql(:X)
+  describe '#make_move' do
+    it "sends the move to its board object" do
+      expect(board).to receive(:place).with(0, :X)
+      game.make_move(0)
     end
 
-    it "rotates the tokens after a valid move" do
-      game.place(0)
-      game.place(1)
-      expect(game.board[1]).to eql(:O)
-    end
-
-    it "doesn't place a move if the space is occupied" do
-      game.place(0)
-      expect{ game.place(0) }.to raise_error(TicTacToe::InvalidMove)
-    end
-
-    it "doesn't place a move if it's off the board" do
-      expect{ game.place(9) }.to raise_error(TicTacToe::InvalidMove)
+    it "rotates the tokens after a move" do
+      game.make_move(0)
+      expect(game.tokens.first).to eql(:O)
     end
   end
 
@@ -33,7 +24,7 @@ describe TicTacToe::Game do
 
     it "returns true if there is a winner" do
       generate_board_from("706458", game)
-      expect(game.over?).to be true
+      expect(game.over?).to be_true
     end
 
     it "returns true if there is a draw" do
@@ -81,8 +72,8 @@ describe TicTacToe::Game do
 
   def generate_board_from(string, game)
     string.each_char do |char|
-      move = char.to_i
-      game.place(move)
+      space = char.to_i
+      game.make_move(space)
     end
   end
 end

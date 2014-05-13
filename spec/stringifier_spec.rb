@@ -3,8 +3,8 @@ require 'spec_helper'
 describe TicTacToe::Stringifier do
   describe '#stringify_board' do
     it "returns a stringified board" do
-      game = TicTacToe::Game.new
-      game.place(4)
+      board = TicTacToe::Board.new
+      board.place(4, :X)
       stringified_board = <<eos
 
    |   |   
@@ -14,7 +14,7 @@ describe TicTacToe::Stringifier do
    |   |   
 
 eos
-      expect(TicTacToe::Stringifier.stringify_board(game.board)).to eql(stringified_board)
+      expect(TicTacToe::Stringifier.stringify_board(board.board)).to eql(stringified_board)
     end
   end
 end

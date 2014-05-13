@@ -7,15 +7,16 @@ module TicTacToe
     def send_move
       begin
         ask_for_move
-        @game.place(solicit_input)
-      rescue InvalidMove
+        space = Integer(solicit_move)
+        @game.make_move(space)
+      rescue ArgumentError, InvalidMove
         say_invalid_move
         send_move
       end
     end
 
-    def solicit_input
-      gets.chomp.to_i
+    def solicit_move
+      gets.chomp
     end
 
     def ask_for_move
@@ -31,7 +32,7 @@ module TicTacToe
     end
 
     def draw_board
-      print TicTacToe::Stringifier.stringify_board(@game.board)
+      print TicTacToe::Stringifier.stringify_board(@game.board.board)
     end
   end
 end

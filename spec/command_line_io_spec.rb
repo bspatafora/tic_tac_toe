@@ -1,28 +1,29 @@
 require 'spec_helper'
 
 describe TicTacToe::CommandLineIO do
-  let(:game) { TicTacToe::Game.new }
+  let(:board) { TicTacToe::Board.new }
+  let(:game) { TicTacToe::Game.new(board) }
   let(:stringifier) { TicTacToe::Stringifier }
   let(:io) { TicTacToe::CommandLineIO.new(game) }
 
   describe '#send_move' do
     it "calls ask_for_move" do
-      allow(io).to receive(:solicit_input) { 0 }
+      allow(io).to receive(:solicit_move) { 0 }
       expect(io).to receive(:ask_for_move)
       io.send_move
     end
 
-    it "calls Game.place with the move" do
+    it "sends the move to its game object" do
       allow(io).to receive(:ask_for_move)
-      allow(io).to receive(:solicit_input) { 0 }
-      expect(game).to receive(:place).with(0)
+      allow(io).to receive(:solicit_move) { 0 }
+      expect(game).to receive(:make_move).with(0)
       io.send_move
     end
 
     context "when given an invalid move" do
       it "calls invalid_move" do
         allow(io).to receive(:ask_for_move)
-        allow(io).to receive(:solicit_input).and_return(9, 0)
+        allow(io).to receive(:solicit_move).and_return(9, 0)
         expect(io).to receive(:say_invalid_move).once
         io.send_move
       end
@@ -30,9 +31,9 @@ describe TicTacToe::CommandLineIO do
       it "calls itself until it's given a valid move" do
         allow(io).to receive(:ask_for_move)
         allow(io).to receive(:say_invalid_move)
-        allow(io).to receive(:solicit_input).and_return(9, 0)
+        allow(io).to receive(:solicit_move).and_return(9, 0)
         io.send_move
-        expect(game.board[0]).to eql(:X) 
+        expect(board.read(0)).to eql(:X) 
       end
     end
   end
@@ -60,7 +61,7 @@ describe TicTacToe::CommandLineIO do
 
   describe '#draw_board' do
     it "asks for a stringified representation of its game's board" do
-      expect(stringifier).to receive(:stringify_board).with(game.board)
+      expect(stringifier).to receive(:stringify_board).with(board.board)
       io.draw_board
     end
   end
