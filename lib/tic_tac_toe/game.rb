@@ -4,7 +4,6 @@ module TicTacToe
 
     def initialize(board)
       @board = board
-      @row_size = Math.sqrt(@board.size)
       @tokens = [:X, :O]
     end
 

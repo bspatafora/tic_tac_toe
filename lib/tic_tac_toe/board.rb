@@ -17,8 +17,8 @@ module TicTacToe
       end
     end
 
-    def read(position)
-      @spaces[position]
+    def read(space)
+      @spaces[space]
     end
 
     def generate_rows
