@@ -28,6 +28,7 @@ module TicTacToe
     end
 
     def say_game_over(winner)
+      winner = "Nobody" if winner.nil?
       print TicTacToe::Stringifier.stringify_game_over(winner)
     end
 

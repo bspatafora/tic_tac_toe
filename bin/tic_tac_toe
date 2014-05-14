@@ -4,7 +4,7 @@ require_relative '../lib/tic_tac_toe.rb'
 
 board = TicTacToe::Board.new
 game = TicTacToe::Game.new(board)
-computer = TicTacToe::Computer.new(board)
 io = TicTacToe::CommandLineIO.new(game)
+computer = TicTacToe::Computer.new(game)
 runner = TicTacToe::CommandLineRunner.new(game, computer, io)
 runner.play
