@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tic_tac_toe/player'
 
 describe TicTacToe::Player do
   describe '#make_move' do

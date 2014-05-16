@@ -1,3 +1,5 @@
+require 'tic_tac_toe/exceptions'
+
 module TicTacToe
   class Player
     attr_reader :decider, :token

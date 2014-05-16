@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tic_tac_toe/ai'
 
 describe TicTacToe::AI do
   let(:human_player) { double("human player", :token => :X) }

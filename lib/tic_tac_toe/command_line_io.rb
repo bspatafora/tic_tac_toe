@@ -1,3 +1,5 @@
+require 'tic_tac_toe/Stringifier'
+
 module TicTacToe
   module CommandLineIO
     def self.make_move(board, players)

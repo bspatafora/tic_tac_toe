@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/tic_tac_toe.rb'
+$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
+
+require 'tic_tac_toe/board'
+require 'tic_tac_toe/player'
+require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/ai'
+require 'tic_tac_toe/command_line_runner'
 
 board = TicTacToe::Board.new
 human_player = TicTacToe::Player.new(TicTacToe::CommandLineIO, :X)

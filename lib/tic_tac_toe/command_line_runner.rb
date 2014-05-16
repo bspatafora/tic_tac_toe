@@ -1,3 +1,6 @@
+require 'tic_tac_toe/rules'
+require 'tic_tac_toe/command_line_io'
+
 module TicTacToe
   class CommandLineRunner
     def initialize(board, players)

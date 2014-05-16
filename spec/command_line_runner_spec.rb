@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tic_tac_toe/command_line_runner'
 
 describe TicTacToe::CommandLineRunner do
   end_state_board = [:X, nil, nil,
