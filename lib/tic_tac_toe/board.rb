@@ -8,9 +8,7 @@ module TicTacToe
     end
 
     def place(space, token)
-      space_empty = @spaces[space].nil?
-      on_the_board = (0..(size - 1)).include? space
-      if space_empty && on_the_board
+      if valid?(space)
         @spaces[space] = token
       else
         raise InvalidMove
@@ -27,6 +25,14 @@ module TicTacToe
 
     def generate_rows
       @spaces.each_slice(3).to_a
+    end
+
+    private
+
+    def valid?(space)
+      space_empty = @spaces[space].nil?
+      on_the_board = (0..(size - 1)).include? space
+      space_empty && on_the_board
     end
   end
 end
