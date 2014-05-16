@@ -1,6 +1,6 @@
 module TicTacToe
   class Board
-    attr_reader :size, :spaces
+    attr_reader :size
 
     def initialize
       @size = 9
@@ -17,8 +17,12 @@ module TicTacToe
       end
     end
 
-    def read(space)
+    def get_space(space)
       @spaces[space]
+    end
+
+    def get_spaces
+      @spaces
     end
 
     def generate_rows

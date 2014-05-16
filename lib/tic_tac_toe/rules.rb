@@ -1,13 +1,17 @@
 module TicTacToe
   module Rules
-    def self.game_over?(tokens, board)
-      tie = board.spaces.all? { |space| space != nil }
-      determine_winner(tokens, board) || tie
+    def self.game_over?(players, board)
+      winner = !!determine_winner(players, board)
+      tie = board.get_spaces.all? { |space| space != nil }
+      winner || tie
     end
 
-    def self.determine_winner(tokens, board)
+    def self.determine_winner(players, board)
       winner = nil
-      tokens.each { |token| winner = token if win?(token, board) }
+      players.each do |player|
+        player_has_won = win?(player.token, board)
+        winner = player.token if player_has_won
+      end
       winner
     end
 
@@ -28,15 +32,15 @@ module TicTacToe
     end
 
     def self.horizontal_win?(token, board)
-      any_row_win?(board.generate_rows, token)
+      row_win?(board.generate_rows, token)
     end
 
     def self.vertical_win?(token, board)
       transposed_rows = board.generate_rows.transpose
-      any_row_win?(transposed_rows, token)
+      row_win?(transposed_rows, token)
     end
 
-    def self.any_row_win?(rows, token)
+    def self.row_win?(rows, token)
       rows.any? { |row| row.all? { |space| space == token  } }
     end
   end

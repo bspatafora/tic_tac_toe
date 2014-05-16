@@ -1,39 +1,29 @@
 module TicTacToe
-  class CommandLineIO
-    def initialize(game)
-      @game = game
-    end
-
-    def send_move
+  module CommandLineIO
+    def self.make_move(board, players)
       begin
         ask_for_move
-        space = Integer(solicit_move)
-        @game.make_move(space)
-      rescue ArgumentError, InvalidMove
-        say_invalid_move
-        send_move
+        Integer(solicit_move)
+      rescue ArgumentError
+        make_move(board, players)
       end
     end
 
-    def solicit_move
+    def self.solicit_move
       gets.chomp
     end
 
-    def ask_for_move
+    def self.ask_for_move
       print TicTacToe::Stringifier.stringify_ask_for_move
     end
 
-    def say_invalid_move
-      print TicTacToe::Stringifier.stringify_invalid_move
-    end
-
-    def say_game_over(winner)
+    def self.say_game_over(winner)
       winner = "Nobody" if winner.nil?
       print TicTacToe::Stringifier.stringify_game_over(winner)
     end
 
-    def draw_board
-      print TicTacToe::Stringifier.stringify_board(@game.board)
+    def self.draw_board(board)
+      print TicTacToe::Stringifier.stringify_board(board)
     end
   end
 end

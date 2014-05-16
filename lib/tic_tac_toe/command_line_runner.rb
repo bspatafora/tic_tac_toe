@@ -1,23 +1,24 @@
 module TicTacToe
   class CommandLineRunner
-    def initialize(game, computer, io)
-      @game = game
-      @computer = computer
-      @io = io
+    def initialize(board, players)
+      @board = board
+      @players = players
     end
 
-    def play
-      @io.draw_board
-      if Rules.game_over?(@game.tokens, @game.board)
-        @io.say_game_over(Rules.determine_winner(@game.tokens, @game.board))
-      else
-        if @game.tokens.first == @computer.computer_token
-          @game.make_move(@computer.make_move(@game.board))
-        else
-          @io.send_move
-        end
-        play
-      end
+    def run
+      take_turn until Rules.game_over?(@players, @board)
+      end_game
+    end
+
+    def take_turn
+      CommandLineIO.draw_board(@board)
+      @players.first.make_move(@board, @players)
+      @players.rotate!
+    end
+
+    def end_game
+      CommandLineIO.draw_board(@board)
+      CommandLineIO.say_game_over(Rules.determine_winner(@players, @board))
     end
   end
 end

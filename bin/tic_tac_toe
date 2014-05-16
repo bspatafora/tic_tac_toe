@@ -3,8 +3,9 @@
 require_relative '../lib/tic_tac_toe.rb'
 
 board = TicTacToe::Board.new
-game = TicTacToe::Game.new(board)
-io = TicTacToe::CommandLineIO.new(game)
-computer = TicTacToe::Computer.new(game)
-runner = TicTacToe::CommandLineRunner.new(game, computer, io)
-runner.play
+human_player = TicTacToe::Player.new(TicTacToe::CommandLineIO, :X)
+computer_player = TicTacToe::Player.new(TicTacToe::AI, :O)
+players = [human_player, computer_player]
+
+runner = TicTacToe::CommandLineRunner.new(board, players)
+runner.run

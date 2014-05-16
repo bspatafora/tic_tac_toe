@@ -3,10 +3,11 @@ require 'spec_helper'
 describe TicTacToe::Board do
   let(:board) { TicTacToe::Board.new }
 
-  describe '#place and #read' do
-    it "places a valid move" do
+
+  describe '#place and #get_space' do
+    it "places a valid move and allows it to be accessed" do
       board.place(0, :X)
-      expect(board.read(0)).to eql(:X)
+      expect(board.get_space(0)).to eql(:X)
     end
 
     it "doesn't place a move if the space is occupied" do
@@ -18,6 +19,7 @@ describe TicTacToe::Board do
       expect{ board.place(9, :X) }.to raise_error(TicTacToe::InvalidMove)
     end
   end
+
 
   describe '#generate_rows' do
     it "returns an array of row arrays" do

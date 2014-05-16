@@ -1,9 +1,11 @@
 require 'spec_helper'
 
-describe TicTacToe::Computer do
-  let(:board) { TicTacToe::Board.new }
-  let(:game) { TicTacToe::Game.new(board) }
-  let(:computer) { TicTacToe::Computer.new(game) }
+describe TicTacToe::AI do
+  let(:human_player) { double("human player", :token => :X) }
+  let(:computer_player) { double("computer player", :token => :O) }
+  let(:players) { [computer_player, human_player] }
+  let(:ai) { TicTacToe::AI }
+
 
   describe '#make_move' do
     it "returns the best move" do
@@ -11,9 +13,11 @@ describe TicTacToe::Computer do
                    :O, :O, nil,
                    :X, nil, :X]
       board = generate_board(structure)
-      expect(computer.make_move(board)).to eql(5)
+      winning_move = 5
+      expect(ai.make_move(board, players)).to eql(winning_move)
     end
   end
+
 
   describe '#minimax' do
     it "correctly scores pre-win" do
@@ -21,7 +25,8 @@ describe TicTacToe::Computer do
                    :O, :O, nil,
                    :X, nil, :X]
       board = generate_board(structure)
-      expect(computer.minimax(board, computer.computer_token)).to eql(1)
+      win_score = 1
+      expect(ai.minimax(board, :max, players)).to eql(win_score)
     end
 
     it "correctly scores pre-loss" do
@@ -29,17 +34,20 @@ describe TicTacToe::Computer do
                    nil, nil, nil,
                    :X, nil, :X]
       board = generate_board(structure)
-      expect(computer.minimax(board, computer.computer_token)).to eql(-1)
+      loss_score = -1
+      expect(ai.minimax(board, :max, players)).to eql(loss_score)
     end
 
     it "correctly scores pre-draw" do
-      structure = [:O, :O, :X,
-                   :X, nil, :O,
-                   :O, :X, :O]
+      structure = [:X, :X, :O,
+                   :O, nil, :X,
+                   :X, :O, :X]
       board = generate_board(structure)
-      expect(computer.minimax(board, computer.human_token)).to eql(0)
+      draw_score = 0
+      expect(ai.minimax(board, :max, players)).to eql(draw_score)
     end
   end
+
 
   describe '#generate_board' do
     it "generates a new board based on a move and a board" do
@@ -47,10 +55,11 @@ describe TicTacToe::Computer do
                    nil, :O, nil,
                    :X, nil, nil]
       board = generate_board(structure)
-      new_board = computer.generate_board(3, computer.computer_token, board)
-      expect(new_board.read(3)).to eql(:O)
+      new_board = ai.generate_board(3, :O, board)
+      expect(new_board.get_space(3)).to eql(:O)
     end
   end
+
 
   describe '#generate_moves' do
     it "generates possible next moves based on a board" do
@@ -58,33 +67,38 @@ describe TicTacToe::Computer do
                    :O, :O, :X,
                    :X, :X, nil]
       board = generate_board(structure)
-      expect(computer.generate_moves(board)).to eql([2, 8])
+      open_spaces = [2, 8]
+      expect(ai.generate_moves(board)).to eql(open_spaces)
     end
   end
 
+
   describe '#score' do
-    it "returns 1 if the computer has won" do
+    it "correctly scores if the computer has won" do
       structure = [:O, nil, nil,
                    nil, :O, nil,
                    nil, nil, :O]
       board = generate_board(structure)
-      expect(computer.score(board)).to eql(1)
+      win_score = 1
+      expect(ai.score(board, players)).to eql(win_score)
     end
 
-    it "returns 0 if no one has won" do
+    it "correctly scores if no one has won" do
       structure = [:O, :O, :X,
                    :X, :X, :O,
                    :O, :X, :O]
       board = generate_board(structure)
-      expect(computer.score(board)).to eql(0)
+      draw_score = 0
+      expect(ai.score(board, players)).to eql(draw_score)
     end
 
-    it "returns -1 if another player has won" do
+    it "correctly scores if another player has won" do
       structure = [:X, nil, nil,
                    nil, :X, nil,
                    nil, nil, :X]
       board = generate_board(structure)
-      expect(computer.score(board)).to eql(-1)
+      loss_score = -1
+      expect(ai.score(board, players)).to eql(loss_score)
     end
   end
 end
