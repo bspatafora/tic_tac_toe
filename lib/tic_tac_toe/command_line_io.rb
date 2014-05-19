@@ -24,6 +24,22 @@ module TicTacToe
       print TicTacToe::Stringifier.stringify_ask_for_token(player)
     end
 
+    def self.get_difficulty
+      ask_for_difficulty
+      case solicit_input.downcase
+      when "easy"
+        :easy
+      when "hard"
+        :hard
+      else
+        get_difficulty
+      end
+    end
+
+    def self.ask_for_difficulty
+      print TicTacToe::Stringifier.stringify_ask_for_difficulty
+    end
+
     def self.say_game_over(winner)
       winner = "Nobody" if winner.nil?
       print TicTacToe::Stringifier.stringify_game_over(winner)

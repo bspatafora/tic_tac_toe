@@ -71,6 +71,38 @@ describe TicTacToe::CommandLineIO do
   end
 
 
+  describe '#get_difficulty' do
+    let(:valid_difficulty) { "easy" }
+    let(:invalid_difficulty) { "green" }
+
+    it "asks for a difficulty" do
+      allow(io).to receive(:solicit_input) { valid_difficulty }
+      expect(io).to receive(:ask_for_difficulty)
+      io.get_difficulty
+    end
+
+    it "solicits a difficulty" do
+      allow(io).to receive(:ask_for_difficulty)
+      expect(io).to receive(:solicit_input) { valid_difficulty }
+      io.get_difficulty
+    end
+
+    it "only returns a difficulty once it receives a valid string" do
+      allow(io).to receive(:ask_for_difficulty)
+      allow(io).to receive(:solicit_input).and_return(invalid_difficulty, valid_difficulty)
+      expect(io.get_difficulty).to eql(:easy)
+    end
+  end
+
+
+  describe '#ask_for_difficulty' do
+    it "asks for a stringified difficulty solicitation message" do
+      expect(stringifier).to receive(:stringify_ask_for_difficulty)
+      io.ask_for_difficulty
+    end
+  end
+
+
   describe '#say_game_over' do
     it "asks for a stringified game over message" do
       winner = :O

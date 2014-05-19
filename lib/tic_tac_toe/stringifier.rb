@@ -4,6 +4,10 @@ module TicTacToe
       "Pick #{player} token.\n"
     end
 
+    def self.stringify_ask_for_difficulty
+      "Pick difficulty.\n"
+    end
+
     def self.stringify_ask_for_move
       "Pick a space.\n"
     end
