@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'tic_tac_toe/ai'
+require 'tic_tac_toe/hard_ai'
 
-describe TicTacToe::AI do
+describe TicTacToe::HardAI do
   let(:human_player) { double("human player", :token => :X) }
   let(:computer_player) { double("computer player", :token => :O) }
   let(:players) { [computer_player, human_player] }
-  let(:ai) { TicTacToe::AI }
+  let(:ai) { TicTacToe::HardAI }
 
 
   describe '#make_move' do
@@ -58,18 +58,6 @@ describe TicTacToe::AI do
       board = generate_board(structure)
       new_board = ai.generate_board(3, :O, board)
       expect(new_board.get_space(3)).to eql(:O)
-    end
-  end
-
-
-  describe '#generate_moves' do
-    it "generates possible next moves based on a board" do
-      structure = [:X, :O, nil,
-                   :O, :O, :X,
-                   :X, :X, nil]
-      board = generate_board(structure)
-      open_spaces = [2, 8]
-      expect(ai.generate_moves(board)).to eql(open_spaces)
     end
   end
 

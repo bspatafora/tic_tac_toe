@@ -1,4 +1,4 @@
-require 'tic_tac_toe/ai'
+require 'tic_tac_toe/hard_ai'
 require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/exceptions'
 require 'tic_tac_toe/player'
@@ -21,7 +21,7 @@ module TicTacToe
       taken_tokens = []
       human = generate_player(:human, CommandLineIO, taken_tokens)
       taken_tokens << human.token
-      computer = generate_player(:computer, AI, taken_tokens)
+      computer = generate_player(:computer, HardAI, taken_tokens)
       [human, computer]
     end
 

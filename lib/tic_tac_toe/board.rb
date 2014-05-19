@@ -23,6 +23,14 @@ module TicTacToe
       @spaces
     end
 
+    def get_open_spaces
+      open_spaces = Array.new
+      @spaces.each_with_index do |space, index|
+        open_spaces << index if space.nil?
+      end
+      open_spaces
+    end
+
     def generate_rows
       @spaces.each_slice(3).to_a
     end

@@ -23,6 +23,18 @@ describe TicTacToe::Board do
   end
 
 
+  describe '#get_open_spaces' do
+    it "generates possible next moves" do
+      structure = [:X, :O, nil,
+                   :O, :O, :X,
+                   :X, :X, nil]
+      board = generate_board(structure)
+      open_spaces = [2, 8]
+      expect(board.get_open_spaces).to eql(open_spaces)
+    end
+  end
+
+
   describe '#generate_rows' do
     it "returns an array of row arrays" do
       row_structure = [nil, nil, nil]
