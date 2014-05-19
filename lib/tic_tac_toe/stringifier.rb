@@ -1,5 +1,9 @@
 module TicTacToe
   module Stringifier
+    def self.stringify_ask_for_token(player)
+      "Pick #{player} token.\n"
+    end
+
     def self.stringify_ask_for_move
       "Pick a space.\n"
     end

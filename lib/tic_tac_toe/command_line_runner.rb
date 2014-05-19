@@ -1,16 +1,37 @@
-require 'tic_tac_toe/rules'
+require 'tic_tac_toe/ai'
 require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/exceptions'
+require 'tic_tac_toe/player'
+require 'tic_tac_toe/rules'
 
 module TicTacToe
   class CommandLineRunner
-    def initialize(board, players)
+    def initialize(board)
       @board = board
-      @players = players
+      @players = []
     end
 
     def run
+      @players = generate_players
       take_turn until Rules.game_over?(@players, @board)
       end_game
+    end
+
+    def generate_players
+      taken_tokens = []
+      human = generate_player(:human, CommandLineIO, taken_tokens)
+      taken_tokens << human.token
+      computer = generate_player(:computer, AI, taken_tokens)
+      [human, computer]
+    end
+
+    def generate_player(player_type, decider, taken_tokens)
+      begin
+        token = CommandLineIO.get_token(player_type)
+        Player.new(decider, token, taken_tokens)
+      rescue InvalidToken
+        generate_player(player_type, decider, taken_tokens)
+      end
     end
 
     def take_turn

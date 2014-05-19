@@ -14,7 +14,7 @@ describe TicTacToe::CommandLineIO do
 
     it "asks for a move" do
       valid_move = 0
-      allow(io).to receive(:solicit_move) { valid_move }
+      allow(io).to receive(:solicit_input) { valid_move }
       expect(io).to receive(:ask_for_move)
       io.make_move(board, players)
     end
@@ -22,14 +22,14 @@ describe TicTacToe::CommandLineIO do
     it "solicits a move" do
       valid_move = 0
       allow(io).to receive(:ask_for_move)
-      expect(io).to receive(:solicit_move) { valid_move }
+      expect(io).to receive(:solicit_input) { valid_move }
       io.make_move(board, players)
     end
 
     it "only returns a move once it receives an integer-like string" do
       not_integer_like, integer_like = "string", 100
       allow(io).to receive(:ask_for_move)
-      allow(io).to receive(:solicit_move).and_return(not_integer_like, integer_like)
+      allow(io).to receive(:solicit_input).and_return(not_integer_like, integer_like)
       expect(io.make_move(board, players)).to eql(integer_like)
     end
   end
@@ -39,6 +39,34 @@ describe TicTacToe::CommandLineIO do
     it "asks for a stringified move solicitation message" do
       expect(stringifier).to receive(:stringify_ask_for_move)
       io.ask_for_move
+    end
+  end
+
+
+  describe '#get_token' do
+    let(:player) { :human }
+
+    it "asks for a token" do
+      valid_token = "X"
+      allow(io).to receive(:solicit_input) { valid_token }
+      expect(io).to receive(:ask_for_token).with(player)
+      io.get_token(player)
+    end
+
+    it "solicits a token" do
+      valid_token = "X"
+      allow(io).to receive(:ask_for_token)
+      expect(io).to receive(:solicit_input) { valid_token }
+      io.get_token(player)
+    end
+  end
+
+
+  describe '#ask_for_token' do
+    it "asks for a stringified token solicitation message" do
+      player = :human
+      expect(stringifier).to receive(:stringify_ask_for_token).with(player)
+      io.ask_for_token(player)
     end
   end
 

@@ -5,18 +5,23 @@ module TicTacToe
     def self.make_move(board, players)
       begin
         ask_for_move
-        Integer(solicit_move)
+        Integer(solicit_input)
       rescue ArgumentError
         make_move(board, players)
       end
     end
 
-    def self.solicit_move
-      gets.chomp
-    end
-
     def self.ask_for_move
       print TicTacToe::Stringifier.stringify_ask_for_move
+    end
+
+    def self.get_token(player)
+      ask_for_token(player)
+      solicit_input.to_sym
+    end
+
+    def self.ask_for_token(player)
+      print TicTacToe::Stringifier.stringify_ask_for_token(player)
     end
 
     def self.say_game_over(winner)
@@ -26,6 +31,12 @@ module TicTacToe
 
     def self.draw_board(board)
       print TicTacToe::Stringifier.stringify_board(board)
+    end
+
+    private
+
+    def self.solicit_input
+      gets.chomp
     end
   end
 end
