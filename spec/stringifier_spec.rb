@@ -7,11 +7,11 @@ describe TicTacToe::Stringifier do
       board.place(4, :X)
       stringified_board = <<eos
 
-   |   |   
+[0]|[1]|[2]
 -----------
-   | X |   
+[3]| X |[5]
 -----------
-   |   |   
+[6]|[7]|[8]
 
 eos
       expect(TicTacToe::Stringifier.stringify_board(board)).to eql(stringified_board)
