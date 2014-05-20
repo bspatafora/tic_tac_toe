@@ -1,5 +1,11 @@
 module TicTacToe
   module Rules
+    def self.token_valid?(token, taken_tokens)
+      correct_length = token.length == 1
+      untaken = !taken_tokens.include?(token)
+      correct_length && untaken
+    end
+
     def self.game_over?(players, board)
       winner = !!determine_winner(players, board)
       tie = board.get_spaces.all? { |space| space != nil }

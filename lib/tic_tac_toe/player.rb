@@ -21,17 +21,11 @@ module TicTacToe
     private
 
     def validate_token(token, taken_tokens)
-      if token_valid?(token, taken_tokens)
+      if Rules.token_valid?(token, taken_tokens)
         token
       else
         raise InvalidToken
       end
-    end
-
-    def token_valid?(token, taken_tokens)
-      correct_length = token.length == 1
-      untaken = !taken_tokens.include?(token)
-      correct_length && untaken
     end
   end
 end

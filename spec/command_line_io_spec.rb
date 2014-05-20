@@ -19,7 +19,7 @@ describe TicTacToe::CommandLineIO do
       io.make_move(board, players)
     end
 
-    it "solicits a move" do
+    it "solicits move input" do
       valid_move = 0
       allow(io).to receive(:ask_for_move)
       expect(io).to receive(:solicit_input) { valid_move }
@@ -53,7 +53,7 @@ describe TicTacToe::CommandLineIO do
       io.get_token(player)
     end
 
-    it "solicits a token" do
+    it "solicits token input" do
       valid_token = "X"
       allow(io).to receive(:ask_for_token)
       expect(io).to receive(:solicit_input) { valid_token }
@@ -81,7 +81,7 @@ describe TicTacToe::CommandLineIO do
       io.get_difficulty
     end
 
-    it "solicits a difficulty" do
+    it "solicits difficulty input" do
       allow(io).to receive(:ask_for_difficulty)
       expect(io).to receive(:solicit_input) { valid_difficulty }
       io.get_difficulty

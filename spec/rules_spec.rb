@@ -7,6 +7,27 @@ describe TicTacToe::Rules do
   let(:rules) { TicTacToe::Rules }
 
 
+  describe '#token_valid?' do
+    it "returns false if the token is not a single character" do
+      long_token = :long
+      taken_tokens = []
+      expect(rules.token_valid?(long_token, taken_tokens)).to be false
+    end
+
+    it "returns false if the token is already taken" do
+      taken_token = :X
+      taken_tokens = [:X]
+      expect(rules.token_valid?(taken_token, taken_tokens)).to be false
+    end
+
+    it "returns true if the token is valid" do
+      valid_token = :O
+      taken_tokens = [:X]
+      expect(rules.token_valid?(valid_token, taken_tokens)).to be true
+    end
+  end
+
+
   describe '#game_over?' do
     it "returns false if the game is not over" do
       structure = [:X, :X, :O,
