@@ -32,6 +32,8 @@ module TicTacToe
       stringified_board << "\n"
     end
 
+    private
+
     def self.stringify_row(row, row_start_index)
       stringified_row = []
       row.each_with_index do |space, index|

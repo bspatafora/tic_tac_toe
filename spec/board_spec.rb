@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'tic_tac_toe/board'
-require 'tic_tac_toe/exceptions'
 
 describe TicTacToe::Board do
   let(:board) { TicTacToe::Board.new }
@@ -24,7 +23,7 @@ describe TicTacToe::Board do
 
 
   describe '#get_open_spaces' do
-    it "generates possible next moves" do
+    it "returns an array of the board's open spaces" do
       structure = [:X, :O, nil,
                    :O, :O, :X,
                    :X, :X, nil]
@@ -38,7 +37,8 @@ describe TicTacToe::Board do
   describe '#generate_rows' do
     it "returns an array of row arrays" do
       row_structure = [nil, nil, nil]
-      expect(board.generate_rows).to eql(Array.new(3) { row_structure })
+      rows_array = Array.new(3) { row_structure }
+      expect(board.generate_rows).to eql(rows_array)
     end
   end
 end

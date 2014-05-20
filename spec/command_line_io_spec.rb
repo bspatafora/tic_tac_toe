@@ -8,9 +8,7 @@ describe TicTacToe::CommandLineIO do
 
   describe '#make_move' do
     let(:board) { double("board") }
-    let(:human_player) { double("human player", :token => :X) }
-    let(:computer_player) { double("computer player", :token => :O) }
-    let(:players) { [human_player, computer_player] }
+    let(:players) { double("players") }
 
     it "asks for a move" do
       valid_move = 0
@@ -44,7 +42,7 @@ describe TicTacToe::CommandLineIO do
 
 
   describe '#get_token' do
-    let(:player) { :human }
+    let(:player) { double("player") }
 
     it "asks for a token" do
       valid_token = "X"
@@ -109,11 +107,18 @@ describe TicTacToe::CommandLineIO do
       expect(stringifier).to receive(:stringify_game_over).with(winner)
       io.say_game_over(winner)
     end
+
+    it "passes 'Nobody' if there is no winner" do
+      winner = nil
+      winner_string = "Nobody"
+      expect(stringifier).to receive(:stringify_game_over).with(winner_string)
+      io.say_game_over(winner)
+    end
   end
 
 
   describe '#draw_board' do
-    it "asks for a stringified representation of its game's board" do
+    it "asks for a stringified representation of a board" do
       board = double("board")
       expect(stringifier).to receive(:stringify_board).with(board)
       io.draw_board(board)

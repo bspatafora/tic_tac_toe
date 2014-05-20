@@ -1,18 +1,17 @@
 require 'spec_helper'
 require 'tic_tac_toe/player'
-require 'tic_tac_toe/exceptions'
 
 describe TicTacToe::Player do
   describe '#initialize' do
+    let(:decider) { double("test decider") }
+
     it "doesn't accept non-single character tokens" do
-      decider = double("test decider")
       invalid_token = :invalid
       taken_tokens = []
       expect{ TicTacToe::Player.new(decider, invalid_token, taken_tokens) }.to raise_error(TicTacToe::InvalidToken)
     end
 
     it "doesn't accept already-taken tokens" do
-      decider = double("test decider")
       invalid_token = :X
       taken_tokens = [:X]
       expect{ TicTacToe::Player.new(decider, invalid_token, taken_tokens) }.to raise_error(TicTacToe::InvalidToken)
@@ -21,7 +20,7 @@ describe TicTacToe::Player do
     it "accepts valid tokens" do
       valid_token = :X
       taken_tokens = []
-      player = TicTacToe::Player.new(double("test decider"), valid_token, taken_tokens)
+      player = TicTacToe::Player.new(decider, valid_token, taken_tokens)
       expect(player.token).to eql(:X)
     end
   end
