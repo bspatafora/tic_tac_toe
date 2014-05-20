@@ -43,12 +43,22 @@ describe TicTacToe::CommandLineRunner do
 
 
   describe '#generate_players' do
-    let(:player) { double("player", :token => :X) }
+    let(:hard_ai) { TicTacToe::HardAI }
+    let(:human) { TicTacToe::Player.new(io, :X, []) }
+    let(:computer) { TicTacToe::Player.new(hard_ai, :O, [:X]) }
 
-    it "asks for two generated players" do
-      allow(io).to receive(:get_difficulty) { :easy }
-      expect(runner).to receive(:generate_player).twice { player }
-      runner.generate_players
+    it "generates players" do
+      human_token, computer_token = :X, :O
+      computer_difficulty = :hard
+      allow(io).to receive(:get_token).and_return(human_token, computer_token)
+      allow(io).to receive(:get_difficulty) { computer_difficulty }
+
+      generated_array = runner.generate_players
+      generated_human, generated_computer = generated_array.first, generated_array.last
+
+      expect(generated_human.token).to eql(human.token)
+      expect(generated_computer.token).to eql(computer.token)
+      expect(generated_computer.decider).to eql(computer.decider)
     end
   end
 

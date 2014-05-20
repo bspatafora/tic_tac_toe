@@ -29,6 +29,8 @@ module TicTacToe
       case solicit_input.downcase
       when "easy"
         :easy
+      when "medium"
+        :medium
       when "hard"
         :hard
       else

@@ -2,6 +2,7 @@ require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/easy_ai'
 require 'tic_tac_toe/exceptions'
 require 'tic_tac_toe/hard_ai'
+require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/player'
 require 'tic_tac_toe/rules'
 
@@ -31,6 +32,8 @@ module TicTacToe
       case difficulty
       when :easy
         generate_player(:computer, EasyAI, taken_tokens)
+      when :medium
+        generate_player(:computer, MediumAI, taken_tokens)
       when :hard
         generate_player(:computer, HardAI, taken_tokens)
       end
