@@ -63,28 +63,6 @@ describe TicTacToe::CommandLineRunner do
   end
 
 
-  describe '#generate_computer' do
-    it "generates a player based on a difficulty" do
-      difficulty = :easy
-      taken_tokens = []
-      expect(runner).to receive(:generate_player).with(:computer, TicTacToe::EasyAI, taken_tokens)
-      runner.generate_computer(difficulty, taken_tokens)
-    end
-  end
-
-
-  describe '#generate_player' do
-    let(:taken_tokens) { [:X] }
-    let(:player) { runner.generate_player(double("player type"), double("decider"), taken_tokens) }
-
-    it "asks until it receives a valid token" do
-      invalid_token, valid_token = taken_tokens.first, :O
-      allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
-      expect(player.token).to eql(:O)
-    end
-  end
-
-
   describe '#take_turn' do
     before(:each) do
       allow(runner).to receive(:generate_players) { players }

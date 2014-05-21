@@ -1,9 +1,5 @@
 require 'tic_tac_toe/command_line_io'
-require 'tic_tac_toe/easy_ai'
-require 'tic_tac_toe/exceptions'
-require 'tic_tac_toe/hard_ai'
-require 'tic_tac_toe/medium_ai'
-require 'tic_tac_toe/player'
+require 'tic_tac_toe/player_factory'
 require 'tic_tac_toe/rules'
 
 module TicTacToe
@@ -21,31 +17,11 @@ module TicTacToe
 
     def generate_players
       taken_tokens = []
-      human = generate_player(:human, CommandLineIO, taken_tokens)
+      human = PlayerFactory.generate_player(:human, CommandLineIO, taken_tokens)
       taken_tokens << human.token
       difficulty = CommandLineIO.get_difficulty
-      computer = generate_computer(difficulty, taken_tokens)
+      computer = PlayerFactory.generate_computer(difficulty, taken_tokens)
       [human, computer]
-    end
-
-    def generate_computer(difficulty, taken_tokens)
-      case difficulty
-      when :easy
-        generate_player(:computer, EasyAI, taken_tokens)
-      when :medium
-        generate_player(:computer, MediumAI, taken_tokens)
-      when :hard
-        generate_player(:computer, HardAI, taken_tokens)
-      end
-    end
-
-    def generate_player(player_type, decider, taken_tokens)
-      begin
-        token = CommandLineIO.get_token(player_type)
-        Player.new(decider, token, taken_tokens)
-      rescue InvalidToken
-        generate_player(player_type, decider, taken_tokens)
-      end
     end
 
     def take_turn
