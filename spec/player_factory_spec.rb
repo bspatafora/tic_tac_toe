@@ -3,26 +3,31 @@ require 'tic_tac_toe/player_factory'
 
 describe TicTacToe::PlayerFactory do
   let(:factory) { TicTacToe::PlayerFactory }
-  let(:io) { TicTacToe::CommandLineIO }
 
-  describe '#generate_computer' do
-    it "generates a player based on a difficulty" do
-      difficulty = :easy
-      taken_tokens = []
-      expect(factory).to receive(:generate_player).with(:computer, TicTacToe::EasyAI, taken_tokens)
-      factory.generate_computer(difficulty, taken_tokens)
+
+  describe '#generate_human_player' do
+    it "returns a player with the correct token and decider" do
+      token, taken_tokens = :X, []
+      human_player = factory.generate_human_player(token, taken_tokens)
+      expect(human_player.decider).to eql(TicTacToe::CommandLineIO)
+      expect(human_player.token).to equal(:X)
     end
   end
 
 
-  describe '#generate_player' do
-    let(:taken_tokens) { [:X] }
-    let(:player) { factory.generate_player(double("player type"), double("decider"), taken_tokens) }
+  describe '#generate_computer_player' do
+    it "doesn't accept invalid difficulties" do
+      token, taken_tokens = :O, []
+      invalid_difficulty = :green
+      expect { factory.generate_computer_player(token, taken_tokens, invalid_difficulty) }.to raise_error(TicTacToe::InvalidDifficulty)
+    end
 
-    it "asks until it receives a valid token" do
-      invalid_token, valid_token = taken_tokens.first, :O
-      allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
-      expect(player.token).to eql(:O)
+    it "returns a player with the correct token and decider when given a valid difficulty" do
+      token, taken_tokens = :O, []
+      difficulty = :medium
+      computer_player = factory.generate_computer_player(token, taken_tokens, difficulty)
+      expect(computer_player.decider).to eql(TicTacToe::MediumAI)
+      expect(computer_player.token).to equal(:O)
     end
   end
 end

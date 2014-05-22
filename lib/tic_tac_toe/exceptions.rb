@@ -4,4 +4,7 @@ module TicTacToe
 
   class InvalidToken < StandardError
   end
+
+  class InvalidDifficulty < StandardError
+  end
 end

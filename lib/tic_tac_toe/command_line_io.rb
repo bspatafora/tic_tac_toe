@@ -1,7 +1,58 @@
+require 'tic_tac_toe/Board'
+require 'tic_tac_toe/Player_Factory'
 require 'tic_tac_toe/Stringifier'
 
 module TicTacToe
   module CommandLineIO
+    def self.get_initial_game_state
+      { board: TicTacToe::Board.new, players: get_player_array }
+    end
+
+    def self.get_player_array
+      taken_tokens = []
+      human_player = get_human_player(taken_tokens)
+      taken_tokens << human_player.token
+      computer_player = get_computer_player(taken_tokens)
+      [human_player, computer_player]
+    end
+
+    def self.get_human_player(taken_tokens)
+      begin
+        token = get_token(:human)
+        PlayerFactory.generate_human_player(token, taken_tokens)
+      rescue InvalidToken
+        get_human_player(taken_tokens)
+      end
+    end
+
+    def self.get_computer_player(taken_tokens)
+      begin
+        token = get_token(:computer)
+        difficulty = get_difficulty
+        PlayerFactory.generate_computer_player(token, taken_tokens, difficulty)
+      rescue InvalidToken, InvalidDifficulty
+        get_computer_player(taken_tokens)
+      end
+    end
+
+    def self.get_token(player)
+      ask_for_token(player)
+      solicit_input.to_sym
+    end
+
+    def self.ask_for_token(player)
+      print Stringifier.stringify_ask_for_token(player)
+    end
+
+    def self.get_difficulty
+      ask_for_difficulty
+      solicit_input.downcase.to_sym
+    end
+
+    def self.ask_for_difficulty
+      print TicTacToe::Stringifier.stringify_ask_for_difficulty
+    end
+
     def self.make_move(board, players)
       begin
         ask_for_move
@@ -12,34 +63,7 @@ module TicTacToe
     end
 
     def self.ask_for_move
-      print TicTacToe::Stringifier.stringify_ask_for_move
-    end
-
-    def self.get_token(player)
-      ask_for_token(player)
-      solicit_input.to_sym
-    end
-
-    def self.ask_for_token(player)
-      print TicTacToe::Stringifier.stringify_ask_for_token(player)
-    end
-
-    def self.get_difficulty
-      ask_for_difficulty
-      case solicit_input.downcase
-      when "easy"
-        :easy
-      when "medium"
-        :medium
-      when "hard"
-        :hard
-      else
-        get_difficulty
-      end
-    end
-
-    def self.ask_for_difficulty
-      print TicTacToe::Stringifier.stringify_ask_for_difficulty
+      print Stringifier.stringify_ask_for_move
     end
 
     def self.say_game_over(winner)
