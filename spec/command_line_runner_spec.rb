@@ -2,9 +2,10 @@ require 'spec_helper'
 require 'tic_tac_toe/command_line_runner'
 
 describe TicTacToe::CommandLineRunner do
-  let(:rules) { TicTacToe::Rules }
   let(:io) { TicTacToe::CommandLineIO }
-  let(:runner) { TicTacToe::CommandLineRunner.new }
+  let(:menu) { TicTacToe::Menu.new }
+  let(:rules) { TicTacToe::Rules }
+  let(:runner) { TicTacToe::CommandLineRunner.new(menu: menu) }
 
 
   describe '#run' do
@@ -12,15 +13,15 @@ describe TicTacToe::CommandLineRunner do
     let(:players) { double("players") }
     let(:game_state) { { board: board, players: players } }
 
-    it "asks its IO for an initial game state" do
+    it "asks its menu for an initial game state" do
       allow(rules).to receive(:game_over?) { true }
       allow(runner).to receive(:end_game)
-      expect(io).to receive(:get_initial_game_state) { game_state }
+      expect(menu).to receive(:get_initial_game_state) { game_state }
       runner.run
     end
 
     it "takes turns" do
-      allow(io).to receive(:get_initial_game_state) { game_state }
+      allow(menu).to receive(:get_initial_game_state) { game_state }
       allow(rules).to receive(:game_over?).and_return(false, true)
       allow(runner).to receive(:end_game)
       expect(runner).to receive(:take_turn).once
@@ -28,7 +29,7 @@ describe TicTacToe::CommandLineRunner do
     end
 
     it "ends the game when it is over" do
-      allow(io).to receive(:get_initial_game_state) { game_state }
+      allow(menu).to receive(:get_initial_game_state) { game_state }
       allow(rules).to receive(:game_over?) { true }
       expect(runner).to receive(:end_game)
       runner.run

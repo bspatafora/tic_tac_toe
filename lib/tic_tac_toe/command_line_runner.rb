@@ -1,16 +1,18 @@
 require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/menu'
 require 'tic_tac_toe/player_factory'
 require 'tic_tac_toe/rules'
 
 module TicTacToe
   class CommandLineRunner
-    def initialize(io: CommandLineIO, rules: Rules)
+    def initialize(io: CommandLineIO, menu: Menu.new, rules: Rules)
       @io = io
+      @menu = menu
       @rules = rules
     end
 
     def run
-      game_state = @io.get_initial_game_state
+      game_state = @menu.get_initial_game_state
       board = game_state[:board]
       players = game_state[:players]
       take_turn(board, players) until @rules.game_over?(players, board)
