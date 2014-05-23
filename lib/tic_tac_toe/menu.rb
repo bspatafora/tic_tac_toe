@@ -9,7 +9,16 @@ module TicTacToe
     end
 
     def get_initial_game_state
-      { board: Board.new, players: get_player_array }
+      { board: get_board, players: get_player_array }
+    end
+
+    def get_board
+      begin
+        row_size = @io.get_row_size
+        Board.new(row_size: row_size)
+      rescue InvalidRowSize
+        get_board
+      end
     end
 
     def get_player_array

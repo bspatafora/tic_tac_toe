@@ -1,9 +1,10 @@
 module TicTacToe
   class Board
-    attr_reader :size
+    attr_reader :row_size, :size
 
-    def initialize
-      @size = 9
+    def initialize(row_size: 3)
+      @row_size = validate_size(row_size)
+      @size = @row_size ** 2
       @spaces = Array.new(@size)
     end
 
@@ -32,11 +33,18 @@ module TicTacToe
     end
 
     def generate_rows
-      row_size = Math.sqrt(@size)
-      @spaces.each_slice(row_size).to_a
+      @spaces.each_slice(@row_size).to_a
     end
 
     private
+
+    def validate_size(row_size)
+      if Rules.row_size_valid?(row_size)
+        row_size
+      else
+        raise InvalidRowSize
+      end
+    end
 
     def valid?(move)
       space_empty = @spaces[move].nil?

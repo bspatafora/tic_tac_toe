@@ -5,6 +5,39 @@ describe TicTacToe::CommandLineIO do
   let(:stringifier) { TicTacToe::Stringifier }
   let(:io) { TicTacToe::CommandLineIO }
 
+
+  describe '#get_row_size' do
+    it "asks for a row size" do
+      valid_row_size = 3
+      allow(io).to receive(:solicit_input) { valid_row_size }
+      expect(io).to receive(:ask_for_row_size)
+      io.get_row_size
+    end
+
+    it "solicits row size input" do
+      valid_row_size = 3
+      allow(io).to receive(:ask_for_row_size)
+      expect(io).to receive(:solicit_input) { valid_row_size }
+      io.get_row_size
+    end
+
+    it "only returns a row size once it receives an integer-like string" do
+      not_integer_like, integer_like = "string", 10
+      allow(io).to receive(:ask_for_row_size)
+      allow(io).to receive(:solicit_input).and_return(not_integer_like, integer_like)
+      expect(io.get_row_size).to eql(integer_like)
+    end
+  end
+
+
+  describe '#ask_for_row_size' do
+    it "asks for a stringified row size solicitation message" do
+      expect(stringifier).to receive(:stringify_ask_for_row_size)
+      io.ask_for_row_size
+    end
+  end
+
+
   describe '#get_token' do
     let(:token) { "X" }
     let(:player) { double("player") }

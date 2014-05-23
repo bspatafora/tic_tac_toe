@@ -3,7 +3,7 @@ require 'spec_helper'
 describe TicTacToe::Stringifier do
   describe '#stringify_board' do
     it "returns a stringified board" do
-      board = TicTacToe::Board.new
+      board = TicTacToe::Board.new(row_size: 3)
       board.place(4, :X)
       stringified_board = <<eos
 

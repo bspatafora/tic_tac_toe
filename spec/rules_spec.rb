@@ -7,6 +7,19 @@ describe TicTacToe::Rules do
   let(:rules) { TicTacToe::Rules }
 
 
+  describe '#row_size_valid?' do
+    it "returns false if the row size is too large" do
+      invalid_row_size = 11
+      expect(rules.row_size_valid?(invalid_row_size)).to be false
+    end
+
+    it "returns true if the row size is valid" do
+      valid_row_size = 10
+      expect(rules.row_size_valid?(valid_row_size)).to be true
+    end
+  end
+
+
   describe '#token_valid?' do
     it "returns false if the token is not a single character" do
       long_token = :long

@@ -2,6 +2,19 @@ require 'tic_tac_toe/stringifier'
 
 module TicTacToe
   module CommandLineIO
+    def self.get_row_size
+      begin
+        ask_for_row_size
+        Integer(solicit_input)
+      rescue ArgumentError
+        get_row_size
+      end
+    end
+
+    def self.ask_for_row_size
+      print Stringifier.stringify_ask_for_row_size
+    end
+
     def self.get_token(player)
       ask_for_token(player)
       solicit_input.to_sym

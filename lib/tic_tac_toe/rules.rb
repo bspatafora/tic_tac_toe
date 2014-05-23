@@ -1,5 +1,9 @@
 module TicTacToe
   module Rules
+    def self.row_size_valid?(row_size)
+      row_size.between?(2, 10)
+    end
+
     def self.token_valid?(token, taken_tokens)
       correct_length = token.length == 1
       untaken = !taken_tokens.include?(token)
