@@ -1,3 +1,4 @@
+require 'tic_tac_toe/exceptions'
 require 'tic_tac_toe/stringifier'
 
 module TicTacToe

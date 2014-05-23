@@ -1,6 +1,5 @@
 require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/menu'
-require 'tic_tac_toe/player_factory'
 require 'tic_tac_toe/rules'
 
 module TicTacToe

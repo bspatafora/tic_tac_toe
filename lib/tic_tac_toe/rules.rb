@@ -32,11 +32,10 @@ module TicTacToe
     private
 
     def self.diagonal_win?(token, board)
-      row_size = Math.sqrt(board.size)
       back_diagonal, front_diagonal = true, true
       board.generate_rows.each_with_index do |row, index|
         back_diagonal = false if row[index] != token
-        front_diagonal = false if row[row_size - (index + 1)] != token
+        front_diagonal = false if row[board.row_size - (index + 1)] != token
       end
       back_diagonal || front_diagonal
     end

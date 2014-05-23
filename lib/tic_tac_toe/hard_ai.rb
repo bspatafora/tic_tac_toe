@@ -1,3 +1,5 @@
+require 'tic_tac_toe/rules'
+
 module TicTacToe
   module HardAI
     def self.make_move(board, players)

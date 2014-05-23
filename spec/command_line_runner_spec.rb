@@ -1,5 +1,8 @@
 require 'spec_helper'
+require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/command_line_runner'
+require 'tic_tac_toe/menu'
+require 'tic_tac_toe/rules'
 
 describe TicTacToe::CommandLineRunner do
   let(:io) { TicTacToe::CommandLineIO }

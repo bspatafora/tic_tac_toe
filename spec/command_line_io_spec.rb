@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::CommandLineIO do
   let(:stringifier) { TicTacToe::Stringifier }

@@ -1,4 +1,7 @@
 require 'spec_helper'
+require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/exceptions'
+require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/player_factory'
 
 describe TicTacToe::PlayerFactory do

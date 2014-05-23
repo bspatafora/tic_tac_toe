@@ -1,5 +1,6 @@
 require 'tic_tac_toe/board'
 require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/exceptions'
 require 'tic_tac_toe/player_factory'
 
 module TicTacToe

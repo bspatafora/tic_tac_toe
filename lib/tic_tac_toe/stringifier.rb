@@ -22,20 +22,15 @@ module TicTacToe
 
     def self.stringify_board(board)
       rows = board.generate_rows
-      board_size = board.size
-      row_size = Math.sqrt(board_size)
       stringified_board = ""
-
       rows.each_with_index do |row, index|
-        row_start_index = (index * row_size).to_i
-        is_last_row = index == row_size - 1
-
+        row_start_index = (index * board.row_size).to_i
+        is_last_row = index == board.row_size - 1
         stringified_board << "\n"
-        stringified_board << stringify_row(row, row_start_index, board_size)
+        stringified_board << stringify_row(row, row_start_index, board.size)
         stringified_board << "\n"
-        stringified_board << stringify_horizontal_divider(row_size, board_size) unless is_last_row
+        stringified_board << stringify_horizontal_divider(board.row_size, board.size) unless is_last_row
       end
-
       stringified_board << "\n"
     end
 

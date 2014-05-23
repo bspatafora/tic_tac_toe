@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'tic_tac_toe/board'
+require 'tic_tac_toe/exceptions'
 
 describe TicTacToe::Board do
   let(:board) { TicTacToe::Board.new }

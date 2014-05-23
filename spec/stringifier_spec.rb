@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'tic_tac_toe/board'
+require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::Stringifier do
   describe '#stringify_board' do

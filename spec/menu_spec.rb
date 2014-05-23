@@ -1,5 +1,9 @@
 require 'spec_helper'
+require 'tic_tac_toe/board'
+require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/menu'
+require 'tic_tac_toe/player'
 
 describe TicTacToe::Menu do
   let(:io) { TicTacToe::CommandLineIO }

@@ -1,3 +1,5 @@
+require 'tic_tac_toe/board'
+
 module TicTacToe
   module EasyAI
     def self.make_move(board, players)
