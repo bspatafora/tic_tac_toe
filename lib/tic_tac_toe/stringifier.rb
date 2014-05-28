@@ -21,36 +21,36 @@ module TicTacToe
     end
 
     def self.board(board)
-      stringified_board = ""
+      board_string = ""
 
       board.rows.each_with_index do |row, index|
         row_start_index = (index * board.row_size).to_i
-        is_last_row = index == board.row_size - 1
+        at_last_row = index == board.row_size - 1
 
-        stringified_board << "\n"
-        stringified_board << row(row, row_start_index, board.size)
-        stringified_board << "\n"
-        stringified_board << horizontal_divider(board.row_size, board.size) unless is_last_row
+        board_string << "\n"
+        board_string << row(row, row_start_index, board.size)
+        board_string << "\n"
+        board_string << horizontal_divider(board.row_size, board.size) unless at_last_row
       end
 
-      stringified_board << "\n"
+      board_string << "\n"
     end
 
     private
 
     def self.row(row, row_start_index, board_size)
-      stringified_row = []
+      row_array = []
 
       row.each_with_index do |space, index|
         if space.nil?
           board_index = index + row_start_index
-          stringified_row << empty_space(board_index, board_size)
+          row_array << empty_space(board_index, board_size)
         else
-          stringified_row << token(space, board_size)
+          row_array << token(space, board_size)
         end
       end
 
-      stringified_row.join("|")
+      row_array.join("|")
     end
 
     def self.empty_space(board_index, board_size)
@@ -72,6 +72,7 @@ module TicTacToe
     def self.space_needs_buffer?(board_index, board_size)
       is_double_digit_board = double_digit_board?(board_size)
       is_single_digit_space = board_index < 10
+
       is_double_digit_board && is_single_digit_space
     end
 

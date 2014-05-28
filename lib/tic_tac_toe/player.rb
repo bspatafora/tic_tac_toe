@@ -10,12 +10,11 @@ module TicTacToe
     end
 
     def make_move(board, players)
-      begin
-        space = @decider.make_move(board, players)
-        board.place(@token, space)
+      space = @decider.make_move(board, players)
+
+      board.place(@token, space)
       rescue InvalidMove
         make_move(board, players)
-      end
     end
 
     private
@@ -24,7 +23,7 @@ module TicTacToe
       if Rules.token_valid?(token, taken_tokens)
         token
       else
-        raise InvalidToken
+        fail InvalidToken
       end
     end
   end

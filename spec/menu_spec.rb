@@ -3,21 +3,22 @@ require 'tic_tac_toe/board'
 require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/menu'
-require 'tic_tac_toe/player'
 
 describe TicTacToe::Menu do
   let(:io) { TicTacToe::CommandLineIO }
   let(:menu) { TicTacToe::Menu.new }
 
   describe '#get_initial_game_state' do
-    it "asks for a player array" do
+    it "gets players" do
       allow(menu).to receive(:get_board)
-      expect(menu).to receive(:get_player_array)
+
+      expect(menu).to receive(:get_players)
       menu.get_initial_game_state
     end
 
-    it "asks for a board" do
-      allow(menu).to receive(:get_player_array)
+    it "gets a board" do
+      allow(menu).to receive(:get_players)
+
       expect(menu).to receive(:get_board)
       menu.get_initial_game_state
     end
@@ -25,11 +26,11 @@ describe TicTacToe::Menu do
     it "returns a hash containing a board object and a player array" do
       row_size = 3
       human_token, computer_token = :X, :O
-      computer_difficulty = :medium
+      difficulty = :medium
 
       allow(io).to receive(:get_row_size) { row_size }
       allow(io).to receive(:get_token).and_return(human_token, computer_token)
-      allow(io).to receive(:get_difficulty) { computer_difficulty }
+      allow(io).to receive(:get_difficulty) { difficulty }
 
       game_state = menu.get_initial_game_state
       expect(game_state[:board]).to be_a TicTacToe::Board
@@ -39,41 +40,43 @@ describe TicTacToe::Menu do
 
 
   describe '#get_board' do
-    it "returns a board" do
+    it "returns a board with the correct row size when given valid row size input" do
       row_size = 3
-      board_size = 9
       allow(io).to receive(:get_row_size) { row_size }
-      expect(menu.get_board.size).to equal(board_size)
+
+      board = menu.get_board
+      expect(board.row_size).to equal(row_size)
     end
 
     it "only returns a board once it receives a valid row size" do
-      invalid_row_size, valid_row_size = 14, 5
-      board_size = valid_row_size ** 2
+      invalid_row_size, valid_row_size = 999, 5
       allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
+
       board = menu.get_board
-      expect(board.size).to equal(board_size)
+      expect(board.row_size).to equal(valid_row_size)
     end
   end
 
 
-  describe '#get_player_array' do
-    it "returns a player array" do
+  describe '#get_players' do
+    it "returns an array consisting of a human player and a computer player" do
       human_token, computer_token = :X, :O
-      computer_difficulty = :medium
+      difficulty = :medium
 
       allow(io).to receive(:get_token).and_return(human_token, computer_token)
-      allow(io).to receive(:get_difficulty).and_return(computer_difficulty)
+      allow(io).to receive(:get_difficulty).and_return(difficulty)
 
-      player_array = menu.get_player_array
-      expect(player_array).to be_an Array
-      player_array.each { |player| expect(player).to be_a TicTacToe::Player }
+      human_player, computer_player = menu.get_players
+      expect(human_player.decider).to eql(TicTacToe::CommandLineIO)
+      expect(computer_player.decider).to eql(TicTacToe::MediumAI)
     end
   end
 
 
   describe '#get_human_player' do
-    it "gets a token" do
+    it "gets a token for the human player" do
       token, taken_tokens = :X, []
+
       expect(io).to receive(:get_token).with(:human) { token }
       menu.get_human_player(taken_tokens)
     end
@@ -81,31 +84,44 @@ describe TicTacToe::Menu do
     it "only returns a human player once it receives a valid token" do
       invalid_token, valid_token = :invalid, :X
       taken_tokens = []
+
       allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
       human_player = menu.get_human_player(taken_tokens)
-      expect(human_player.token).to equal(:X)
+      expect(human_player.token).to equal(valid_token)
     end
   end
 
 
   describe '#get_computer_player' do
-    it "gets a token" do
+    it "gets a token for the computer player" do
       token, taken_tokens = :O, []
       difficulty = :medium
       allow(io).to receive(:get_difficulty) { difficulty }
+
       expect(io).to receive(:get_token).with(:computer) { token }
+      menu.get_computer_player(taken_tokens)
+    end
+
+    it "gets a difficulty for the computer player" do
+      token, taken_tokens = :O, []
+      difficulty = :medium
+      allow(io).to receive(:get_token).with(:computer) { token }
+
+      expect(io).to receive(:get_difficulty) { difficulty }
       menu.get_computer_player(taken_tokens)
     end
 
     it "only returns a computer player once it receives a valid token and difficulty" do
       invalid_token, valid_token = :invalid, :O
-      invalid_difficulty, valid_difficulty = :green, :medium
+      invalid_difficulty, valid_difficulty = :invalid, :medium
       taken_tokens = []
 
-      allow(io).to receive(:get_token).and_return(invalid_token, valid_token, valid_token)
-      allow(io).to receive(:get_difficulty).and_return(valid_difficulty, invalid_difficulty, valid_difficulty)
+      allow(io).to receive(:get_token).
+        and_return(invalid_token, valid_token, valid_token)
+      allow(io).to receive(:get_difficulty).
+        and_return(valid_difficulty, invalid_difficulty, valid_difficulty)
       computer_player = menu.get_computer_player(taken_tokens)
-      expect(computer_player.token).to equal(:O)
+      expect(computer_player.token).to equal(valid_token)
       expect(computer_player.decider).to equal(TicTacToe::MediumAI)
     end
   end

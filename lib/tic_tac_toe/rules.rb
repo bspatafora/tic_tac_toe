@@ -7,44 +7,55 @@ module TicTacToe
     def self.token_valid?(token, taken_tokens)
       correct_length = token.length == 1
       untaken = !taken_tokens.include?(token)
+
       correct_length && untaken
     end
 
-    def self.game_over?(players, board)
-      winner = !!determine_winner(players, board)
+    def self.game_over?(board, players)
+      winner = !determine_winner(board, players).nil?
       tie = board.full?
+
       winner || tie
     end
 
-    def self.determine_winner(players, board)
+    def self.determine_winner(board, players)
       winner = nil
+
       players.each do |player|
-        player_has_won = win?(player.token, board)
+        player_has_won = win?(board, player.token)
         winner = player.token if player_has_won
       end
+
       winner
     end
 
-    def self.win?(token, board)
-      diagonal_win?(token, board) || horizontal_win?(token, board) || vertical_win?(token, board)
+    def self.win?(board, token)
+      diagonal_win?(board, token) ||
+      horizontal_win?(board, token) ||
+      vertical_win?(board, token)
     end
 
     private
 
-    def self.diagonal_win?(token, board)
+    def self.diagonal_win?(board, token)
       back_diagonal, front_diagonal = true, true
+
       board.rows.each_with_index do |row, index|
-        back_diagonal = false if row[index] != token
-        front_diagonal = false if row[board.row_size - (index + 1)] != token
+        back_diagonal_space = row[index]
+        front_diagonal_space = row[board.row_size - (index + 1)]
+
+        back_diagonal = false if back_diagonal_space != token
+        front_diagonal = false if front_diagonal_space != token
       end
+
       back_diagonal || front_diagonal
     end
 
-    def self.horizontal_win?(token, board)
+    def self.horizontal_win?(board, token)
       row_win?(board.rows, token)
     end
 
-    def self.vertical_win?(token, board)
+    def self.vertical_win?(board, token)
       transposed_rows = board.rows.transpose
       row_win?(transposed_rows, token)
     end

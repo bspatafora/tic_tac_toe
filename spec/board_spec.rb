@@ -7,7 +7,8 @@ describe TicTacToe::Board do
     it "doesn't accept row sizes outside the range 2 to 10" do
       invalid_row_size = -4
 
-      expect{ TicTacToe::Board.new(row_size: invalid_row_size) }.to raise_error(TicTacToe::InvalidRowSize)
+      expect { TicTacToe::Board.new(row_size: invalid_row_size) }.
+        to raise_error(TicTacToe::InvalidRowSize)
     end
 
     it "accepts row sizes in the range 2 to 10 and sets row_size and size accordingly" do
@@ -29,7 +30,7 @@ describe TicTacToe::Board do
       space = 0
 
       board.place(first_token, space)
-      expect{ board.place(second_token, space) }.to raise_error(TicTacToe::InvalidMove)
+      expect { board.place(second_token, space) }.to raise_error(TicTacToe::InvalidMove)
     end
 
     it "doesn't accept a move if it isn't in the board's spaces range" do

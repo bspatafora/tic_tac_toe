@@ -21,7 +21,7 @@ module TicTacToe
       when :hard
         Player.new(HardAI, token, taken_tokens)
       else
-        raise InvalidDifficulty
+        fail InvalidDifficulty
       end
     end
   end

@@ -12,28 +12,29 @@ describe TicTacToe::CommandLineRunner do
 
 
   describe '#run' do
-    let(:board) { double("board") }
-    let(:players) { double("players") }
-    let(:game_state) { { board: board, players: players } }
+    let(:game_state) { { board: double("board"), players: double("players") } }
 
     it "asks its menu for an initial game state" do
       allow(rules).to receive(:game_over?) { true }
       allow(runner).to receive(:end_game)
+
       expect(menu).to receive(:get_initial_game_state) { game_state }
       runner.run
     end
 
-    it "takes turns" do
+    it "takes turns until the game is over" do
       allow(menu).to receive(:get_initial_game_state) { game_state }
       allow(rules).to receive(:game_over?).and_return(false, true)
       allow(runner).to receive(:end_game)
+
       expect(runner).to receive(:take_turn).once
       runner.run
     end
 
-    it "ends the game when it is over" do
+    it "ends the game when the game is over" do
       allow(menu).to receive(:get_initial_game_state) { game_state }
       allow(rules).to receive(:game_over?) { true }
+
       expect(runner).to receive(:end_game)
       runner.run
     end
@@ -42,8 +43,8 @@ describe TicTacToe::CommandLineRunner do
 
   describe '#take_turn' do
     let(:board) { double("board") }
-    let(:first_player) { double("first player", :make_move => true) }
-    let(:second_player) { double("second player", :make_move => true) }
+    let(:first_player) { double("first player", make_move: true) }
+    let(:second_player) { double("second player", make_move: true) }
     let(:players) { [first_player, second_player] }
 
     it "asks its IO to draw the board" do
@@ -51,14 +52,16 @@ describe TicTacToe::CommandLineRunner do
       runner.take_turn(board, players)
     end
 
-    it "asks the current player to make a move" do
+    it "asks the first player to make a move" do
       allow(io).to receive(:draw_board)
+
       expect(first_player).to receive(:make_move)
       runner.take_turn(board, players)
     end
 
-    it "keeps track of the current player" do
+    it "keeps track of the current player by rotating the players" do
       allow(io).to receive(:draw_board)
+
       runner.take_turn(board, players)
       expect(second_player).to receive(:make_move)
       runner.take_turn(board, players)
@@ -70,17 +73,27 @@ describe TicTacToe::CommandLineRunner do
     let(:board) { double("board") }
     let(:players) { double("players") }
 
-    it "asks the interface to draw the board" do
-      allow(io).to receive(:say_game_over)
+    it "asks its IO to draw the board" do
+      allow(io).to receive(:game_over_notification)
       allow(rules).to receive(:determine_winner)
+
       expect(io).to receive(:draw_board)
       runner.end_game(board, players)
     end
 
-    it "asks the interface to say game over" do
+    it "asks its IO to notify the user of the winner" do
       allow(io).to receive(:draw_board)
-      expect(io).to receive(:say_game_over)
-      allow(rules).to receive(:determine_winner)
+      allow(rules).to receive(:determine_winner) { :winner }
+
+      expect(io).to receive(:game_over_notification).with(:winner)
+      runner.end_game(board, players)
+    end
+
+    it "asks its rules to determine the winner" do
+      allow(io).to receive(:draw_board)
+      allow(io).to receive(:game_over_notification)
+
+      expect(rules).to receive(:determine_winner)
       runner.end_game(board, players)
     end
   end

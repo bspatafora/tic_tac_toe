@@ -4,50 +4,50 @@ require 'tic_tac_toe/stringifier'
 module TicTacToe
   module CommandLineIO
     def self.get_row_size
-      begin
-        ask_for_row_size
-        Integer(get_input)
+      row_size_solicitation
+
+      Integer(get_input)
       rescue ArgumentError
         get_row_size
-      end
     end
 
-    def self.ask_for_row_size
+    def self.row_size_solicitation
       print Stringifier.row_size_solicitation
     end
 
     def self.get_token(player)
-      ask_for_token(player)
+      token_solicitation(player)
+
       get_input.to_sym
     end
 
-    def self.ask_for_token(player)
+    def self.token_solicitation(player)
       print Stringifier.token_solicitation(player)
     end
 
     def self.get_difficulty
-      ask_for_difficulty
+      difficulty_solicitation
+
       get_input.downcase.to_sym
     end
 
-    def self.ask_for_difficulty
+    def self.difficulty_solicitation
       print Stringifier.difficulty_solicitation
     end
 
-    def self.make_move(board, players)
-      begin
-        ask_for_move
-        Integer(get_input)
+    def self.make_move(_board, _players)
+      move_solicitation
+
+      Integer(get_input)
       rescue ArgumentError
-        make_move(board, players)
-      end
+        make_move(_board, _players)
     end
 
-    def self.ask_for_move
+    def self.move_solicitation
       print Stringifier.move_solicitation
     end
 
-    def self.say_game_over(winner)
+    def self.game_over_notification(winner)
       winner = "Nobody" if winner.nil?
       print Stringifier.game_over_notification(winner)
     end

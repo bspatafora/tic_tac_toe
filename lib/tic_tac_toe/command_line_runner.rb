@@ -13,7 +13,8 @@ module TicTacToe
     def run
       game_state = @menu.get_initial_game_state
       board, players = game_state[:board], game_state[:players]
-      take_turn(board, players) until @rules.game_over?(players, board)
+
+      take_turn(board, players) until @rules.game_over?(board, players)
       end_game(board, players)
     end
 
@@ -25,7 +26,7 @@ module TicTacToe
 
     def end_game(board, players)
       @io.draw_board(board)
-      @io.say_game_over(@rules.determine_winner(players, board))
+      @io.game_over_notification(@rules.determine_winner(board, players))
     end
   end
 end
