@@ -12,18 +12,21 @@ describe TicTacToe::CommandLineRunner do
 
 
   describe '#run' do
-    let(:game_state) { { board: double("board"), players: double("players") } }
+    let(:board) { double("board") }
+    let(:players) { double("players") }
 
-    it "asks its menu for an initial game state" do
+    it "asks its menu for a board and players" do
       allow(rules).to receive(:game_over?) { true }
       allow(runner).to receive(:end_game)
 
-      expect(menu).to receive(:get_initial_game_state) { game_state }
+      expect(menu).to receive(:get_board) { board }
+      expect(menu).to receive(:get_players) { players }
       runner.run
     end
 
     it "takes turns until the game is over" do
-      allow(menu).to receive(:get_initial_game_state) { game_state }
+      allow(menu).to receive(:get_board) { board }
+      allow(menu).to receive(:get_players) { players }
       allow(rules).to receive(:game_over?).and_return(false, true)
       allow(runner).to receive(:end_game)
 
@@ -32,7 +35,8 @@ describe TicTacToe::CommandLineRunner do
     end
 
     it "ends the game when the game is over" do
-      allow(menu).to receive(:get_initial_game_state) { game_state }
+      allow(menu).to receive(:get_board) { board }
+      allow(menu).to receive(:get_players) { players }
       allow(rules).to receive(:game_over?) { true }
 
       expect(runner).to receive(:end_game)

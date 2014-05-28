@@ -9,10 +9,6 @@ module TicTacToe
       @io = io
     end
 
-    def get_initial_game_state
-      { board: get_board, players: get_players }
-    end
-
     def get_board
       row_size = @io.get_row_size
 

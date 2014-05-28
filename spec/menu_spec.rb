@@ -8,36 +8,6 @@ describe TicTacToe::Menu do
   let(:io) { TicTacToe::CommandLineIO }
   let(:menu) { TicTacToe::Menu.new }
 
-  describe '#get_initial_game_state' do
-    it "gets players" do
-      allow(menu).to receive(:get_board)
-
-      expect(menu).to receive(:get_players)
-      menu.get_initial_game_state
-    end
-
-    it "gets a board" do
-      allow(menu).to receive(:get_players)
-
-      expect(menu).to receive(:get_board)
-      menu.get_initial_game_state
-    end
-
-    it "returns a hash containing a board object and a player array" do
-      row_size = 3
-      human_token, computer_token = :X, :O
-      difficulty = :medium
-
-      allow(io).to receive(:get_row_size) { row_size }
-      allow(io).to receive(:get_token).and_return(human_token, computer_token)
-      allow(io).to receive(:get_difficulty) { difficulty }
-
-      game_state = menu.get_initial_game_state
-      expect(game_state[:board]).to be_a TicTacToe::Board
-      expect(game_state[:players]).to be_an Array
-    end
-  end
-
 
   describe '#get_board' do
     it "returns a board with the correct row size when given valid row size input" do
