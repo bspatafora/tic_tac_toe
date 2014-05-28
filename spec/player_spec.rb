@@ -36,7 +36,7 @@ describe TicTacToe::Player do
       invalid_move, valid_move = 100, 0
       allow(player.decider).to receive(:make_move).and_return(invalid_move, valid_move)
       player.make_move(board, players)
-      expect(board.get_space(0)).to eql(:X)
+      expect(board.space(0)).to eql(:X)
     end
   end
 end

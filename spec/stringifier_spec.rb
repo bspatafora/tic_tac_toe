@@ -6,7 +6,7 @@ describe TicTacToe::Stringifier do
   describe '#stringify_board' do
     it "returns a stringified board" do
       board = TicTacToe::Board.new(row_size: 3)
-      board.place(4, :X)
+      board.place(:X, 4)
       stringified_board = <<eos
 
 [0]|[1]|[2]
@@ -16,7 +16,7 @@ describe TicTacToe::Stringifier do
 [6]|[7]|[8]
 
 eos
-      expect(TicTacToe::Stringifier.stringify_board(board)).to eql(stringified_board)
+      expect(TicTacToe::Stringifier.board(board)).to eql(stringified_board)
     end
   end
 end

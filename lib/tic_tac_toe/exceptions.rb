@@ -1,13 +1,9 @@
 module TicTacToe
-  class InvalidRowSize < StandardError
-  end
+  InvalidRowSize = Class.new(StandardError)
 
-  class InvalidMove < StandardError
-  end
+  InvalidMove = Class.new(StandardError)
 
-  class InvalidToken < StandardError
-  end
+  InvalidToken = Class.new(StandardError)
 
-  class InvalidDifficulty < StandardError
-  end
+  InvalidDifficulty = Class.new(StandardError)
 end

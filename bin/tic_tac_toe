@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 
 require 'tic_tac_toe/command_line_runner'
 

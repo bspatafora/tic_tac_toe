@@ -1,59 +1,71 @@
 module TicTacToe
   module Stringifier
-    def self.stringify_ask_for_row_size
+    def self.row_size_solicitation
       "Pick row size of board:\n"
     end
 
-    def self.stringify_ask_for_token(player)
+    def self.token_solicitation(player)
       "Pick #{player} token:\n"
     end
 
-    def self.stringify_ask_for_difficulty
+    def self.difficulty_solicitation
       "Pick difficulty (easy, medium, hard):\n"
     end
 
-    def self.stringify_ask_for_move
+    def self.move_solicitation
       "Pick a space:\n"
     end
 
-    def self.stringify_game_over(winner)
+    def self.game_over_notification(winner)
       "#{winner} wins!\n"
     end
 
-    def self.stringify_board(board)
-      rows = board.generate_rows
+    def self.board(board)
       stringified_board = ""
-      rows.each_with_index do |row, index|
+
+      board.rows.each_with_index do |row, index|
         row_start_index = (index * board.row_size).to_i
         is_last_row = index == board.row_size - 1
+
         stringified_board << "\n"
-        stringified_board << stringify_row(row, row_start_index, board.size)
+        stringified_board << row(row, row_start_index, board.size)
         stringified_board << "\n"
-        stringified_board << stringify_horizontal_divider(board.row_size, board.size) unless is_last_row
+        stringified_board << horizontal_divider(board.row_size, board.size) unless is_last_row
       end
+
       stringified_board << "\n"
     end
 
     private
 
-    def self.stringify_row(row, row_start_index, board_size)
+    def self.row(row, row_start_index, board_size)
       stringified_row = []
+
       row.each_with_index do |space, index|
         if space.nil?
           board_index = index + row_start_index
-          stringified_row << stringify_empty_space(board_index, board_size)
+          stringified_row << empty_space(board_index, board_size)
         else
-          stringified_row << stringify_token(space, board_size)
+          stringified_row << token(space, board_size)
         end
       end
+
       stringified_row.join("|")
     end
 
-    def self.stringify_empty_space(board_index, board_size)
+    def self.empty_space(board_index, board_size)
       if space_needs_buffer?(board_index, board_size)
         "[ #{board_index}]"
       else
         "[#{board_index}]"
+      end
+    end
+
+    def self.token(space, board_size)
+      if double_digit_board?(board_size)
+        "  #{space} "
+      else
+        " #{space} "
       end
     end
 
@@ -63,15 +75,11 @@ module TicTacToe
       is_double_digit_board && is_single_digit_space
     end
 
-    def self.stringify_token(space, board_size)
-      if double_digit_board?(board_size)
-        "  #{space} "
-      else
-        " #{space} "
-      end
+    def self.double_digit_board?(board_size)
+      board_size > 10
     end
 
-    def self.stringify_horizontal_divider(row_size, board_size)
+    def self.horizontal_divider(row_size, board_size)
       horizontal_divider = ""
       divider_unit = "-"
       divider_units_per_space = double_digit_board?(board_size) ? 5 : 4
@@ -81,10 +89,6 @@ module TicTacToe
       truncated_length = raw_length - extra_units_per_row
       truncated_length.times { horizontal_divider << divider_unit }
       horizontal_divider
-    end
-
-    def self.double_digit_board?(board_size)
-      board_size > 10
     end
   end
 end

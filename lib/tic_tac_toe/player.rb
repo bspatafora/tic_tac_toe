@@ -11,8 +11,8 @@ module TicTacToe
 
     def make_move(board, players)
       begin
-        move = @decider.make_move(board, players)
-        board.place(move, @token)
+        space = @decider.make_move(board, players)
+        board.place(@token, space)
       rescue InvalidMove
         make_move(board, players)
       end

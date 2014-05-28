@@ -56,8 +56,8 @@ describe TicTacToe::HardAI do
                    nil, :O, nil,
                    :X, nil, nil]
       board = generate_board(structure)
-      new_board = ai.generate_board(3, :O, board)
-      expect(new_board.get_space(3)).to eql(:O)
+      new_board = ai.generate_board(:O, 3, board)
+      expect(new_board.space(3)).to eql(:O)
     end
   end
 

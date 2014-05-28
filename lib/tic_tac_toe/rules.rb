@@ -12,7 +12,7 @@ module TicTacToe
 
     def self.game_over?(players, board)
       winner = !!determine_winner(players, board)
-      tie = board.get_spaces.all? { |space| space != nil }
+      tie = board.full?
       winner || tie
     end
 
@@ -33,7 +33,7 @@ module TicTacToe
 
     def self.diagonal_win?(token, board)
       back_diagonal, front_diagonal = true, true
-      board.generate_rows.each_with_index do |row, index|
+      board.rows.each_with_index do |row, index|
         back_diagonal = false if row[index] != token
         front_diagonal = false if row[board.row_size - (index + 1)] != token
       end
@@ -41,11 +41,11 @@ module TicTacToe
     end
 
     def self.horizontal_win?(token, board)
-      row_win?(board.generate_rows, token)
+      row_win?(board.rows, token)
     end
 
     def self.vertical_win?(token, board)
-      transposed_rows = board.generate_rows.transpose
+      transposed_rows = board.rows.transpose
       row_win?(transposed_rows, token)
     end
 
