@@ -19,7 +19,7 @@ module TicTacToe
     end
 
     def self.invalid_move
-      "Input must be on the board\n"
+      "Input must be a space that is on the board and untaken\n"
     end
 
     def self.thinking

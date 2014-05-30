@@ -6,6 +6,7 @@ require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::Menu do
   let(:io) { TicTacToe::CommandLineIO }
+  let(:stringifier) { TicTacToe::Stringifier }
   let(:menu) { TicTacToe::Menu.new }
 
 
@@ -35,7 +36,7 @@ describe TicTacToe::Menu do
       it "sends a red notification with an invalid row size message" do
         allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
 
-        expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.invalid_row_size)
+        expect(io).to receive(:red_notification).with(stringifier.invalid_row_size)
         menu.get_row_size
       end
 
@@ -82,7 +83,7 @@ describe TicTacToe::Menu do
       it "sends a red notification with an invalid token message" do
         allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
 
-        expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.invalid_token)
+        expect(io).to receive(:red_notification).with(stringifier.invalid_token)
         menu.get_token(player, taken_tokens)
       end
 
@@ -111,7 +112,7 @@ describe TicTacToe::Menu do
       it "sends a red notification with an invalid difficulty message" do
         allow(io).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
-        expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.invalid_difficulty)
+        expect(io).to receive(:red_notification).with(stringifier.invalid_difficulty)
         menu.get_difficulty
       end
 

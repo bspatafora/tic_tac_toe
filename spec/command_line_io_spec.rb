@@ -7,13 +7,45 @@ describe TicTacToe::CommandLineIO do
   let(:io) { TicTacToe::CommandLineIO }
 
 
-  describe '#red_notification' do
-    it "prints the message it receives (in red)" do
-      message = "Error"
-      red_message = TicTacToe::CommandLineIO.red(message)
+  describe '#make_move' do
+    let(:board) { double("board") }
+    let(:players) { double("players") }
 
-      expect(io).to receive(:print).with(red_message)
-      io.red_notification(message)
+    it "prints a move solicitation" do
+      valid_move = 0
+      allow(io).to receive(:get_input) { valid_move }
+
+      expect(io).to receive(:move_solicitation)
+      io.make_move(board, players)
+    end
+
+    it "gets move input from the user" do
+      valid_move = 0
+      allow(io).to receive(:move_solicitation)
+
+      expect(io).to receive(:get_input) { valid_move }
+      io.make_move(board, players)
+    end
+
+    context 'when given not-integer-like input' do
+      let(:not_integer_like) { "string" }
+      let(:integer_like) { "100" }
+
+      it "sends a red notification with a not-integer-like message" do
+        allow(io).to receive(:move_solicitation)
+        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+
+        expect(io).to receive(:red_notification).with(stringifier.not_an_integer)
+        io.make_move(board, players)
+      end
+
+      it "only returns a move (converted to integer) once it gets integer-like input" do
+        allow(io).to receive(:move_solicitation)
+        allow(io).to receive(:red_notification)
+        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+
+        expect(io.make_move(board, players)).to eql(100)
+      end
     end
   end
 
@@ -58,14 +90,6 @@ describe TicTacToe::CommandLineIO do
   end
 
 
-  describe '#row_size_solicitation' do
-    it "asks for a row size solicitation string" do
-      expect(stringifier).to receive(:row_size_solicitation)
-      io.row_size_solicitation
-    end
-  end
-
-
   describe '#get_token' do
     let(:token) { "X" }
     let(:player) { double("player") }
@@ -90,16 +114,6 @@ describe TicTacToe::CommandLineIO do
       allow(io).to receive(:token_solicitation)
 
       expect(io.get_token(player)).to equal(token)
-    end
-  end
-
-
-  describe '#token_solicitation' do
-    it "asks for a token solicitation string with the name of the player whose token is to be set" do
-      player = :human
-
-      expect(stringifier).to receive(:token_solicitation).with(player)
-      io.token_solicitation(player)
     end
   end
 
@@ -131,6 +145,32 @@ describe TicTacToe::CommandLineIO do
   end
 
 
+  describe '#move_solicitation' do
+    it "asks for a move solicitation string" do
+      expect(stringifier).to receive(:move_solicitation)
+      io.move_solicitation
+    end
+  end
+
+
+  describe '#row_size_solicitation' do
+    it "asks for a row size solicitation string" do
+      expect(stringifier).to receive(:row_size_solicitation)
+      io.row_size_solicitation
+    end
+  end
+
+
+  describe '#token_solicitation' do
+    it "asks for a token solicitation string with the name of the player whose token is to be set" do
+      player = :human
+
+      expect(stringifier).to receive(:token_solicitation).with(player)
+      io.token_solicitation(player)
+    end
+  end
+
+
   describe '#difficulty_solicitation' do
     it "asks for a difficulty solicitation string" do
       expect(stringifier).to receive(:difficulty_solicitation)
@@ -139,53 +179,23 @@ describe TicTacToe::CommandLineIO do
   end
 
 
-  describe '#make_move' do
-    let(:board) { double("board") }
-    let(:players) { double("players") }
+  describe '#draw_board' do
+    it "asks for the string representation of a board" do
+      board = double("board")
 
-    it "prints a move solicitation" do
-      valid_move = 0
-      allow(io).to receive(:get_input) { valid_move }
-
-      expect(io).to receive(:move_solicitation)
-      io.make_move(board, players)
-    end
-
-    it "gets move input from the user" do
-      valid_move = 0
-      allow(io).to receive(:move_solicitation)
-
-      expect(io).to receive(:get_input) { valid_move }
-      io.make_move(board, players)
-    end
-
-    context 'when given not-integer-like input' do
-      let(:not_integer_like) { "string" }
-      let(:integer_like) { "100" }
-
-      it "sends a red notification with a not-integer-like message" do
-        allow(io).to receive(:move_solicitation)
-        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
-
-        expect(io).to receive(:red_notification).with(stringifier.not_an_integer)
-        io.make_move(board, players)
-      end
-
-      it "only returns a move (converted to integer) once it gets integer-like input" do
-        allow(io).to receive(:move_solicitation)
-        allow(io).to receive(:red_notification)
-        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
-
-        expect(io.make_move(board, players)).to eql(100)
-      end
+      expect(stringifier).to receive(:board).with(board)
+      io.draw_board(board)
     end
   end
 
 
-  describe '#move_solicitation' do
-    it "asks for a move solicitation string" do
-      expect(stringifier).to receive(:move_solicitation)
-      io.move_solicitation
+  describe '#red_notification' do
+    it "prints the message it receives in red" do
+      message = "Error"
+      red_message = TicTacToe::CommandLineIO.red(message)
+
+      expect(io).to receive(:print).with(red_message)
+      io.red_notification(message)
     end
   end
 
@@ -204,16 +214,6 @@ describe TicTacToe::CommandLineIO do
 
       expect(stringifier).to receive(:game_over_notification).with(winner_string)
       io.game_over_notification(winner)
-    end
-  end
-
-
-  describe '#draw_board' do
-    it "asks for the string representation of a board" do
-      board = double("board")
-
-      expect(stringifier).to receive(:board).with(board)
-      io.draw_board(board)
     end
   end
 end

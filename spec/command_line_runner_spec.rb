@@ -7,6 +7,7 @@ require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::CommandLineRunner do
   let(:io) { TicTacToe::CommandLineIO }
+  let(:stringifier) { TicTacToe::Stringifier }
   let(:menu) { TicTacToe::Menu.new }
   let(:rules) { TicTacToe::Rules }
   let(:runner) { TicTacToe::CommandLineRunner.new(menu: menu) }
@@ -63,11 +64,11 @@ describe TicTacToe::CommandLineRunner do
       allow(io).to receive(:draw_board)
       allow(first_player).to receive(:make_move)
 
-      expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.thinking)
+      expect(io).to receive(:red_notification).with(stringifier.thinking)
       runner.take_turn(board, players)
 
       allow(second_player).to receive(:make_move)
-      expect(io).not_to receive(:red_notification).with(TicTacToe::Stringifier.thinking)
+      expect(io).not_to receive(:red_notification).with(stringifier.thinking)
       runner.take_turn(board, players)
     end
 

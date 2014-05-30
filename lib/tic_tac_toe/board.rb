@@ -1,5 +1,3 @@
-require 'tic_tac_toe/rules'
-
 module TicTacToe
   class Board
     attr_reader :row_size, :size
