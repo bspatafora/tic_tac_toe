@@ -17,7 +17,7 @@ module TicTacToe
       loop do
         row_size = @io.get_row_size
         break row_size if Rules.row_size_valid?(row_size)
-        @io.error_notification(Stringifier.invalid_row_size)
+        @io.red_notification(Stringifier.invalid_row_size)
       end
     end
 
@@ -39,7 +39,7 @@ module TicTacToe
       loop do
         token = @io.get_token(player)
         break token if Rules.token_valid?(token, taken_tokens)
-        @io.error_notification(Stringifier.invalid_token)
+        @io.red_notification(Stringifier.invalid_token)
       end
     end
 
@@ -47,7 +47,7 @@ module TicTacToe
       loop do
         difficulty = @io.get_difficulty
         break difficulty if Rules.difficulty_valid?(difficulty)
-        @io.error_notification(Stringifier.invalid_difficulty)
+        @io.red_notification(Stringifier.invalid_difficulty)
       end
     end
   end

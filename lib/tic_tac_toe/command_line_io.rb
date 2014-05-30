@@ -2,8 +2,8 @@ require 'tic_tac_toe/stringifier'
 
 module TicTacToe
   module CommandLineIO
-    def self.error_notification(error_message)
-      print error_message.red
+    def self.red_notification(message)
+      print message.red
     end
 
     def self.get_row_size
@@ -11,7 +11,7 @@ module TicTacToe
 
       Integer(get_input)
       rescue ArgumentError
-        error_notification(Stringifier.not_an_integer)
+        red_notification(Stringifier.not_an_integer)
         get_row_size
     end
 
@@ -44,7 +44,7 @@ module TicTacToe
 
       Integer(get_input)
       rescue ArgumentError
-        error_notification(Stringifier.not_an_integer)
+        red_notification(Stringifier.not_an_integer)
         make_move(_board, _players)
     end
 
@@ -65,18 +65,6 @@ module TicTacToe
 
     def self.get_input
       gets.chomp
-    end
-
-    def self.red
-      colorize(31)
-    end
-
-    def self.blue
-      colorize(34)
-    end
-
-    def self.colorize(color_code)
-      "\e[#{color_code}m#{self}\e[0m"
     end
   end
 end

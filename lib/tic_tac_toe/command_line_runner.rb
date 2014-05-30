@@ -20,7 +20,7 @@ module TicTacToe
 
     def take_turn(board, players)
       @io.draw_board(board)
-      @io.error_notification(Stringifier.thinking) if players.first.needs_to_think
+      @io.red_notification(Stringifier.thinking) if players.first.needs_to_think
       players.first.make_move(board, players)
       players.rotate!
     end

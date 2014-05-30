@@ -16,7 +16,7 @@ module TicTacToe
       loop do
         space = @decider.make_move(board, players)
         break if board.place(@token, space)
-        @io.error_notification(Stringifier.invalid_move)
+        @io.red_notification(Stringifier.invalid_move)
       end
     end
   end

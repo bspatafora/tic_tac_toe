@@ -32,15 +32,15 @@ describe TicTacToe::Menu do
       let(:invalid_row_size) { 99 }
       let(:valid_row_size) { 5 }
 
-      it "sends an error notification with an invalid row size message" do
+      it "sends a red notification with an invalid row size message" do
         allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
 
-        expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_row_size)
+        expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.invalid_row_size)
         menu.get_row_size
       end
 
       it "only returns a row size once it receives a valid row size" do
-        allow(io).to receive(:error_notification)
+        allow(io).to receive(:red_notification)
         allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
 
         expect(menu.get_row_size).to equal(valid_row_size)
@@ -79,15 +79,15 @@ describe TicTacToe::Menu do
       let(:valid_token) { "X" }
       let(:taken_tokens) { [] }
 
-      it "sends an error notification with an invalid token message" do
+      it "sends a red notification with an invalid token message" do
         allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
 
-        expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_token)
+        expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.invalid_token)
         menu.get_token(player, taken_tokens)
       end
 
       it "only returns a token once it receives a valid token" do
-        allow(io).to receive(:error_notification)
+        allow(io).to receive(:red_notification)
         allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
 
         expect(menu.get_token(player, taken_tokens)).to equal(valid_token)
@@ -108,15 +108,15 @@ describe TicTacToe::Menu do
       let(:invalid_difficulty) { :invalid }
       let(:valid_difficulty) { :medium }
 
-      it "sends an error notification with an invalid difficulty message" do
+      it "sends a red notification with an invalid difficulty message" do
         allow(io).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
-        expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_difficulty)
+        expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.invalid_difficulty)
         menu.get_difficulty
       end
 
       it "only returns a difficulty once it receives a valid difficulty" do
-        allow(io).to receive(:error_notification)
+        allow(io).to receive(:red_notification)
         allow(io).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
         expect(menu.get_difficulty).to equal(valid_difficulty)

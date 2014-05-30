@@ -11,7 +11,7 @@ module TicTacToe
     end
 
     def self.invalid_token
-      "Input must be a single character\n"
+      "Input must be a single, untaken character\n"
     end
 
     def self.invalid_difficulty

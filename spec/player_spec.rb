@@ -14,18 +14,18 @@ describe TicTacToe::Player do
  
     it "only returns a move once it receives a valid move" do
       invalid_move, valid_move = 9, 0
-      allow(io).to receive(:error_notification)
+      allow(io).to receive(:red_notification)
       allow(player.decider).to receive(:make_move).and_return(invalid_move, valid_move)
 
       player.make_move(board, players)
       expect(board.space(valid_move)).to eql(token)
     end
 
-    it "sends an error notification with an invalid move message when given an invalid move" do
+    it "sends a red notification with an invalid move message when given an invalid move" do
       invalid_move, valid_move = 9, 0
       allow(player.decider).to receive(:make_move).and_return(invalid_move, valid_move)
 
-      expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_move)
+      expect(io).to receive(:red_notification).with(TicTacToe::Stringifier.invalid_move)
       player.make_move(board, players)
     end
   end
