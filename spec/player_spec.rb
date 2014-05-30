@@ -1,46 +1,31 @@
 require 'spec_helper'
 require 'tic_tac_toe/player'
+require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::Player do
-  let(:decider) { double("test decider") }
-
-
-  describe '#initialize' do
-    it "doesn't accept non-single-character tokens" do
-      invalid_token, taken_tokens = :invalid, []
-
-      expect { TicTacToe::Player.new(decider, invalid_token, taken_tokens) }.
-        to raise_error(TicTacToe::InvalidToken)
-    end
-
-    it "doesn't accept already-taken tokens" do
-      invalid_token, taken_tokens = :X, [:X]
-
-      expect { TicTacToe::Player.new(decider, invalid_token, taken_tokens) }.
-        to raise_error(TicTacToe::InvalidToken)
-    end
-
-    it "returns new player objects with the correct token when given single-character, untaken tokens" do
-      valid_token, taken_tokens = :X, []
-
-      player = TicTacToe::Player.new(decider, valid_token, taken_tokens)
-      expect(player.token).to eql(valid_token)
-    end
-  end
-
+  let(:io) { TicTacToe::CommandLineIO }
+  let(:board) { TicTacToe::Board.new(row_size: 3) }
+  let(:players) { double("players") }
 
   describe '#make_move' do
-    let(:board) { TicTacToe::Board.new(row_size: 3) }
-    let(:players) { double("players") }
-
+    let(:token) { :X }
+    let(:player) { TicTacToe::Player.new(double("decider"), token) }
+ 
     it "only returns a move once it receives a valid move" do
-      token, taken_tokens = :X, []
-      player = TicTacToe::Player.new(decider, token, taken_tokens)
       invalid_move, valid_move = 9, 0
-
+      allow(io).to receive(:error_notification)
       allow(player.decider).to receive(:make_move).and_return(invalid_move, valid_move)
+
       player.make_move(board, players)
       expect(board.space(valid_move)).to eql(token)
+    end
+
+    it "sends an error notification with an invalid move message when given an invalid move" do
+      invalid_move, valid_move = 9, 0
+      allow(player.decider).to receive(:make_move).and_return(invalid_move, valid_move)
+
+      expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_move)
+      player.make_move(board, players)
     end
   end
 end

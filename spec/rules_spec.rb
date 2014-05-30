@@ -41,6 +41,21 @@ describe TicTacToe::Rules do
   end
 
 
+  describe '#difficulty_valid?' do
+    it "returns false if the difficulty is not a key in AI_DIFFICULTIES" do
+      invalid_difficulty = :invalid
+
+      expect(rules.difficulty_valid?(invalid_difficulty)).to be false
+    end
+
+    it "returns true if the difficulty is a key in AI_DIFFICULTIES" do
+      valid_difficulty = :medium
+
+      expect(rules.difficulty_valid?(valid_difficulty)).to be true
+    end
+  end
+
+
   describe '#game_over?' do
     let(:human_player) { double("human player", token: :X) }
     let(:computer_player) { double("computer player", token: :O) }

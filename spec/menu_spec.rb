@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'tic_tac_toe/board'
 require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/menu'
+require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::Menu do
   let(:io) { TicTacToe::CommandLineIO }
@@ -12,18 +12,39 @@ describe TicTacToe::Menu do
   describe '#get_board' do
     it "returns a board with the correct row size when given valid row size input" do
       row_size = 3
-      allow(io).to receive(:get_row_size) { row_size }
+      allow(menu).to receive(:get_row_size) { row_size }
 
       board = menu.get_board
       expect(board.row_size).to equal(row_size)
     end
+  end
 
-    it "only returns a board once it receives a valid row size" do
-      invalid_row_size, valid_row_size = 999, 5
-      allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
 
-      board = menu.get_board
-      expect(board.row_size).to equal(valid_row_size)
+  describe '#get_row_size' do
+    it "asks for a row size" do
+      row_size = 3
+
+      expect(io).to receive(:get_row_size) { row_size }
+      menu.get_row_size
+    end
+
+    context 'when given an invalid row size (outside the range 2 to 10)' do
+      let(:invalid_row_size) { 99 }
+      let(:valid_row_size) { 5 }
+
+      it "sends an error notification with an invalid row size message" do
+        allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
+
+        expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_row_size)
+        menu.get_row_size
+      end
+
+      it "only returns a row size once it receives a valid row size" do
+        allow(io).to receive(:error_notification)
+        allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
+
+        expect(menu.get_row_size).to equal(valid_row_size)
+      end
     end
   end
 
@@ -33,8 +54,8 @@ describe TicTacToe::Menu do
       human_token, computer_token = :X, :O
       difficulty = :medium
 
-      allow(io).to receive(:get_token).and_return(human_token, computer_token)
-      allow(io).to receive(:get_difficulty).and_return(difficulty)
+      allow(menu).to receive(:get_token).and_return(human_token, computer_token)
+      allow(menu).to receive(:get_difficulty).and_return(difficulty)
 
       human_player, computer_player = menu.get_players
       expect(human_player.decider).to eql(TicTacToe::CommandLineIO)
@@ -43,56 +64,63 @@ describe TicTacToe::Menu do
   end
 
 
-  describe '#get_human_player' do
-    it "gets a token for the human player" do
+  describe '#get_token' do
+    it "asks for a token with the name of the player whose token it will be" do
+      player = :human
       token, taken_tokens = :X, []
 
-      expect(io).to receive(:get_token).with(:human) { token }
-      menu.get_human_player(taken_tokens)
+      expect(io).to receive(:get_token).with(player) { token }
+      menu.get_token(player, taken_tokens)
     end
 
-    it "only returns a human player once it receives a valid token" do
-      invalid_token, valid_token = :invalid, :X
-      taken_tokens = []
+    context 'when given an invalid token' do
+      let(:player) { :human }
+      let(:invalid_token) { :invalid }
+      let(:valid_token) { :X }
+      let(:taken_tokens) { [] }
 
-      allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
-      human_player = menu.get_human_player(taken_tokens)
-      expect(human_player.token).to equal(valid_token)
+      it "sends an error notification with an invalid token message" do
+        allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
+
+        expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_token)
+        menu.get_token(player, taken_tokens)
+      end
+
+      it "only returns a token once it receives a valid token" do
+        allow(io).to receive(:error_notification)
+        allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
+
+        expect(menu.get_token(player, taken_tokens)).to equal(valid_token)
+      end
     end
   end
 
 
-  describe '#get_computer_player' do
-    it "gets a token for the computer player" do
-      token, taken_tokens = :O, []
+  describe '#get_difficulty' do
+    it "asks for a difficulty" do
       difficulty = :medium
-      allow(io).to receive(:get_difficulty) { difficulty }
-
-      expect(io).to receive(:get_token).with(:computer) { token }
-      menu.get_computer_player(taken_tokens)
-    end
-
-    it "gets a difficulty for the computer player" do
-      token, taken_tokens = :O, []
-      difficulty = :medium
-      allow(io).to receive(:get_token).with(:computer) { token }
 
       expect(io).to receive(:get_difficulty) { difficulty }
-      menu.get_computer_player(taken_tokens)
+      menu.get_difficulty
     end
 
-    it "only returns a computer player once it receives a valid token and difficulty" do
-      invalid_token, valid_token = :invalid, :O
-      invalid_difficulty, valid_difficulty = :invalid, :medium
-      taken_tokens = []
+    context 'when given an invalid difficulty' do
+      let(:invalid_difficulty) { :invalid }
+      let(:valid_difficulty) { :medium }
 
-      allow(io).to receive(:get_token).
-        and_return(invalid_token, valid_token, valid_token)
-      allow(io).to receive(:get_difficulty).
-        and_return(valid_difficulty, invalid_difficulty, valid_difficulty)
-      computer_player = menu.get_computer_player(taken_tokens)
-      expect(computer_player.token).to equal(valid_token)
-      expect(computer_player.decider).to equal(TicTacToe::MediumAI)
+      it "sends an error notification with an invalid difficulty message" do
+        allow(io).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
+
+        expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.invalid_difficulty)
+        menu.get_difficulty
+      end
+
+      it "only returns a difficulty once it receives a valid difficulty" do
+        allow(io).to receive(:error_notification)
+        allow(io).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
+
+        expect(menu.get_difficulty).to equal(valid_difficulty)
+      end
     end
   end
 end

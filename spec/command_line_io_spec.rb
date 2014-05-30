@@ -7,6 +7,16 @@ describe TicTacToe::CommandLineIO do
   let(:io) { TicTacToe::CommandLineIO }
 
 
+  describe '#error_notification' do
+    it "prints the error message it receives" do
+      error_message = "Error"
+
+      expect(io).to receive(:print).with(error_message)
+      io.error_notification(error_message)
+    end
+  end
+
+
   describe '#get_row_size' do
     it "prints a row size solicitation" do
       valid_row_size = 3
@@ -24,12 +34,25 @@ describe TicTacToe::CommandLineIO do
       io.get_row_size
     end
 
-    it "only returns a row size (converted to integer) once it gets integer-like input" do
-      not_integer_like, integer_like = "string", "10"
-      allow(io).to receive(:row_size_solicitation)
-      allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+    context 'when given not-integer-like input' do
+      let(:not_integer_like) { "string" }
+      let(:integer_like) { "10" }
 
-      expect(io.get_row_size).to eql(10)
+      it "sends an error notification with a not-integer-like message" do
+        allow(io).to receive(:row_size_solicitation)
+        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+
+        expect(io).to receive(:error_notification).with(stringifier.not_an_integer)
+        io.get_row_size
+      end
+
+      it "only returns a row size (converted to integer) once it gets integer-like input" do
+        allow(io).to receive(:row_size_solicitation)
+        allow(io).to receive(:error_notification)
+        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+
+        expect(io.get_row_size).to eql(10)
+      end
     end
   end
 
@@ -135,12 +158,25 @@ describe TicTacToe::CommandLineIO do
       io.make_move(board, players)
     end
 
-    it "only returns a move (converted to an integer) once it gets integer-like input" do
-      not_integer_like, integer_like = "string", "100"
-      allow(io).to receive(:move_solicitation)
-      allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+    context 'when given not-integer-like input' do
+      let(:not_integer_like) { "string" }
+      let(:integer_like) { "100" }
 
-      expect(io.make_move(board, players)).to eql(100)
+      it "sends an error notification with a not-integer-like message" do
+        allow(io).to receive(:move_solicitation)
+        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+
+        expect(io).to receive(:error_notification).with(stringifier.not_an_integer)
+        io.make_move(board, players)
+      end
+
+      it "only returns a move (converted to integer) once it gets integer-like input" do
+        allow(io).to receive(:move_solicitation)
+        allow(io).to receive(:error_notification)
+        allow(io).to receive(:get_input).and_return(not_integer_like, integer_like)
+
+        expect(io.make_move(board, players)).to eql(100)
+      end
     end
   end
 

@@ -1,7 +1,14 @@
+require 'tic_tac_toe/easy_ai'
+require 'tic_tac_toe/medium_ai'
+require 'tic_tac_toe/hard_ai'
+
 module TicTacToe
   module Rules
+    ROW_SIZE_RANGE = (2..10)
+    AI_DIFFICULTIES = { easy: EasyAI, medium: MediumAI, hard: HardAI }
+
     def self.row_size_valid?(row_size)
-      row_size.between?(2, 10)
+      row_size.between?(ROW_SIZE_RANGE.min, ROW_SIZE_RANGE.max)
     end
 
     def self.token_valid?(token, taken_tokens)
@@ -9,6 +16,10 @@ module TicTacToe
       untaken = !taken_tokens.include?(token)
 
       correct_length && untaken
+    end
+
+    def self.difficulty_valid?(difficulty)
+      AI_DIFFICULTIES.include? difficulty
     end
 
     def self.game_over?(board, players)

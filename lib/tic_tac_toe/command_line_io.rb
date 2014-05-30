@@ -1,13 +1,17 @@
-require 'tic_tac_toe/exceptions'
 require 'tic_tac_toe/stringifier'
 
 module TicTacToe
   module CommandLineIO
+    def self.error_notification(error_message)
+      print error_message
+    end
+
     def self.get_row_size
       row_size_solicitation
 
       Integer(get_input)
       rescue ArgumentError
+        error_notification(Stringifier.not_an_integer)
         get_row_size
     end
 
@@ -40,6 +44,7 @@ module TicTacToe
 
       Integer(get_input)
       rescue ArgumentError
+        error_notification(Stringifier.not_an_integer)
         make_move(_board, _players)
     end
 

@@ -1,5 +1,27 @@
+require 'tic_tac_toe/rules'
+
 module TicTacToe
   module Stringifier
+    def self.not_an_integer
+      "Input must be an integer\n"
+    end
+
+    def self.invalid_row_size
+      "Input must be between #{Rules::ROW_SIZE_RANGE.min} and #{Rules::ROW_SIZE_RANGE.max}\n"
+    end
+
+    def self.invalid_token
+      "Input must be a single character\n"
+    end
+
+    def self.invalid_difficulty
+      "Input must be a valid difficulty\n"
+    end
+
+    def self.invalid_move
+      "Input must be on the board\n"
+    end
+
     def self.row_size_solicitation
       "Pick row size of board:\n"
     end
