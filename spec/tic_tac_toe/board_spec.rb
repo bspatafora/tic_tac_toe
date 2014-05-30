@@ -54,6 +54,38 @@ describe TicTacToe::Board do
   end
 
 
+  describe '#columns' do
+    it "returns an array of column arrays based on the board's spaces" do
+      structure = [:X, nil, nil, nil,
+                   :X, nil, nil, nil,
+                   :X, nil, nil, nil,
+                   :X, nil, nil, nil]
+      board = generate_board(structure)
+      first_column = [:X, :X, :X, :X]
+
+      expect(board.columns).to have(4).columns
+      expect(board.columns.first).to eql(first_column)
+    end
+  end
+
+
+  describe '#diagonals' do
+    it "returns an array of diagonal arrays based on the board's spaces" do
+      structure = [ :X, nil, nil,  :O,
+                   nil,  :X,  :O, nil,
+                   nil,  :O,  :X, nil,
+                    :O, nil, nil,  :X]
+      board = generate_board(structure)
+      back_diagonal = [:X, :X, :X, :X]
+      front_diagonal = [:O, :O, :O, :O]
+
+      expect(board.diagonals).to have(2).diagonals
+      expect(board.diagonals.first).to eql(back_diagonal)
+      expect(board.diagonals.last).to eql(front_diagonal)
+    end
+  end
+
+
   describe '#full?' do
     it "returns false if any spaces are still nil" do
       board = TicTacToe::Board.new

@@ -30,6 +30,21 @@ module TicTacToe
       @spaces.each_slice(@row_size).to_a
     end
 
+    def columns
+      rows.transpose
+    end
+
+    def diagonals
+      back_diagonal, front_diagonal = [], []
+
+      rows.each_with_index do |row, index|
+        back_diagonal << row[index]
+        front_diagonal << row[@row_size - (index + 1)]
+      end
+
+      [back_diagonal, front_diagonal]
+    end
+
     def full?
       @spaces.all? { |space| !space.nil? }
     end

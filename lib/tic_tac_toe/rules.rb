@@ -49,30 +49,19 @@ module TicTacToe
     private
 
     def self.diagonal_win?(board, token)
-      back_diagonal, front_diagonal = true, true
-
-      board.rows.each_with_index do |row, index|
-        back_diagonal_space = row[index]
-        front_diagonal_space = row[board.row_size - (index + 1)]
-
-        back_diagonal = false if back_diagonal_space != token
-        front_diagonal = false if front_diagonal_space != token
-      end
-
-      back_diagonal || front_diagonal
+      set_win?(board.diagonals, token)
     end
 
     def self.horizontal_win?(board, token)
-      row_win?(board.rows, token)
+      set_win?(board.rows, token)
     end
 
     def self.vertical_win?(board, token)
-      transposed_rows = board.rows.transpose
-      row_win?(transposed_rows, token)
+      set_win?(board.columns, token)
     end
 
-    def self.row_win?(rows, token)
-      rows.any? { |row| row.all? { |space| space == token  } }
+    def self.set_win?(sets, token)
+      sets.any? { |set| set.all? { |space| space == token  } }
     end
   end
 end
