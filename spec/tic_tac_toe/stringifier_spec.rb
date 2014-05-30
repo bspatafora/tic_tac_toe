@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/board'
 require 'tic_tac_toe/rules'
 require 'tic_tac_toe/stringifier'

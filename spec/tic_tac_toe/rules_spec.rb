@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/rules'
 
 describe TicTacToe::Rules do

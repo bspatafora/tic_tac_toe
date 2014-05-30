@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/board'
 require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/player'
