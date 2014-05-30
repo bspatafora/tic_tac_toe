@@ -10,7 +10,7 @@ describe TicTacToe::CommandLineIO do
   describe '#red_notification' do
     it "prints the message it receives (in red)" do
       message = "Error"
-      red_message = message.red
+      red_message = TicTacToe::CommandLineIO.red(message)
 
       expect(io).to receive(:print).with(red_message)
       io.red_notification(message)

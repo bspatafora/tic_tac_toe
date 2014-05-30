@@ -3,7 +3,19 @@ require 'tic_tac_toe/stringifier'
 module TicTacToe
   module CommandLineIO
     def self.red_notification(message)
-      print message.red
+      print red(message)
+    end
+
+    def self.red(message)
+      colorize(message, 31)
+    end
+
+    def self.blue(message)
+      colorize(message, 34)
+    end
+
+    def self.colorize(message, color_code)
+      "\e[#{color_code}m#{message}\e[0m"
     end
 
     def self.get_row_size
@@ -66,19 +78,5 @@ module TicTacToe
     def self.get_input
       gets.chomp
     end
-  end
-end
-
-class String
-  def red
-    colorize(31)
-  end
-
-  def blue
-    colorize(34)
-  end
-
-  def colorize(color_code)
-    "\e[#{color_code}m#{self}\e[0m"
   end
 end
