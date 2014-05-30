@@ -3,7 +3,7 @@ require 'tic_tac_toe/stringifier'
 module TicTacToe
   module CommandLineIO
     def self.error_notification(error_message)
-      print error_message
+      print error_message.red
     end
 
     def self.get_row_size
@@ -22,7 +22,7 @@ module TicTacToe
     def self.get_token(player)
       token_solicitation(player)
 
-      get_input.to_sym
+      get_input
     end
 
     def self.token_solicitation(player)
@@ -66,5 +66,31 @@ module TicTacToe
     def self.get_input
       gets.chomp
     end
+
+    def self.red
+      colorize(31)
+    end
+
+    def self.blue
+      colorize(34)
+    end
+
+    def self.colorize(color_code)
+      "\e[#{color_code}m#{self}\e[0m"
+    end
+  end
+end
+
+class String
+  def red
+    colorize(31)
+  end
+
+  def blue
+    colorize(34)
+  end
+
+  def colorize(color_code)
+    "\e[#{color_code}m#{self}\e[0m"
   end
 end

@@ -22,6 +22,10 @@ module TicTacToe
       "Input must be on the board\n"
     end
 
+    def self.thinking
+      "Thinking...\n"
+    end
+
     def self.row_size_solicitation
       "Pick row size of board:\n"
     end

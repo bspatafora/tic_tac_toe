@@ -8,24 +8,26 @@ describe TicTacToe::PlayerFactory do
 
 
   describe '#generate_human_player' do
-    it "returns a player with the correct token and decider" do
-      token = :X
+    it "returns a player with the correct token (colored blue) and decider" do
+      token = "X"
+      colored_token = "X".blue
 
       human_player = factory.generate_human_player(token)
       expect(human_player.decider).to eql(TicTacToe::CommandLineIO)
-      expect(human_player.token).to equal(token)
+      expect(human_player.token).to eq(colored_token)
     end
   end
 
 
   describe '#generate_computer_player' do
-    it "returns a player with the correct token and decider when given a valid difficulty" do
-      token = :O
+    it "returns a player with the correct token (colored red) and decider when given a valid difficulty" do
+      token = "O"
+      colored_token = "O".red
       difficulty = :medium
 
       computer_player = factory.generate_computer_player(token, difficulty)
       expect(computer_player.decider).to eql(TicTacToe::MediumAI)
-      expect(computer_player.token).to equal(token)
+      expect(computer_player.token).to eq(colored_token)
     end
   end
 end

@@ -3,6 +3,7 @@ require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/command_line_runner'
 require 'tic_tac_toe/menu'
 require 'tic_tac_toe/rules'
+require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::CommandLineRunner do
   let(:io) { TicTacToe::CommandLineIO }
@@ -47,17 +48,32 @@ describe TicTacToe::CommandLineRunner do
 
   describe '#take_turn' do
     let(:board) { double("board") }
-    let(:first_player) { double("first player", make_move: true) }
-    let(:second_player) { double("second player", make_move: true) }
+    let(:first_player) { double("first player", make_move: true, needs_to_think: true) }
+    let(:second_player) { double("second player", make_move: true, needs_to_think: false) }
     let(:players) { [first_player, second_player] }
 
     it "asks its IO to draw the board" do
+      allow(io).to receive(:error_notification)
+
       expect(io).to receive(:draw_board)
+      runner.take_turn(board, players)
+    end
+
+    it "sends a thinking message if the current player needs to think" do
+      allow(io).to receive(:draw_board)
+      allow(first_player).to receive(:make_move)
+
+      expect(io).to receive(:error_notification).with(TicTacToe::Stringifier.thinking)
+      runner.take_turn(board, players)
+
+      allow(second_player).to receive(:make_move)
+      expect(io).not_to receive(:error_notification).with(TicTacToe::Stringifier.thinking)
       runner.take_turn(board, players)
     end
 
     it "asks the first player to make a move" do
       allow(io).to receive(:draw_board)
+      allow(io).to receive(:error_notification)
 
       expect(first_player).to receive(:make_move)
       runner.take_turn(board, players)
@@ -65,6 +81,7 @@ describe TicTacToe::CommandLineRunner do
 
     it "keeps track of the current player by rotating the players" do
       allow(io).to receive(:draw_board)
+      allow(io).to receive(:error_notification)
 
       runner.take_turn(board, players)
       expect(second_player).to receive(:make_move)

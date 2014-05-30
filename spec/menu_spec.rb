@@ -51,7 +51,7 @@ describe TicTacToe::Menu do
 
   describe '#get_players' do
     it "returns an array consisting of a human player and a computer player" do
-      human_token, computer_token = :X, :O
+      human_token, computer_token = "X", "O"
       difficulty = :medium
 
       allow(menu).to receive(:get_token).and_return(human_token, computer_token)
@@ -67,7 +67,7 @@ describe TicTacToe::Menu do
   describe '#get_token' do
     it "asks for a token with the name of the player whose token it will be" do
       player = :human
-      token, taken_tokens = :X, []
+      token, taken_tokens = "X", []
 
       expect(io).to receive(:get_token).with(player) { token }
       menu.get_token(player, taken_tokens)
@@ -76,7 +76,7 @@ describe TicTacToe::Menu do
     context 'when given an invalid token' do
       let(:player) { :human }
       let(:invalid_token) { :invalid }
-      let(:valid_token) { :X }
+      let(:valid_token) { "X" }
       let(:taken_tokens) { [] }
 
       it "sends an error notification with an invalid token message" do

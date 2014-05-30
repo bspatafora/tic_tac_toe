@@ -11,7 +11,7 @@ describe TicTacToe::CommandLineIO do
     it "prints the error message it receives" do
       error_message = "Error"
 
-      expect(io).to receive(:print).with(error_message)
+      expect(io).to receive(:print).with(error_message.red)
       io.error_notification(error_message)
     end
   end
@@ -83,12 +83,12 @@ describe TicTacToe::CommandLineIO do
       io.get_token(player)
     end
 
-    it "returns the input converted into a symbol" do
+    it "returns the input" do
       token = "O"
       allow(io).to receive(:get_input) { token }
       allow(io).to receive(:token_solicitation)
 
-      expect(io.get_token(player)).to equal(:O)
+      expect(io.get_token(player)).to equal(token)
     end
   end
 

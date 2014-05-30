@@ -9,7 +9,8 @@ describe TicTacToe::Player do
 
   describe '#make_move' do
     let(:token) { :X }
-    let(:player) { TicTacToe::Player.new(double("decider"), token) }
+    needs_to_think = false
+    let(:player) { TicTacToe::Player.new(double("decider"), token, needs_to_think) }
  
     it "only returns a move once it receives a valid move" do
       invalid_move, valid_move = 9, 0
