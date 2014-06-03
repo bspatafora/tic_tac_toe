@@ -1,13 +1,13 @@
 require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/command_line/io'
+require 'tic_tac_toe/command_line/menu'
 require 'tic_tac_toe/medium_ai'
-require 'tic_tac_toe/menu'
 require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::Menu do
-  let(:io) { TicTacToe::CommandLineIO }
+  let(:io) { TicTacToe::IO }
   let(:stringifier) { TicTacToe::Stringifier }
-  let(:menu) { TicTacToe::Menu.new }
+  let(:menu) { TicTacToe::Menu.new(io) }
 
 
   describe '#get_board' do
@@ -33,15 +33,15 @@ describe TicTacToe::Menu do
       let(:invalid_row_size) { 99 }
       let(:valid_row_size) { 5 }
 
-      it "sends a red notification with an invalid row size message" do
+      it "sends an invalid row size error" do
         allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
 
-        expect(io).to receive(:red_notification).with(stringifier.invalid_row_size)
+        expect(io).to receive(:invalid_row_size_error)
         menu.get_row_size
       end
 
       it "only returns a row size once it receives a valid row size" do
-        allow(io).to receive(:red_notification)
+        allow(io).to receive(:invalid_row_size_error)
         allow(io).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
 
         expect(menu.get_row_size).to equal(valid_row_size)
@@ -59,7 +59,7 @@ describe TicTacToe::Menu do
       allow(menu).to receive(:get_difficulty).and_return(difficulty)
 
       human_player, computer_player = menu.get_players
-      expect(human_player.decider).to eql(TicTacToe::CommandLineIO)
+      expect(human_player.decider).to eql(TicTacToe::IO)
       expect(computer_player.decider).to eql(TicTacToe::MediumAI)
     end
   end
@@ -80,15 +80,15 @@ describe TicTacToe::Menu do
       let(:valid_token) { "X" }
       let(:taken_tokens) { [] }
 
-      it "sends a red notification with an invalid token message" do
+      it "sends an invalid token error" do
         allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
 
-        expect(io).to receive(:red_notification).with(stringifier.invalid_token)
+        expect(io).to receive(:invalid_token_error)
         menu.get_token(player, taken_tokens)
       end
 
       it "only returns a token once it receives a valid token" do
-        allow(io).to receive(:red_notification)
+        allow(io).to receive(:invalid_token_error)
         allow(io).to receive(:get_token).and_return(invalid_token, valid_token)
 
         expect(menu.get_token(player, taken_tokens)).to equal(valid_token)
@@ -109,15 +109,15 @@ describe TicTacToe::Menu do
       let(:invalid_difficulty) { :invalid }
       let(:valid_difficulty) { :medium }
 
-      it "sends a red notification with an invalid difficulty message" do
+      it "sends an invalid difficulty error" do
         allow(io).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
-        expect(io).to receive(:red_notification).with(stringifier.invalid_difficulty)
+        expect(io).to receive(:invalid_difficulty_error)
         menu.get_difficulty
       end
 
       it "only returns a difficulty once it receives a valid difficulty" do
-        allow(io).to receive(:red_notification)
+        allow(io).to receive(:invalid_difficulty_error)
         allow(io).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
         expect(menu.get_difficulty).to equal(valid_difficulty)

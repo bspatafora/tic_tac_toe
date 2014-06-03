@@ -1,14 +1,12 @@
 require 'tic_tac_toe/board'
-require 'tic_tac_toe/command_line_io'
 require 'tic_tac_toe/player_factory'
 require 'tic_tac_toe/rules'
-require 'tic_tac_toe/stringifier'
 
 module TicTacToe
   class Menu
-    def initialize(io: CommandLineIO, stringifier: Stringifier)
+    def initialize(io)
       @io = io
-      @stringifier = stringifier
+      @player_factory = PlayerFactory.new(io)
     end
 
     def get_board
@@ -19,7 +17,7 @@ module TicTacToe
       loop do
         row_size = @io.get_row_size
         break row_size if Rules.row_size_valid?(row_size)
-        @io.red_notification(@stringifier.invalid_row_size)
+        @io.invalid_row_size_error
       end
     end
 
@@ -31,8 +29,8 @@ module TicTacToe
       computer_token = get_token(:computer, taken_tokens)
       difficulty = get_difficulty
 
-      human_player = PlayerFactory.generate_human_player(human_token)
-      computer_player = PlayerFactory.generate_computer_player(computer_token, difficulty)
+      human_player = @player_factory.generate_human_player(human_token)
+      computer_player = @player_factory.generate_computer_player(computer_token, difficulty)
 
       [human_player, computer_player]
     end
@@ -41,7 +39,7 @@ module TicTacToe
       loop do
         token = @io.get_token(player)
         break token if Rules.token_valid?(token, taken_tokens)
-        @io.red_notification(@stringifier.invalid_token)
+        @io.invalid_token_error
       end
     end
 
@@ -49,7 +47,7 @@ module TicTacToe
       loop do
         difficulty = @io.get_difficulty
         break difficulty if Rules.difficulty_valid?(difficulty)
-        @io.red_notification(@stringifier.invalid_difficulty)
+        @io.invalid_difficulty_error
       end
     end
   end

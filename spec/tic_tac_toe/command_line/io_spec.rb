@@ -1,10 +1,10 @@
 require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/command_line/io'
 require 'tic_tac_toe/stringifier'
 
-describe TicTacToe::CommandLineIO do
+describe TicTacToe::IO do
   let(:stringifier) { TicTacToe::Stringifier }
-  let(:io) { TicTacToe::CommandLineIO }
+  let(:io) { TicTacToe::IO }
 
 
   describe '#make_move' do
@@ -192,10 +192,88 @@ describe TicTacToe::CommandLineIO do
   describe '#red_notification' do
     it "prints the message it receives in red" do
       message = "Error"
-      red_message = TicTacToe::CommandLineIO.red(message)
+      red_message = io.red(message)
 
       expect(io).to receive(:print).with(red_message)
       io.red_notification(message)
+    end
+  end
+
+
+  describe '#not_an_integer_error' do
+    it "asks for a not-an-integer string" do
+      expect(stringifier).to receive(:not_an_integer)
+      io.not_an_integer_error
+    end
+
+    it "prints a red notification with the string" do
+      expect(io).to receive(:red_notification).with(stringifier.not_an_integer)
+      io.not_an_integer_error
+    end
+  end
+
+
+  describe '#invalid_row_size_error' do
+    it "asks for an invalid row size string" do
+      expect(stringifier).to receive(:invalid_row_size)
+      io.invalid_row_size_error
+    end
+
+    it "prints a red notification with the string" do
+      expect(io).to receive(:red_notification).with(stringifier.invalid_row_size)
+      io.invalid_row_size_error
+    end
+  end
+
+
+  describe '#invalid_token_error' do
+    it "asks for an invalid token string" do
+      expect(stringifier).to receive(:invalid_token)
+      io.invalid_token_error
+    end
+
+    it "prints a red notification with the string" do
+      expect(io).to receive(:red_notification).with(stringifier.invalid_token)
+      io.invalid_token_error
+    end
+  end
+
+
+  describe '#invalid_difficulty_error' do
+    it "asks for an invalid difficulty string" do
+      expect(stringifier).to receive(:invalid_difficulty)
+      io.invalid_difficulty_error
+    end
+
+    it "prints a red notification with the string" do
+      expect(io).to receive(:red_notification).with(stringifier.invalid_difficulty)
+      io.invalid_difficulty_error
+    end
+  end
+
+
+  describe '#invalid_move_error' do
+    it "asks for an invalid move string" do
+      expect(stringifier).to receive(:invalid_move)
+      io.invalid_move_error
+    end
+
+    it "prints a red notification with the string" do
+      expect(io).to receive(:red_notification).with(stringifier.invalid_move)
+      io.invalid_move_error
+    end
+  end
+
+
+  describe '#thinking_notification' do
+    it "asks for a thinking string" do
+      expect(stringifier).to receive(:thinking)
+      io.thinking_notification
+    end
+
+    it "prints a red notification with the string" do
+      expect(io).to receive(:red_notification).with(stringifier.thinking)
+      io.thinking_notification
     end
   end
 

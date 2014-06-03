@@ -1,11 +1,11 @@
 require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/command_line_io'
+require 'tic_tac_toe/command_line/io'
 require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/player_factory'
 
 describe TicTacToe::PlayerFactory do
-  let(:io) { TicTacToe::CommandLineIO }
-  let(:player_factory) { TicTacToe::PlayerFactory }
+  let(:io) { TicTacToe::IO }
+  let(:player_factory) { TicTacToe::PlayerFactory.new(io) }
 
 
   describe '#generate_human_player' do
@@ -14,7 +14,7 @@ describe TicTacToe::PlayerFactory do
       colored_token = io.blue(token)
 
       human_player = player_factory.generate_human_player(token)
-      expect(human_player.decider).to eql(TicTacToe::CommandLineIO)
+      expect(human_player.decider).to eql(io)
       expect(human_player.token).to eq(colored_token)
     end
   end

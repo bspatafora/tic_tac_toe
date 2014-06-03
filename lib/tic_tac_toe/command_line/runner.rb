@@ -1,13 +1,7 @@
-require 'tic_tac_toe/command_line_io'
-require 'tic_tac_toe/menu'
-require 'tic_tac_toe/rules'
-require 'tic_tac_toe/stringifier'
-
 module TicTacToe
-  class CommandLineRunner
-    def initialize(io: CommandLineIO, stringifier: Stringifier, menu: Menu.new, rules: Rules)
+  class Runner
+    def initialize(io, menu, rules)
       @io = io
-      @stringifier = stringifier
       @menu = menu
       @rules = rules
     end
@@ -21,7 +15,7 @@ module TicTacToe
 
     def take_turn(board, players)
       @io.draw_board(board)
-      @io.red_notification(@stringifier.thinking) if players.first.needs_to_think
+      @io.thinking_notification if players.first.needs_to_think
       players.first.make_move(board, players)
       players.rotate!
     end

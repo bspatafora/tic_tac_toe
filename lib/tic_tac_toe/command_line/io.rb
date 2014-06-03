@@ -1,7 +1,7 @@
 require 'tic_tac_toe/stringifier'
 
 module TicTacToe
-  module CommandLineIO
+  module IO
     def self.make_move(_board, _players)
       move_solicitation
 
@@ -54,6 +54,30 @@ module TicTacToe
 
     def self.red_notification(message)
       print red(message)
+    end
+
+    def self.not_an_integer_error
+      red_notification(Stringifier.not_an_integer)
+    end
+
+    def self.invalid_row_size_error
+      red_notification(Stringifier.invalid_row_size)
+    end
+
+    def self.invalid_token_error
+      red_notification(Stringifier.invalid_token)
+    end
+
+    def self.invalid_difficulty_error
+      red_notification(Stringifier.invalid_difficulty)
+    end
+
+    def self.invalid_move_error
+      red_notification(Stringifier.invalid_move)
+    end
+
+    def self.thinking_notification
+      red_notification(Stringifier.thinking)
     end
 
     def self.game_over_notification(winner)
