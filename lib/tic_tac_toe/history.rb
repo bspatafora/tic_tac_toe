@@ -6,9 +6,9 @@ module TicTacToe
       @board_size = size
     end
 
-    def record_move(token, space)
+    def record_move(move)
       @moves ||= []
-      @moves << [token, space]
+      @moves << move
     end
 
     def record_winner(token)

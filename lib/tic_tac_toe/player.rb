@@ -12,7 +12,7 @@ module TicTacToe
     def make_move(board, players)
       loop do
         space = @decider.make_move(board, players)
-        break if board.place(@token, space)
+        break [@token, space] if board.place(@token, space)
         @io_interface.invalid_move_error
       end
     end

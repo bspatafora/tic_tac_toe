@@ -6,6 +6,7 @@ require 'command_line/io'
 require 'command_line/menu'
 require 'tic_tac_toe/io_interface'
 require 'tic_tac_toe/rules'
+require 'tic_tac_toe/history'
 
 require 'command_line/runner'
 
@@ -13,5 +14,6 @@ io = CommandLine::IO
 io_interface = TicTacToe::IOInterface.new(io)
 menu = CommandLine::Menu.new(io_interface)
 rules = TicTacToe::Rules
+history = TicTacToe::History.new
 
-CommandLine::Runner.new(io_interface, menu, rules).run
+CommandLine::Runner.new(io_interface, menu, rules, history).run

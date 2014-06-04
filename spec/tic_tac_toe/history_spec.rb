@@ -9,7 +9,7 @@ describe TicTacToe::History do
       board_size = 9
 
       history.record_board_size(board_size)
-      expect(history.board_size).to eql(board_size)
+      expect(history.board_size).to eq(board_size)
     end
   end
 
@@ -17,7 +17,7 @@ describe TicTacToe::History do
     it "records the passed token and space" do
       move = ["X", 0]
 
-      history.record_move(move.first, move.last)
+      history.record_move(move)
       expect(history.moves.first).to eql(move)
     end
   end
@@ -27,7 +27,7 @@ describe TicTacToe::History do
       token = "O"
 
       history.record_winner(token)
-      expect(history.winner).to eql(token)
+      expect(history.winner).to eq(token)
     end
   end
 end
