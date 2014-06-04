@@ -1,13 +1,13 @@
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/command_line/io'
-require 'tic_tac_toe/command_line/menu'
+require 'command_line/io'
+require 'command_line/menu'
 require 'tic_tac_toe/medium_ai'
+require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/stringifier'
 
-describe TicTacToe::Menu do
-  let(:io) { TicTacToe::IO }
+describe CommandLine::Menu do
+  let(:io) { CommandLine::IO }
   let(:stringifier) { TicTacToe::Stringifier }
-  let(:menu) { TicTacToe::Menu.new(io) }
+  let(:menu) { CommandLine::Menu.new(io) }
 
 
   describe '#get_board' do
@@ -59,7 +59,7 @@ describe TicTacToe::Menu do
       allow(menu).to receive(:get_difficulty).and_return(difficulty)
 
       human_player, computer_player = menu.get_players
-      expect(human_player.decider).to eql(TicTacToe::IO)
+      expect(human_player.decider).to eql(CommandLine::IO)
       expect(computer_player.decider).to eql(TicTacToe::MediumAI)
     end
   end

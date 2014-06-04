@@ -1,10 +1,10 @@
+require 'command_line/io'
 require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/command_line/io'
 require 'tic_tac_toe/stringifier'
 
-describe TicTacToe::IO do
+describe CommandLine::IO do
   let(:stringifier) { TicTacToe::Stringifier }
-  let(:io) { TicTacToe::IO }
+  let(:io) { CommandLine::IO }
 
 
   describe '#make_move' do

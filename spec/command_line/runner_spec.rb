@@ -1,16 +1,16 @@
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/command_line/io'
-require 'tic_tac_toe/command_line/menu'
-require 'tic_tac_toe/command_line/runner'
+require 'command_line/io'
+require 'command_line/menu'
+require 'command_line/runner'
 require 'tic_tac_toe/rules'
+require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/stringifier'
 
-describe TicTacToe::Runner do
-  let(:io) { TicTacToe::IO }
+describe CommandLine::Runner do
+  let(:io) { CommandLine::IO }
   let(:stringifier) { TicTacToe::Stringifier }
-  let(:menu) { TicTacToe::Menu.new(io) }
+  let(:menu) { CommandLine::Menu.new(io) }
   let(:rules) { TicTacToe::Rules }
-  let(:runner) { TicTacToe::Runner.new(io, menu, rules) }
+  let(:runner) { CommandLine::Runner.new(io, menu, rules) }
 
 
   describe '#run' do

@@ -1,4 +1,4 @@
-module TicTacToe
+module CommandLine
   class Runner
     def initialize(io, menu, rules)
       @io = io

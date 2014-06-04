@@ -2,16 +2,14 @@
 
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 
-require 'tic_tac_toe/command_line/io'
-require 'tic_tac_toe/stringifier'
-require 'tic_tac_toe/command_line/menu'
+require 'command_line/io'
+require 'command_line/menu'
 require 'tic_tac_toe/rules'
 
-require 'tic_tac_toe/command_line/runner'
+require 'command_line/runner'
 
-io = TicTacToe::IO
-menu = TicTacToe::Menu.new(io)
+io = CommandLine::IO
+menu = CommandLine::Menu.new(io)
 rules = TicTacToe::Rules
 
-runner = TicTacToe::Runner.new(io, menu, rules)
-runner.run
+CommandLine::Runner.new(io, menu, rules).run

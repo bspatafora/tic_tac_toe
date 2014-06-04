@@ -1,11 +1,11 @@
-require 'tic_tac_toe/spec_helper'
+require 'command_line/io'
 require 'tic_tac_toe/board'
-require 'tic_tac_toe/command_line/io'
 require 'tic_tac_toe/player'
+require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/stringifier'
 
 describe TicTacToe::Player do
-  let(:io) { TicTacToe::IO }
+  let(:io) { CommandLine::IO }
   let(:stringifier) { TicTacToe::Stringifier }
   let(:board) { TicTacToe::Board.new(row_size: 3) }
   let(:players) { double("players") }

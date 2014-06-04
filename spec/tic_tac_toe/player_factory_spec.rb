@@ -1,10 +1,10 @@
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/command_line/io'
+require 'command_line/io'
 require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/player_factory'
+require 'tic_tac_toe/spec_helper'
 
 describe TicTacToe::PlayerFactory do
-  let(:io) { TicTacToe::IO }
+  let(:io) { CommandLine::IO }
   let(:player_factory) { TicTacToe::PlayerFactory.new(io) }
 
 
