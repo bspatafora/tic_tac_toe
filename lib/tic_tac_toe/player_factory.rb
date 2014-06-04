@@ -1,8 +1,12 @@
+require 'tic_tac_toe/easy_ai'
+require 'tic_tac_toe/hard_ai'
+require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/player'
-require 'tic_tac_toe/rules'
 
 module TicTacToe
   class PlayerFactory
+    AI_DIFFICULTIES = { easy: EasyAI, medium: MediumAI, hard: HardAI }
+
     def initialize(io)
       @io = io
     end
@@ -16,7 +20,7 @@ module TicTacToe
     def generate_computer_player(token, difficulty)
       token = @io.red(token)
       needs_to_think = true
-      Player.new(Rules::AI_DIFFICULTIES[difficulty], token, needs_to_think, @io)
+      Player.new(AI_DIFFICULTIES[difficulty], token, needs_to_think, @io)
     end
   end
 end

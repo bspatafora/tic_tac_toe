@@ -1,11 +1,8 @@
-require 'tic_tac_toe/easy_ai'
-require 'tic_tac_toe/medium_ai'
-require 'tic_tac_toe/hard_ai'
+require 'tic_tac_toe/player_factory'
 
 module TicTacToe
   module Rules
     ROW_SIZE_RANGE = (2..10)
-    AI_DIFFICULTIES = { easy: EasyAI, medium: MediumAI, hard: HardAI }
 
     def self.row_size_valid?(row_size)
       row_size.between?(ROW_SIZE_RANGE.min, ROW_SIZE_RANGE.max)
@@ -19,7 +16,7 @@ module TicTacToe
     end
 
     def self.difficulty_valid?(difficulty)
-      AI_DIFFICULTIES.include? difficulty
+      PlayerFactory::AI_DIFFICULTIES.include? difficulty
     end
 
     def self.game_over?(board, players)
