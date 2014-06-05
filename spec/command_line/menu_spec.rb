@@ -22,11 +22,11 @@ describe CommandLine::Menu do
 
 
   describe '#get_row_size' do
-    it "asks for a row size" do
+    it "returns the row size it receives from its IO" do
       row_size = 3
+      allow(io).to receive(:get_row_size) { row_size }
 
-      expect(io).to receive(:get_row_size) { row_size }
-      menu.get_row_size
+      expect(menu.get_row_size).to equal(row_size)
     end
 
     context 'when given an invalid row size (outside the range 2 to 10)' do
@@ -72,6 +72,14 @@ describe CommandLine::Menu do
 
       expect(io).to receive(:get_token).with(player) { token }
       menu.get_token(player, taken_tokens)
+    end
+
+    it "returns the token it receives from its IO" do
+      player = :human
+      token, taken_tokens = "X", []
+      allow(io).to receive(:get_token).with(player) { token }
+
+      expect(menu.get_token(player, taken_tokens)).to equal(token)
     end
 
     context 'when given an invalid token' do
