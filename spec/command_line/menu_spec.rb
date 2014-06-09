@@ -13,7 +13,7 @@ describe CommandLine::Menu do
   describe '#get_board' do
     it "returns a board with the correct row size when given valid row size input" do
       row_size = 3
-      allow(menu).to receive(:get_row_size) { row_size }
+      allow(io).to receive(:get_row_size) { row_size }
 
       board = menu.get_board
       expect(board.row_size).to equal(row_size)
@@ -55,8 +55,8 @@ describe CommandLine::Menu do
       human_token, computer_token = "X", "O"
       difficulty = :medium
 
-      allow(menu).to receive(:get_token).and_return(human_token, computer_token)
-      allow(menu).to receive(:get_difficulty).and_return(difficulty)
+      allow(io).to receive(:get_token).and_return(human_token, computer_token)
+      allow(io).to receive(:get_difficulty).and_return(difficulty)
 
       human_player, computer_player = menu.get_players
       expect(human_player.decider).to eql(CommandLine::IO)
