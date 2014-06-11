@@ -1,4 +1,5 @@
 require 'command_line/runner'
+require 'tic_tac_toe/board'
 require 'tic_tac_toe/spec_helper'
 
 describe CommandLine::Runner do
@@ -6,12 +7,13 @@ describe CommandLine::Runner do
                         :draw_board => true,
                         :thinking_notification => true,
                         :game_over_notification => true) }
+  let(:board)         { TicTacToe::Board.new(row_size: 3) }
   let(:menu)          { double("menu",
-                        :get_board => true,
+                        :get_board => board,
                         :get_players => true) }
   let(:rules)         { double("rules",
                         :game_over? => true,
-                        :determine_winner => true) }
+                        :determine_winner => "X") }
   let(:history)       { TicTacToe::History.new }
 
   let(:runner) { CommandLine::Runner.new(io_interface, menu, rules, history) }
@@ -25,11 +27,6 @@ describe CommandLine::Runner do
     end
 
     it "has its history object record the board size" do
-      allow(menu).to receive(:get_board) { board }
-      allow(menu).to receive(:get_players) { players }
-      allow(rules).to receive(:game_over?) { true }
-      allow(runner).to receive(:end_game)
-
       runner.run
       expect(history.board_size).to eq(board.size)
     end
@@ -74,9 +71,6 @@ describe CommandLine::Runner do
     end
 
     it "has its history object record the move" do
-      allow(io).to receive(:draw_board)
-      allow(io).to receive(:thinking_notification)
-
       runner.take_turn(board, players)
       expect(history.moves.first).to eql(move)
     end
@@ -111,10 +105,8 @@ describe CommandLine::Runner do
     end
 
     it "has its history object record the winner" do
-      winner = "X"
-
       runner.end_game(board, players)
-      expect(history.winner).to eq(winner)
+      expect(history.winner).to eq("X")
     end
   end
 end
