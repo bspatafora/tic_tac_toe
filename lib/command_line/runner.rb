@@ -1,7 +1,7 @@
 module CommandLine
   class Runner
-    def initialize(io, menu, rules)
-      @io = io
+    def initialize(io_interface, menu, rules)
+      @io_interface = io_interface
       @menu = menu
       @rules = rules
     end
@@ -14,15 +14,15 @@ module CommandLine
     end
 
     def take_turn(board, players)
-      @io.draw_board(board)
-      @io.thinking_notification if players.first.needs_to_think
+      @io_interface.draw_board(board)
+      @io_interface.thinking_notification if players.first.needs_to_think
       players.first.make_move(board, players)
       players.rotate!
     end
 
     def end_game(board, players)
-      @io.draw_board(board)
-      @io.game_over_notification(@rules.determine_winner(board, players))
+      @io_interface.draw_board(board)
+      @io_interface.game_over_notification(@rules.determine_winner(board, players))
     end
   end
 end

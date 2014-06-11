@@ -2,22 +2,22 @@ require 'command_line/runner'
 require 'tic_tac_toe/spec_helper'
 
 describe CommandLine::Runner do
-  let(:io)    { double("IO",
-                :draw_board => true,
-                :thinking_notification => true,
-                :game_over_notification => true) }
-  let(:menu)  { double("Menu",
-                :get_board => true,
-                :get_players => true) }
-  let(:rules) { double("Rules",
-                :game_over? => true,
-                :determine_winner => true) }
+  let(:io_interface)  { double("io interface",
+                        :draw_board => true,
+                        :thinking_notification => true,
+                        :game_over_notification => true) }
+  let(:menu)          { double("menu",
+                        :get_board => true,
+                        :get_players => true) }
+  let(:rules)         { double("rules",
+                        :game_over? => true,
+                        :determine_winner => true) }
 
-  let(:runner) { CommandLine::Runner.new(io, menu, rules) }
+  let(:runner) { CommandLine::Runner.new(io_interface, menu, rules) }
 
 
   describe '#run' do
-    it "asks its menu for a board and players" do
+    it "gets a board and players" do
       expect(menu).to receive(:get_board)
       expect(menu).to receive(:get_players)
       runner.run
@@ -43,16 +43,16 @@ describe CommandLine::Runner do
     let(:second_player) { double("second player", make_move: true, needs_to_think: false) }
     let(:players) { [first_player, second_player] }
 
-    it "asks its IO to draw the board" do
-      expect(io).to receive(:draw_board)
+    it "draws the board" do
+      expect(io_interface).to receive(:draw_board)
       runner.take_turn(board, players)
     end
 
-    it "sends a thinking notification if the current player needs to think" do
-      expect(io).to receive(:thinking_notification)
+    it "displays a thinking notification if the current player needs to think" do
+      expect(io_interface).to receive(:thinking_notification)
       runner.take_turn(board, players)
 
-      expect(io).not_to receive(:thinking_notification)
+      expect(io_interface).not_to receive(:thinking_notification)
       runner.take_turn(board, players)
     end
 
@@ -73,20 +73,20 @@ describe CommandLine::Runner do
     let(:board) { double("board") }
     let(:players) { double("players") }
 
-    it "asks its IO to draw the board" do
-      expect(io).to receive(:draw_board)
+    it "draws the board" do
+      expect(io_interface).to receive(:draw_board)
       runner.end_game(board, players)
     end
 
-    it "asks its IO to notify the user of the winner" do
+    it "determines the winner" do
+      expect(rules).to receive(:determine_winner)
+      runner.end_game(board, players)
+    end
+
+    it "displays the winner" do
       allow(rules).to receive(:determine_winner) { :winner }
 
-      expect(io).to receive(:game_over_notification).with(:winner)
-      runner.end_game(board, players)
-    end
-
-    it "asks its rules to determine the winner" do
-      expect(rules).to receive(:determine_winner)
+      expect(io_interface).to receive(:game_over_notification).with(:winner)
       runner.end_game(board, players)
     end
   end

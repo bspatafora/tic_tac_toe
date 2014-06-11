@@ -1,64 +1,38 @@
 require 'tic_tac_toe/rules'
 
 module TicTacToe
-  module Stringifier
-    def self.not_an_integer
-      "Input must be an integer\n"
-    end
+  module Strings
+    smallest_row_size = Rules::ROW_SIZE_RANGE.min
+    largest_row_size = Rules::ROW_SIZE_RANGE.max
 
-    def self.invalid_row_size
-      "Input must be between #{Rules::ROW_SIZE_RANGE.min} and #{Rules::ROW_SIZE_RANGE.max}\n"
-    end
-
-    def self.invalid_token
-      "Input must be a single, untaken character\n"
-    end
-
-    def self.invalid_difficulty
-      "Input must be a valid difficulty\n"
-    end
-
-    def self.invalid_move
-      "Input must be a space that is on the board and untaken\n"
-    end
-
-    def self.thinking
-      "Thinking...\n"
-    end
-
-    def self.row_size_solicitation
-      "Pick row size of board:\n"
-    end
+    NOT_AN_INTEGER           =  "Input must be an integer"
+    INVALID_ROW_SIZE         =  "Input must be between #{smallest_row_size} and #{largest_row_size}"
+    INVALID_TOKEN            =  "Input must be a single, untaken character"
+    INVALID_DIFFICULTY       =  "Input must be a valid difficulty"
+    INVALID_MOVE             =  "Input must be a space that is on the board and untaken"
+    ROW_SIZE_SOLICITATION    =  "Pick row size of board:"
+    DIFFICULTY_SOLICITATION  =  "Pick difficulty (easy, medium, hard):"
+    MOVE_SOLICITATION        =  "Pick a space:"
+    THINKING                 =  "Thinking..."
 
     def self.token_solicitation(player)
-      "Pick #{player} token:\n"
-    end
-
-    def self.difficulty_solicitation
-      "Pick difficulty (easy, medium, hard):\n"
-    end
-
-    def self.move_solicitation
-      "Pick a space:\n"
+      "Pick #{player} token:"
     end
 
     def self.game_over_notification(winner)
-      "#{winner} wins!\n"
+      "#{winner} wins!"
     end
 
     def self.board(board)
       board_string = ""
-
       board.rows.each_with_index do |row, index|
         row_start_index = (index * board.row_size).to_i
         at_last_row = index == board.row_size - 1
-
         board_string << "\n"
         board_string << row(row, row_start_index, board.size)
         board_string << "\n"
         board_string << horizontal_divider(board.row_size, board.size) unless at_last_row
       end
-
       board_string << "\n"
     end
 
@@ -66,7 +40,6 @@ module TicTacToe
 
     def self.row(row, row_start_index, board_size)
       row_array = []
-
       row.each_with_index do |space, index|
         if space.nil?
           board_index = index + row_start_index
@@ -75,7 +48,6 @@ module TicTacToe
           row_array << token(space, board_size)
         end
       end
-
       row_array.join("|")
     end
 

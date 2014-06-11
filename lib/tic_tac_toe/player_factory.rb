@@ -7,20 +7,20 @@ module TicTacToe
   class PlayerFactory
     AI_DIFFICULTIES = { easy: EasyAI, medium: MediumAI, hard: HardAI }
 
-    def initialize(io)
-      @io = io
+    def initialize(io_interface)
+      @io_interface = io_interface
     end
 
     def generate_human_player(token)
-      token = @io.blue(token)
+      token = @io_interface.blue(token)
       needs_to_think = false
-      Player.new(@io, token, needs_to_think, @io)
+      Player.new(@io_interface, token, needs_to_think, @io_interface)
     end
 
     def generate_computer_player(token, difficulty)
-      token = @io.red(token)
+      token = @io_interface.red(token)
       needs_to_think = true
-      Player.new(AI_DIFFICULTIES[difficulty], token, needs_to_think, @io)
+      Player.new(AI_DIFFICULTIES[difficulty], token, needs_to_think, @io_interface)
     end
   end
 end
