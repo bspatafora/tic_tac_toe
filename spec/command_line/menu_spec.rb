@@ -4,130 +4,99 @@ require 'tic_tac_toe/medium_ai'
 require 'tic_tac_toe/spec_helper'
 
 describe CommandLine::Menu do
-  let(:io) { double("io", red: true, blue: true) }
+  let(:io) { double("io") }
   let(:io_interface) { TicTacToe::IOInterface.new(io) }
   let(:menu) { CommandLine::Menu.new(io_interface) }
 
 
   describe '#get_board' do
-    it "returns a board with the correct row size when given valid row size input" do
-      row_size = 3
-      allow(io_interface).to receive(:get_row_size) { row_size }
+    let(:invalid_row_size) { 11 }
+    let(:valid_row_size) { 7 }
+
+    it "displays an invalid row size error when given an invalid (outside 2-10) row size" do
+      allow(io_interface).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
+
+      expect(io_interface).to receive(:invalid_row_size_error)
+      menu.get_board
+    end
+
+    it "only returns a row size once it receives a valid (2-10) row size" do
+      allow(io_interface).to receive(:invalid_row_size_error)
+      allow(io_interface).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
 
       board = menu.get_board
-      expect(board.row_size).to equal(row_size)
-    end
-  end
-
-
-  describe '#get_row_size' do
-    it "returns the row size it receives from its IO" do
-      row_size = 3
-      allow(io_interface).to receive(:get_row_size) { row_size }
-
-      expect(menu.get_row_size).to equal(row_size)
-    end
-
-    context 'when given an invalid row size (outside the range 2 to 10)' do
-      let(:invalid_row_size) { 99 }
-      let(:valid_row_size) { 5 }
-
-      it "sends an invalid row size error" do
-        allow(io_interface).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
-
-        expect(io_interface).to receive(:invalid_row_size_error)
-        menu.get_row_size
-      end
-
-      it "only returns a row size once it receives a valid row size" do
-        allow(io_interface).to receive(:invalid_row_size_error)
-        allow(io_interface).to receive(:get_row_size).and_return(invalid_row_size, valid_row_size)
-
-        expect(menu.get_row_size).to equal(valid_row_size)
-      end
+      expect(board.row_size).to eq(valid_row_size)
     end
   end
 
 
   describe '#get_players' do
-    it "returns an array consisting of a human player and a computer player" do
-      human_token, computer_token = "X", "O"
+    before(:each) do
+      allow(io).to receive(:blue) { |argument| argument }
+      allow(io).to receive(:red) { |argument| argument }
+    end
+
+    it "returns an array with a human (IO decider) player and a computer (AI decider) player" do
+      first_token, second_token = "X", "O"
       difficulty = :medium
 
-      allow(io_interface).to receive(:get_token).and_return(human_token, computer_token)
+      allow(io_interface).to receive(:get_token).and_return(first_token, second_token)
       allow(io_interface).to receive(:get_difficulty).and_return(difficulty)
 
       human_player, computer_player = menu.get_players
       expect(human_player.decider).to be_a TicTacToe::IOInterface
-      expect(computer_player.decider).to eql(TicTacToe::MediumAI)
-    end
-  end
-
-
-  describe '#get_token' do
-    it "asks for a token with the name of the player whose token it will be" do
-      player = :human
-      token, taken_tokens = "X", []
-
-      expect(io_interface).to receive(:get_token).with(player) { token }
-      menu.get_token(player, taken_tokens)
+      expect(computer_player.decider).to eq(TicTacToe::MediumAI)
     end
 
-    it "returns the token it receives from its IO" do
-      player = :human
-      token, taken_tokens = "X", []
-      allow(io_interface).to receive(:get_token).with(player) { token }
+    context 'when given an invalid (non-single-character) token' do
+      let(:invalid_token) { "invalid" }
+      let(:first_token) { "X" }
+      let(:second_token) { "O" }
 
-      expect(menu.get_token(player, taken_tokens)).to equal(token)
-    end
+      before(:each) do
+        valid_difficulty = :medium
+        allow(io_interface).to receive(:get_difficulty) { valid_difficulty }
+      end
 
-    context 'when given an invalid token' do
-      let(:player) { :human }
-      let(:invalid_token) { :invalid }
-      let(:valid_token) { "X" }
-      let(:taken_tokens) { [] }
-
-      it "sends an invalid token error" do
-        allow(io_interface).to receive(:get_token).and_return(invalid_token, valid_token)
+      it "displays an invalid token error" do
+        allow(io_interface).to receive(:get_token).and_return(invalid_token, first_token, second_token)
 
         expect(io_interface).to receive(:invalid_token_error)
-        menu.get_token(player, taken_tokens)
+        menu.get_players
       end
 
-      it "only returns a token once it receives a valid token" do
+      it "only returns an array of players (with correct tokens) once it receives a valid token" do
         allow(io_interface).to receive(:invalid_token_error)
-        allow(io_interface).to receive(:get_token).and_return(invalid_token, valid_token)
+        allow(io_interface).to receive(:get_token).and_return(invalid_token, first_token, second_token)
 
-        expect(menu.get_token(player, taken_tokens)).to equal(valid_token)
+        first_player, second_player = menu.get_players
+        expect(first_player.token).to eq(first_token)
+        expect(second_player.token).to eq(second_token)
       end
     end
-  end
 
-
-  describe '#get_difficulty' do
-    it "asks for a difficulty" do
-      difficulty = :medium
-
-      expect(io_interface).to receive(:get_difficulty) { difficulty }
-      menu.get_difficulty
-    end
-
-    context 'when given an invalid difficulty' do
+    context 'when given an invalid (not in the list) difficulty' do
       let(:invalid_difficulty) { :invalid }
       let(:valid_difficulty) { :medium }
 
-      it "sends an invalid difficulty error" do
+      before(:each) do
+        first_token, second_token = "X", "O"
+        allow(io_interface).to receive(:get_token).and_return(first_token, second_token)
+      end
+
+      it "displays an invalid difficulty error" do
         allow(io_interface).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
         expect(io_interface).to receive(:invalid_difficulty_error)
-        menu.get_difficulty
+        menu.get_players
       end
 
-      it "only returns a difficulty once it receives a valid difficulty" do
+      it "only returns an array of players (with correct difficulty) once it receives a valid difficulty" do
         allow(io_interface).to receive(:invalid_difficulty_error)
         allow(io_interface).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
-        expect(menu.get_difficulty).to equal(valid_difficulty)
+        computer_player = menu.get_players.last
+        expect(computer_player.decider).to eq(TicTacToe::MediumAI)
       end
     end
   end
