@@ -20,7 +20,7 @@ describe TicTacToe::Player do
       allow(decider).to receive(:make_move).and_return(invalid_space, valid_space)
 
       player.make_move(board, players)
-      expect(board.space(valid_space)).to eq(token)
+      expect(board.space(valid_space)).to eq(player)
     end
 
     it "displays an invalid move error when given an invalid move" do

@@ -11,8 +11,9 @@ module TicTacToe
       @moves << move
     end
 
-    def record_winner(token)
-      @winner = token
+    def record_winner(winner)
+      winner = "Draw" if winner.nil?
+      @winner = winner
     end
   end
 end

@@ -60,10 +60,20 @@ module TicTacToe
     end
 
     def self.token(space, board_size)
+      token = get_colored_token(space)
+
       if double_digit_board?(board_size)
-        "  #{space} "
+        "  #{token} "
       else
-        " #{space} "
+        " #{token} "
+      end
+    end
+
+    def self.get_colored_token(player)
+      if player.needs_to_think
+        return CommandLine::IO.red(player.token)
+      else
+        return CommandLine::IO.blue(player.token)
       end
     end
 

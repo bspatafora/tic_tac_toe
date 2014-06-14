@@ -3,7 +3,9 @@ require 'tic_tac_toe/rules'
 
 describe TicTacToe::Rules do
   let(:rules) { TicTacToe::Rules }
-
+  let(:x) { double("human player", token: "x") }
+  let(:o) { double("computer player", token: "o") }
+  let(:players) { [x, o] }
 
   describe '#row_size_valid?' do
     it "returns false if the row size is outside the range 2 to 10" do
@@ -57,32 +59,28 @@ describe TicTacToe::Rules do
 
 
   describe '#game_over?' do
-    let(:human_player) { double("human player", token: :X) }
-    let(:computer_player) { double("computer player", token: :O) }
-    let(:players) { [human_player, computer_player] }
-
     it "returns false if there is not yet a winner and the board is not full" do
-      structure = [:X, :X,  :O,
-                   :O, :O, nil,
-                   :X, :O,  :X]
+      structure = [x, x,   o,
+                   o, o, nil,
+                   x, o,   x]
       board = generate_board(structure)
 
       expect(rules.game_over?(board, players)).to be false
     end
 
     it "returns true if any player has won" do
-      structure = [ :X, nil, nil,
-                   nil,  :X, nil,
-                   nil, nil,  :X]
+      structure = [  x, nil, nil,
+                   nil,   x, nil,
+                   nil, nil,   x]
       board = generate_board(structure)
 
       expect(rules.game_over?(board, players)).to be true
     end
 
     it "returns true if the board is full" do
-      structure = [:X, :X, :O,
-                   :O, :O, :X,
-                   :X, :O, :X]
+      structure = [x, x, o,
+                   o, o, x,
+                   x, o, x]
       board = generate_board(structure)
 
       expect(rules.game_over?(board, players)).to be true
@@ -91,24 +89,20 @@ describe TicTacToe::Rules do
 
 
   describe '#determine_winner' do
-    let(:human_player) { double("human player", token: :X) }
-    let(:computer_player) { double("computer player", token: :O) }
-    let(:players) { [human_player, computer_player] }
-
     it "returns the winning token when there is a winner" do
-      structure = [ :O, nil, nil,
-                   nil,  :O, nil,
-                   nil, nil,  :O]
+      structure = [  o, nil, nil,
+                   nil,   o, nil,
+                   nil, nil,   o]
       board = generate_board(structure)
-      winning_token = :O
+      winning_token = "o"
 
       expect(rules.determine_winner(board, players)).to eql(winning_token)
     end
 
     it "returns nil if there is not a winner" do
-      structure = [:X, :X,  :O,
-                   :O, :O, nil,
-                   :X, :O,  :X]
+      structure = [x, x,   o,
+                   o, o, nil,
+                   x, o,   x]
       board = generate_board(structure)
 
       expect(rules.determine_winner(board, players)).to be_nil
@@ -118,48 +112,48 @@ describe TicTacToe::Rules do
 
   describe '#win?' do
     it "returns false if the given token has not won" do
-      structure = [:X, :X,  :O,
-                   :O, :O, nil,
-                   :X, :O,  :X]
+      structure = [x, x,  o,
+                   o, o, nil,
+                   x, o,  x]
       board = generate_board(structure)
 
-      expect(rules.win?(board, :X)).to be false
+      expect(rules.win?(board, x)).to be false
     end
 
     it "returns true if the given token has achieved a back diagonal win" do
-      structure = [ :X, nil, nil,
-                   nil,  :X, nil,
-                   nil, nil,  :X]
+      structure = [  x, nil, nil,
+                   nil,   x, nil,
+                   nil, nil,   x]
       board = generate_board(structure)
 
-      expect(rules.win?(board, :X)).to be true
+      expect(rules.win?(board, x)).to be true
     end
 
     it "returns true if the given token has achieved a front diagonal win" do
-      structure = [nil, nil,  :X,
-                   nil,  :X, nil,
-                    :X, nil, nil]
+      structure = [nil, nil,   x,
+                   nil,   x, nil,
+                     x, nil, nil]
       board = generate_board(structure)
 
-      expect(rules.win?(board, :X)).to be true
+      expect(rules.win?(board, x)).to be true
     end
 
     it "returns true if the given token has achieved a horizonatal win" do
       structure = [nil, nil, nil,
-                    :X,  :X,  :X,
+                     x,   x,   x,
                    nil, nil, nil]
       board = generate_board(structure)
 
-      expect(rules.win?(board, :X)).to be true
+      expect(rules.win?(board, x)).to be true
     end
 
     it "returns true if the given token has achieved a vertical win" do
-      structure = [nil, :X, nil,
-                   nil, :X, nil,
-                   nil, :X, nil]
+      structure = [nil, x, nil,
+                   nil, x, nil,
+                   nil, x, nil]
       board = generate_board(structure)
 
-      expect(rules.win?(board, :X)).to be true
+      expect(rules.win?(board, x)).to be true
     end
   end
 end

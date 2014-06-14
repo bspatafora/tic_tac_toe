@@ -38,6 +38,14 @@ describe Database::PGWrapper do
       expect(history2.moves[0]).to eq(["&", 14])
       expect(history2.winner).to eq("*")
     end
+
+    it "writes the winner to the database" do
+      connection = PG.connect(dbname: database)
+      pg_wrapper.record_game_history(@history1)
+      rows = connection.exec("SELECT * FROM games")
+      winner = rows.first["winner"]
+      expect(winner).to eq ("X")
+    end
   end
 
   after do

@@ -55,11 +55,11 @@ module Database
       connection.exec("CREATE TABLE IF NOT EXISTS games (
         id serial primary key,
         board_size integer,
-        winner char(1))")
+        winner varchar)")
       connection.exec("CREATE TABLE IF NOT EXISTS moves (
         game integer REFERENCES games (id),
         number integer,
-        token char(1),
+        token varchar,
         space integer)")
     end
 

@@ -32,14 +32,13 @@ describe TicTacToe::Strings do
   describe '#board' do
     it "returns a board string" do
       board = TicTacToe::Board.new(row_size: 3)
-      board.place(:X, 4)
 
       leading_spaces_regexp = /^[[:blank:]]+/
       board_string = <<-END.gsub(leading_spaces_regexp, '')
 
         [0]|[1]|[2]
         -----------
-        [3]| X |[5]
+        [3]|[4]|[5]
         -----------
         [6]|[7]|[8]
 

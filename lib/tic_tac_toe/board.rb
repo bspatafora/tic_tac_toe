@@ -8,8 +8,8 @@ module TicTacToe
       @spaces = Array.new(@size)
     end
 
-    def place(token, space)
-      @spaces[space] = token if valid?(space)
+    def place(player, space)
+      @spaces[space] = player if valid?(space)
     end
 
     def space(space)

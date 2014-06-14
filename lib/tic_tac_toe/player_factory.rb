@@ -12,13 +12,11 @@ module TicTacToe
     end
 
     def generate_human_player(token)
-      token = @io_interface.blue(token)
       needs_to_think = false
       Player.new(@io_interface, token, needs_to_think, @io_interface)
     end
 
     def generate_computer_player(token, difficulty)
-      token = @io_interface.red(token)
       needs_to_think = true
       Player.new(AI_DIFFICULTIES[difficulty], token, needs_to_think, @io_interface)
     end

@@ -1,17 +1,17 @@
-require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/medium_ai'
+require 'tic_tac_toe/spec_helper'
 
 describe TicTacToe::MediumAI do
-  let(:human_player) { double("human player", token: :X) }
-  let(:computer_player) { double("computer player", token: :O) }
-  let(:players) { [human_player, computer_player] }
   let(:ai) { TicTacToe::MediumAI }
+  let(:x) { TicTacToe::Player.new("decider", "x", false, "interface") }
+  let(:o) { TicTacToe::Player.new(ai, "o", true, "interface") }
+  let(:players) { [x, o] }
 
   describe '#make_move' do
     it "makes a valid move (based on either EasyAI or HardAI)" do
-      structure = [ :O, :O,  :X,
-                   nil, :X, nil,
-                   nil, :X, nil]
+      structure = [  o, o,   x,
+                   nil, x, nil,
+                   nil, x, nil]
       board = generate_board(structure)
       valid_moves = [3, 5, 6, 8]
 

@@ -5,8 +5,8 @@ def generate_board(structure)
   row_size = Math.sqrt(board_size)
   board = TicTacToe::Board.new(row_size: row_size)
 
-  structure.each_with_index do |token, index|
-    board.place(token, index)
+  structure.each_with_index do |player, index|
+    board.place(player, index)
   end
 
   board

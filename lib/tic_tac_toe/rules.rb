@@ -30,35 +30,35 @@ module TicTacToe
       winner = nil
 
       players.each do |player|
-        player_has_won = win?(board, player.token)
+        player_has_won = win?(board, player)
         winner = player.token if player_has_won
       end
 
       winner
     end
 
-    def self.win?(board, token)
-      diagonal_win?(board, token) ||
-      horizontal_win?(board, token) ||
-      vertical_win?(board, token)
+    def self.win?(board, player)
+      diagonal_win?(board, player) ||
+      horizontal_win?(board, player) ||
+      vertical_win?(board, player)
     end
 
     private
 
-    def self.diagonal_win?(board, token)
-      set_win?(board.diagonals, token)
+    def self.diagonal_win?(board, player)
+      set_win?(board.diagonals, player)
     end
 
-    def self.horizontal_win?(board, token)
-      set_win?(board.rows, token)
+    def self.horizontal_win?(board, player)
+      set_win?(board.rows, player)
     end
 
-    def self.vertical_win?(board, token)
-      set_win?(board.columns, token)
+    def self.vertical_win?(board, player)
+      set_win?(board.columns, player)
     end
 
-    def self.set_win?(sets, token)
-      sets.any? { |set| set.all? { |space| space == token  } }
+    def self.set_win?(sets, player)
+      sets.any? { |set| set.all? { |space| space.token == player.token unless space.nil?  } }
     end
   end
 end

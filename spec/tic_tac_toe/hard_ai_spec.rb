@@ -1,18 +1,19 @@
-require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/hard_ai'
+require 'tic_tac_toe/player'
+require 'tic_tac_toe/spec_helper'
 
 describe TicTacToe::HardAI do
-  let(:human_player) { double("human player", token: :X) }
-  let(:computer_player) { double("computer player", token: :O) }
-  let(:players) { [computer_player, human_player] }
   let(:ai) { TicTacToe::HardAI }
+  let(:x) { TicTacToe::Player.new("decider", "x", false, "interface") }
+  let(:o) { TicTacToe::Player.new(ai, "o", true, "interface") }
+  let(:players) { [o, x] }
 
 
   describe '#make_move' do
     it "returns the best move" do
-      structure = [:X, nil, nil,
-                   :O,  :O, nil,
-                   :X, nil,  :X]
+      structure = [x, nil, nil,
+                   o,   o, nil,
+                   x, nil,   x]
       board = generate_board(structure)
       best_move = 5
 
@@ -23,9 +24,9 @@ describe TicTacToe::HardAI do
 
   describe '#minimax' do
     it "returns the correct score for a pre-win board" do
-      structure = [:X, nil, nil,
-                   :O,  :O, nil,
-                   :X, nil,  :X]
+      structure = [x, nil, nil,
+                   o,   o, nil,
+                   x, nil,   x]
       board = generate_board(structure)
       win_score = 1
 
@@ -33,9 +34,9 @@ describe TicTacToe::HardAI do
     end
 
     it "returns the correct score for a pre-loss board" do
-      structure = [ :O,  :O,  :X,
+      structure = [  o,   o,   x,
                    nil, nil, nil,
-                    :X, nil,  :X]
+                     x, nil,   x]
       board = generate_board(structure)
       loss_score = -1
 
@@ -43,9 +44,9 @@ describe TicTacToe::HardAI do
     end
 
     it "returns the correct score for a pre-draw board" do
-      structure = [:X,  :X, :O,
-                   :O, nil, :X,
-                   :X,  :O, :X]
+      structure = [x,   x, o,
+                   o, nil, x,
+                   x,   o, x]
       board = generate_board(structure)
       draw_score = 0
 
@@ -56,10 +57,10 @@ describe TicTacToe::HardAI do
 
   describe '#generate_board' do
     it "returns a board based on a token, a space, and an existing board" do
-      token, space = :O, 3
-      structure = [ :X, nil, nil,
-                   nil,  :O, nil,
-                    :X, nil, nil]
+      token, space = o, 3
+      structure = [  x, nil, nil,
+                   nil,   o, nil,
+                     x, nil, nil]
       board = generate_board(structure)
 
       new_board = ai.generate_board(token, space, board)
@@ -69,14 +70,10 @@ describe TicTacToe::HardAI do
 
 
   describe '#score' do
-    let(:opponent) { double("opponent", token: :X) }
-    let(:hard_ai) { double("hard ai", token: :O) }
-    let(:players) { [hard_ai, opponent] }
-
     it "returns the correct score when HardAI has won" do
-      structure = [ :O, nil, nil,
-                   nil,  :O, nil,
-                   nil, nil,  :O]
+      structure = [  o, nil, nil,
+                   nil,   o, nil,
+                   nil, nil,   o]
       board = generate_board(structure)
       win_score = 1
 
@@ -84,9 +81,9 @@ describe TicTacToe::HardAI do
     end
 
     it "returns the correct score when no one has won" do
-      structure = [:O, :O, :X,
-                   :X, :X, :O,
-                   :O, :X, :O]
+      structure = [o, o, x,
+                   x, x, o,
+                   o, x, o]
       board = generate_board(structure)
       draw_score = 0
 
@@ -94,9 +91,9 @@ describe TicTacToe::HardAI do
     end
 
     it "returns the correct score when the opponent has won" do
-      structure = [ :X, nil, nil,
-                   nil,  :X, nil,
-                   nil, nil,  :X]
+      structure = [  x, nil, nil,
+                   nil,   x, nil,
+                   nil, nil,   x]
       board = generate_board(structure)
       loss_score = -1
 
