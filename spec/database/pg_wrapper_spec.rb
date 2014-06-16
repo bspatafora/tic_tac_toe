@@ -6,45 +6,32 @@ require 'tic_tac_toe/spec_helper'
 describe Database::PGWrapper do
   database = "test"
   let(:pg_wrapper) { Database::PGWrapper.new(database) }
-
-  before do
-    @history1 = TicTacToe::History.new
-    @history1.record_board_size(9)
-    @history1.record_move(["X", 1])
-    @history1.record_move(["O", 4])
-    @history1.record_winner("X")
-
-    @history2 = TicTacToe::History.new
-    @history2.record_board_size(16)
-    @history2.record_move(["&", 14])
-    @history2.record_winner("*")
-  end
+  let(:history1)   { double("history 1",
+                     :board_size => 9,
+                     :moves => [["X", 1], ["O", 4]],
+                     :winner => "X") }
+  let(:history2)   { double("history 2",
+                     :board_size => 16,
+                     :moves => [["&", 14]],
+                     :winner => "*") }
 
   describe '#record_game_history and #read_games' do
-    it "records and reads history objects to and from the database" do
-      pg_wrapper.record_game_history(@history1)
-      pg_wrapper.record_game_history(@history2)
+    it "records and reads a history object to and from the database" do
+      pg_wrapper.record_game_history(history1)
 
-      games = pg_wrapper.read_game_histories
-      history1 = games[0]
-      history2 = games[1]
+      history_from_database = pg_wrapper.read_game_histories.first
 
-      expect(history1.board_size).to eq(9)
-      expect(history1.moves[0]).to eq(["X", 1])
-      expect(history1.moves[1]).to eq(["O", 4])
-      expect(history1.winner).to eq("X")
-
-      expect(history2.board_size).to eq(16)
-      expect(history2.moves[0]).to eq(["&", 14])
-      expect(history2.winner).to eq("*")
+      expect(history_from_database.board_size).to eq(9)
+      expect(history_from_database.moves[0]).to eq(["X", 1])
+      expect(history_from_database.moves[1]).to eq(["O", 4])
+      expect(history_from_database.winner).to eq("X")
     end
 
-    it "writes the winner to the database" do
-      connection = PG.connect(dbname: database)
-      pg_wrapper.record_game_history(@history1)
-      rows = connection.exec("SELECT * FROM games")
-      winner = rows.first["winner"]
-      expect(winner).to eq ("X")
+    it "records and reads multiple history objects to and from the database" do
+      pg_wrapper.record_game_history(history1)
+      pg_wrapper.record_game_history(history2)
+      histories_from_database = pg_wrapper.read_game_histories
+      expect(histories_from_database).to have(2).histories
     end
   end
 

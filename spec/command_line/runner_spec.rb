@@ -1,23 +1,24 @@
 require 'command_line/runner'
 require 'tic_tac_toe/board'
+require 'tic_tac_toe/history'
 require 'tic_tac_toe/spec_helper'
 
 describe CommandLine::Runner do
-  let(:io_interface)      { double("io interface",
-                            :draw_board => true,
-                            :thinking_notification => true,
-                            :game_over_notification => true) }
-  let(:board)             { TicTacToe::Board.new(row_size: 3) }
-  let(:menu)              { double("menu",
-                            :get_board => board,
-                            :get_players => true) }
-  let(:rules)             { double("rules",
-                            :game_over? => true,
-                            :determine_winner => "X") }
-  let(:history)           { TicTacToe::History.new }
-  let(:database_wrapper)  { double("database wrapper", :record_game_history => true) }
+  let(:io_interface)        { double("io interface",
+                              :draw_board => true,
+                              :thinking_notification => true,
+                              :game_over_notification => true) }
+  let(:board)               { TicTacToe::Board.new(row_size: 3) }
+  let(:menu)                { double("menu",
+                              :get_board => board,
+                              :get_players => true) }
+  let(:rules)               { double("rules",
+                              :game_over? => true,
+                              :determine_winner => "X") }
+  let(:database_interface)  { double("database interface", :record_game_history => true) }
+  let(:history)             { TicTacToe::History.new(database_interface) }
 
-  let(:runner) { CommandLine::Runner.new(io_interface, menu, rules, history, database_wrapper) }
+  let(:runner)              { CommandLine::Runner.new(io_interface, menu, rules, history) }
 
 
   describe '#run' do
@@ -110,8 +111,8 @@ describe CommandLine::Runner do
       expect(history.winner).to eq("X")
     end
 
-    it "has its database wrapper record the game history" do
-      expect(database_wrapper).to receive(:record_game_history).with(history)
+    it "has its history object persist the game history" do
+      expect(history).to receive(:persist)
       runner.end_game(board, players)
     end
   end

@@ -2,7 +2,8 @@ require 'tic_tac_toe/spec_helper'
 require 'tic_tac_toe/history'
 
 describe TicTacToe::History do
-  let(:history) { TicTacToe::History.new }
+  let(:database_interface) { double("database interface", :record_game_history => true) }
+  let(:history) { TicTacToe::History.new(database_interface) }
 
   describe '#record_board_size' do
     it "records the passed board size" do
@@ -28,6 +29,13 @@ describe TicTacToe::History do
 
       history.record_winner(token)
       expect(history.winner).to eq(token)
+    end
+  end
+
+  describe '#persist' do
+    it "sends the history instance to its database interface for storage" do
+      expect(database_interface).to receive(:record_game_history).with history
+      history.persist
     end
   end
 end

@@ -1,11 +1,10 @@
 module CommandLine
   class Runner
-    def initialize(io_interface, menu, rules, history, database_wrapper)
+    def initialize(io_interface, menu, rules, history)
       @io_interface = io_interface
       @menu = menu
       @rules = rules
       @history = history
-      @database_wrapper = database_wrapper
     end
 
     def run
@@ -31,7 +30,7 @@ module CommandLine
       winner = @rules.determine_winner(board, players)
 
       @history.record_winner(winner)
-      @database_wrapper.record_game_history(@history)
+      @history.persist
       @io_interface.game_over_notification(winner)
     end
   end
