@@ -15,6 +15,19 @@ describe Database::PGWrapper do
                      :moves => [["&", 14]],
                      :winner => "*") }
 
+  before do
+    connection = PG.connect(dbname: database)
+    connection.exec("CREATE TABLE games (
+      id serial primary key,
+      board_size integer,
+      winner varchar)")
+    connection.exec("CREATE TABLE moves (
+      game integer REFERENCES games (id),
+      number integer,
+      token varchar,
+      space integer)")
+  end
+
   describe '#record_game_history and #read_games' do
     it "records and reads a history object to and from the database" do
       pg_wrapper.record_game_history(history1)

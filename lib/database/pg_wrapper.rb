@@ -9,7 +9,6 @@ module Database
 
     def record_game_history(history)
       connection = establish_connection
-      create_tables_if_needed(connection)
       record_board_size_and_winner(history, connection)
       record_moves(history, connection)
     end
@@ -43,24 +42,7 @@ module Database
     private
 
     def establish_connection
-      connection = PG.connect(dbname: @database)
-
-      # Suppress PostgreSQL notices that tables already exist
-      connection.exec("set client_min_messages=warning")
-
-      connection
-    end
-
-    def create_tables_if_needed(connection)
-      connection.exec("CREATE TABLE IF NOT EXISTS games (
-        id serial primary key,
-        board_size integer,
-        winner varchar)")
-      connection.exec("CREATE TABLE IF NOT EXISTS moves (
-        game integer REFERENCES games (id),
-        number integer,
-        token varchar,
-        space integer)")
+      PG.connect(dbname: @database)
     end
 
     def record_board_size_and_winner(history, connection)
