@@ -1,11 +1,11 @@
-require 'tic_tac_toe/hard_ai'
-require 'tic_tac_toe/player'
-require 'tic_tac_toe/spec_helper'
+require 'tic_tac_toes/hard_ai'
+require 'tic_tac_toes/player'
+require 'tic_tac_toes/spec_helper'
 
-describe TicTacToe::HardAI do
-  let(:ai) { TicTacToe::HardAI }
-  let(:x) { TicTacToe::Player.new("decider", "x", false, "interface") }
-  let(:o) { TicTacToe::Player.new(ai, "o", true, "interface") }
+describe TicTacToes::HardAI do
+  let(:ai) { TicTacToes::HardAI }
+  let(:x) { TicTacToes::Player.new("decider", "x", false, "interface") }
+  let(:o) { TicTacToes::Player.new(ai, "o", true, "interface") }
   let(:players) { [o, x] }
 
 

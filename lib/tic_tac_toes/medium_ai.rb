@@ -1,7 +1,7 @@
-require 'tic_tac_toe/easy_ai'
-require 'tic_tac_toe/hard_ai'
+require 'tic_tac_toes/easy_ai'
+require 'tic_tac_toes/hard_ai'
 
-module TicTacToe
+module TicTacToes
   module MediumAI
     def self.make_move(board, players)
       ai = [EasyAI, HardAI, HardAI].sample

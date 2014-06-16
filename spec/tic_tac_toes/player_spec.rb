@@ -1,10 +1,10 @@
-require 'tic_tac_toe/board'
-require 'tic_tac_toe/io_interface'
-require 'tic_tac_toe/player'
-require 'tic_tac_toe/spec_helper'
+require 'tic_tac_toes/board'
+require 'tic_tac_toes/io_interface'
+require 'tic_tac_toes/player'
+require 'tic_tac_toes/spec_helper'
 
-describe TicTacToe::Player do
-  let(:board) { TicTacToe::Board.new(row_size: 3) }
+describe TicTacToes::Player do
+  let(:board) { TicTacToes::Board.new(row_size: 3) }
   let(:io_interface) { double("io_interface", invalid_move_error: true) }
   let(:players) { double("players") }
 
@@ -13,7 +13,7 @@ describe TicTacToe::Player do
     let(:token) { "X" }
     let(:needs_to_think) { false }
 
-    let(:player) { TicTacToe::Player.new(decider, token, needs_to_think, io_interface) }
+    let(:player) { TicTacToes::Player.new(decider, token, needs_to_think, io_interface) }
  
     it "only returns a move once it receives a valid move" do
       invalid_space, valid_space = 9, 0

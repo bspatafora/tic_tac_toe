@@ -1,4 +1,4 @@
-module TicTacToe
+module TicTacToes
   class Player
     attr_reader :decider, :token, :needs_to_think
 

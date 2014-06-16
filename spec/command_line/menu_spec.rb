@@ -1,11 +1,11 @@
-require 'tic_tac_toe/io_interface'
+require 'tic_tac_toes/io_interface'
 require 'command_line/menu'
-require 'tic_tac_toe/medium_ai'
-require 'tic_tac_toe/spec_helper'
+require 'tic_tac_toes/medium_ai'
+require 'tic_tac_toes/spec_helper'
 
 describe CommandLine::Menu do
   let(:io) { double("io") }
-  let(:io_interface) { TicTacToe::IOInterface.new(io) }
+  let(:io_interface) { TicTacToes::IOInterface.new(io) }
   let(:menu) { CommandLine::Menu.new(io_interface) }
 
 
@@ -44,8 +44,8 @@ describe CommandLine::Menu do
       allow(io_interface).to receive(:get_difficulty).and_return(difficulty)
 
       human_player, computer_player = menu.get_players
-      expect(human_player.decider).to be_a TicTacToe::IOInterface
-      expect(computer_player.decider).to eq(TicTacToe::MediumAI)
+      expect(human_player.decider).to be_a TicTacToes::IOInterface
+      expect(computer_player.decider).to eq(TicTacToes::MediumAI)
     end
 
     context 'when given an invalid (non-single-character) token' do
@@ -96,7 +96,7 @@ describe CommandLine::Menu do
         allow(io_interface).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
         computer_player = menu.get_players.last
-        expect(computer_player.decider).to eq(TicTacToe::MediumAI)
+        expect(computer_player.decider).to eq(TicTacToes::MediumAI)
       end
     end
   end

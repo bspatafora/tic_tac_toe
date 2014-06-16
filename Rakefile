@@ -21,5 +21,5 @@ task :destroy_tables do
 end
 
 def establish_connection
-  PG.connect(dbname: "tic_tac_toe")
+  PG.connect(dbname: "tic_tac_toes")
 end

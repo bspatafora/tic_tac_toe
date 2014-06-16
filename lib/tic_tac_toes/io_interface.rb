@@ -1,6 +1,6 @@
-require 'tic_tac_toe/strings'
+require 'tic_tac_toes/strings'
 
-module TicTacToe
+module TicTacToes
   class IOInterface
     def initialize(io)
       @io = io

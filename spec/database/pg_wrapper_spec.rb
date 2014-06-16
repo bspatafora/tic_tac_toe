@@ -1,7 +1,7 @@
 require 'database/pg_wrapper'
 require 'pg'
-require 'tic_tac_toe/history'
-require 'tic_tac_toe/spec_helper'
+require 'tic_tac_toes/history'
+require 'tic_tac_toes/spec_helper'
 
 describe Database::PGWrapper do
   database = "test"

@@ -1,6 +1,6 @@
-require 'tic_tac_toe/player_factory'
+require 'tic_tac_toes/player_factory'
 
-module TicTacToe
+module TicTacToes
   module Rules
     ROW_SIZE_RANGE = (2..10)
 

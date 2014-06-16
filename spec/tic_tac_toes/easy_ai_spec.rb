@@ -1,10 +1,10 @@
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/easy_ai'
+require 'tic_tac_toes/spec_helper'
+require 'tic_tac_toes/easy_ai'
 
-describe TicTacToe::EasyAI do
+describe TicTacToes::EasyAI do
   describe '#make_move' do
     let(:players) { double("players") }
-    let(:ai) { TicTacToe::EasyAI }
+    let(:ai) { TicTacToes::EasyAI }
 
     it "returns a randomly-selected valid move" do
       structure = [ :O, nil, nil,

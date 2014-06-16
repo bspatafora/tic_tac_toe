@@ -1,9 +1,8 @@
-# TicTacToe
+# TicTacToes
 
-The game Tic Tac Toe. In this implementation, a human player plays against an unbeatable computer player.
+The game Tic-tac-toe, featuring an unbeatable AI.
 
 ## Usage
 
-Navigate to the directory containing the Tic Tac Toe gem, then run:
-
-    $ tic_tac_toe/bin/tic_tac_toe
+1. Install the gem: `gem install tic_tac_toes`
+2. Launch the game: `tic_tac_toes`

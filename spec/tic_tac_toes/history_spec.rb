@@ -1,9 +1,9 @@
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/history'
+require 'tic_tac_toes/spec_helper'
+require 'tic_tac_toes/history'
 
-describe TicTacToe::History do
+describe TicTacToes::History do
   let(:database_interface) { double("database interface", :record_game_history => true) }
-  let(:history) { TicTacToe::History.new(database_interface) }
+  let(:history) { TicTacToes::History.new(database_interface) }
 
   describe '#record_board_size' do
     it "records the passed board size" do

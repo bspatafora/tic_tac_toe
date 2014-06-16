@@ -1,4 +1,4 @@
-module TicTacToe
+module TicTacToes
   class Board
     attr_reader :row_size, :size
 

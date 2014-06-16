@@ -1,4 +1,4 @@
-module TicTacToe
+module TicTacToes
   class History
     attr_reader :board_size, :moves, :winner
 

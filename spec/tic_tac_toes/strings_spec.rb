@@ -1,15 +1,15 @@
-require 'tic_tac_toe/board'
-require 'tic_tac_toe/rules'
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/strings'
+require 'tic_tac_toes/board'
+require 'tic_tac_toes/rules'
+require 'tic_tac_toes/spec_helper'
+require 'tic_tac_toes/strings'
 
-describe TicTacToe::Strings do
-  let(:strings) { TicTacToe::Strings }
+describe TicTacToes::Strings do
+  let(:strings) { TicTacToes::Strings }
 
   describe '#invalid_row_size' do
     it "returns a string containing the minimum and maximum allowed row sizes" do
-      smallest_row_size = TicTacToe::Rules::ROW_SIZE_RANGE.min.to_s
-      largest_row_size = TicTacToe::Rules::ROW_SIZE_RANGE.max.to_s
+      smallest_row_size = TicTacToes::Rules::ROW_SIZE_RANGE.min.to_s
+      largest_row_size = TicTacToes::Rules::ROW_SIZE_RANGE.max.to_s
 
       expect(strings::INVALID_ROW_SIZE).to include(smallest_row_size, largest_row_size)
     end
@@ -31,7 +31,7 @@ describe TicTacToe::Strings do
 
   describe '#board' do
     it "returns a board string" do
-      board = TicTacToe::Board.new(row_size: 3)
+      board = TicTacToes::Board.new(row_size: 3)
 
       leading_spaces_regexp = /^[[:blank:]]+/
       board_string = <<-END.gsub(leading_spaces_regexp, '')

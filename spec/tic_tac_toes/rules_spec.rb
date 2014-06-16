@@ -1,8 +1,8 @@
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/rules'
+require 'tic_tac_toes/spec_helper'
+require 'tic_tac_toes/rules'
 
-describe TicTacToe::Rules do
-  let(:rules) { TicTacToe::Rules }
+describe TicTacToes::Rules do
+  let(:rules) { TicTacToes::Rules }
   let(:x) { double("human player", token: "x") }
   let(:o) { double("computer player", token: "o") }
   let(:players) { [x, o] }

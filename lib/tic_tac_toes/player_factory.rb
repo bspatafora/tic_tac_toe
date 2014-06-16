@@ -1,9 +1,9 @@
-require 'tic_tac_toe/easy_ai'
-require 'tic_tac_toe/hard_ai'
-require 'tic_tac_toe/medium_ai'
-require 'tic_tac_toe/player'
+require 'tic_tac_toes/easy_ai'
+require 'tic_tac_toes/hard_ai'
+require 'tic_tac_toes/medium_ai'
+require 'tic_tac_toes/player'
 
-module TicTacToe
+module TicTacToes
   class PlayerFactory
     AI_DIFFICULTIES = { easy: EasyAI, medium: MediumAI, hard: HardAI }
 

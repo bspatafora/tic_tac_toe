@@ -1,5 +1,5 @@
 require 'pg'
-require 'tic_tac_toe/history'
+require 'tic_tac_toes/history'
 
 module Database
   class PGWrapper
@@ -24,7 +24,7 @@ module Database
         winner = row[2]
         moves_result = connection.exec("SELECT * FROM moves WHERE game = #{game_id}")
 
-        history = TicTacToe::History.new(self)
+        history = TicTacToes::History.new(self)
 
         moves_result.each_row do |row|
           token, space = row[2], row[3].to_i

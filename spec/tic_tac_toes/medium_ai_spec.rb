@@ -1,10 +1,10 @@
-require 'tic_tac_toe/medium_ai'
-require 'tic_tac_toe/spec_helper'
+require 'tic_tac_toes/medium_ai'
+require 'tic_tac_toes/spec_helper'
 
-describe TicTacToe::MediumAI do
-  let(:ai) { TicTacToe::MediumAI }
-  let(:x) { TicTacToe::Player.new("decider", "x", false, "interface") }
-  let(:o) { TicTacToe::Player.new(ai, "o", true, "interface") }
+describe TicTacToes::MediumAI do
+  let(:ai) { TicTacToes::MediumAI }
+  let(:x) { TicTacToes::Player.new("decider", "x", false, "interface") }
+  let(:o) { TicTacToes::Player.new(ai, "o", true, "interface") }
   let(:players) { [x, o] }
 
   describe '#make_move' do

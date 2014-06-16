@@ -1,12 +1,12 @@
-require 'tic_tac_toe/board'
-require 'tic_tac_toe/io_interface'
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/strings'
+require 'tic_tac_toes/board'
+require 'tic_tac_toes/io_interface'
+require 'tic_tac_toes/spec_helper'
+require 'tic_tac_toes/strings'
 
-describe TicTacToe::IOInterface do
-  let(:strings) { TicTacToe::Strings }
+describe TicTacToes::IOInterface do
+  let(:strings) { TicTacToes::Strings }
   let(:io) { double("io", solicit_input: 0, display: true, display_red: true) }
-  let(:io_interface) { TicTacToe::IOInterface.new(io) }
+  let(:io_interface) { TicTacToes::IOInterface.new(io) }
 
 
   describe '#make_move' do
@@ -98,7 +98,7 @@ describe TicTacToe::IOInterface do
 
   describe '#draw_board' do
     it "displays a board string" do
-      board = TicTacToe::Board.new
+      board = TicTacToes::Board.new
       board_string = strings.board(board)
 
       expect(io).to receive(:display).with(board_string)

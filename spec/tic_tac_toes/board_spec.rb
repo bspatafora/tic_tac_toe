@@ -1,9 +1,9 @@
-require 'tic_tac_toe/spec_helper'
-require 'tic_tac_toe/board'
+require 'tic_tac_toes/spec_helper'
+require 'tic_tac_toes/board'
 
-describe TicTacToe::Board do
+describe TicTacToes::Board do
   describe '#place (and #space)' do
-    let(:board) { TicTacToe::Board.new(row_size: 3) }
+    let(:board) { TicTacToes::Board.new(row_size: 3) }
 
     it "returns nil if the space is not nil" do
       first_token, second_token = :X, :O
@@ -88,7 +88,7 @@ describe TicTacToe::Board do
 
   describe '#full?' do
     it "returns false if any spaces are still nil" do
-      board = TicTacToe::Board.new
+      board = TicTacToes::Board.new
       expect(board.full?).to be false
     end
 

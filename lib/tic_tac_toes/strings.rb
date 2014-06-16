@@ -1,6 +1,6 @@
-require 'tic_tac_toe/rules'
+require 'tic_tac_toes/rules'
 
-module TicTacToe
+module TicTacToes
   module Strings
     smallest_row_size = Rules::ROW_SIZE_RANGE.min
     largest_row_size = Rules::ROW_SIZE_RANGE.max
