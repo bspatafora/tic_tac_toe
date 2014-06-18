@@ -48,7 +48,7 @@ describe TicTacToes::Board do
       board = generate_board(structure)
       first_row = [:X, :X, :X, :X]
 
-      expect(board.rows).to have(4).rows
+      expect(board.rows.size).to eq(4)
       expect(board.rows.first).to eql(first_row)
     end
   end
@@ -63,7 +63,7 @@ describe TicTacToes::Board do
       board = generate_board(structure)
       first_column = [:X, :X, :X, :X]
 
-      expect(board.columns).to have(4).columns
+      expect(board.columns.size).to eq(4)
       expect(board.columns.first).to eql(first_column)
     end
   end
@@ -79,7 +79,7 @@ describe TicTacToes::Board do
       back_diagonal = [:X, :X, :X, :X]
       front_diagonal = [:O, :O, :O, :O]
 
-      expect(board.diagonals).to have(2).diagonals
+      expect(board.diagonals.size).to eq(2)
       expect(board.diagonals.first).to eql(back_diagonal)
       expect(board.diagonals.last).to eql(front_diagonal)
     end

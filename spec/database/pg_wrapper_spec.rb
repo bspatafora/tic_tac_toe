@@ -44,7 +44,7 @@ describe Database::PGWrapper do
       pg_wrapper.record_game_history(history1)
       pg_wrapper.record_game_history(history2)
       histories_from_database = pg_wrapper.read_game_histories
-      expect(histories_from_database).to have(2).histories
+      expect(histories_from_database.size).to eq(2)
     end
   end
 
