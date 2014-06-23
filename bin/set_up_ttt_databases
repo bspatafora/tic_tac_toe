@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'rake'
+
+gem_directory = File.expand_path('..', File.dirname(__FILE__))
+Dir.chdir(gem_directory)
+
+Rake.application.init
+Rake.application.load_rakefile
+Rake.application['set_up_databases'].invoke

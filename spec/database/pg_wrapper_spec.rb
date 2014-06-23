@@ -1,10 +1,10 @@
 require 'database/pg_wrapper'
 require 'pg'
-require 'tic_tac_toes/history'
 require 'tic_tac_toes/spec_helper'
 
 describe Database::PGWrapper do
-  database = "test"
+  database = "tic_tac_toes_test"
+
   let(:pg_wrapper) { Database::PGWrapper.new(database) }
   let(:history1)   { double("history 1",
                      :board_size => 9,
