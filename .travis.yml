@@ -2,6 +2,6 @@ language: ruby
 rvm:
   - "2.1.1"
 script:
-  - set_up_ttt_databases
+  - rake set_up_databases
   - bundle exec rspec
-  - destroy_ttt_databases
+  - rake destroy_databases
