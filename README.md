@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bspatafora/tic_tac_toes.svg?branch=master)](https://travis-ci.org/bspatafora/tic_tac_toes)
+
 # TicTacToes
 
 The game Tic-tac-toe, featuring an unbeatable AI.
