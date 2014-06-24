@@ -1,5 +1,7 @@
-require 'pg'
+require 'bundler/setup'
 require 'rubygems'
+
+require 'pg'
 
 PRODUCTION_DATABASE = 'tic_tac_toes'
 TEST_DATABASE = 'tic_tac_toes_test'
