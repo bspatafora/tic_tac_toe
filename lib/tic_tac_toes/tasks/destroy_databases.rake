@@ -1,6 +1,3 @@
-require 'bundler/setup'
-require 'rubygems'
-
 require 'pg'
 
 desc 'Drop tic_tac_toes databases'
