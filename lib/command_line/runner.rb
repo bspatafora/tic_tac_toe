@@ -19,7 +19,7 @@ module CommandLine
       @io_interface.draw_board(board)
       @io_interface.thinking_notification if players.first.needs_to_think
 
-      move = players.first.make_move(board, players)
+      move = players.first.place_and_return_move(board, players)
       @history.record_move(move)
       players.rotate!
     end

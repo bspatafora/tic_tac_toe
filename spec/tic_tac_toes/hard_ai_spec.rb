@@ -3,13 +3,13 @@ require 'tic_tac_toes/player'
 require 'tic_tac_toes/spec_helper'
 
 describe TicTacToes::HardAI do
-  let(:ai) { TicTacToes::HardAI }
+  let(:hard_ai) { TicTacToes::HardAI }
   let(:x) { TicTacToes::Player.new("decider", "x", false, "interface") }
-  let(:o) { TicTacToes::Player.new(ai, "o", true, "interface") }
+  let(:o) { TicTacToes::Player.new(hard_ai, "o", true, "interface") }
   let(:players) { [o, x] }
 
 
-  describe '#make_move' do
+  describe '#move' do
     it "returns the best move" do
       structure = [x, nil, nil,
                    o,   o, nil,
@@ -17,7 +17,7 @@ describe TicTacToes::HardAI do
       board = generate_board(structure)
       best_move = 5
 
-      expect(ai.make_move(board, players)).to eql(best_move)
+      expect(hard_ai.move(board, players)).to eql(best_move)
     end
   end
 
@@ -30,7 +30,7 @@ describe TicTacToes::HardAI do
       board = generate_board(structure)
       win_score = 1
 
-      expect(ai.minimax(board, :max, players)).to eql(win_score)
+      expect(hard_ai.minimax(board, :max, players)).to eql(win_score)
     end
 
     it "returns the correct score for a pre-loss board" do
@@ -40,7 +40,7 @@ describe TicTacToes::HardAI do
       board = generate_board(structure)
       loss_score = -1
 
-      expect(ai.minimax(board, :max, players)).to eql(loss_score)
+      expect(hard_ai.minimax(board, :max, players)).to eql(loss_score)
     end
 
     it "returns the correct score for a pre-draw board" do
@@ -50,7 +50,7 @@ describe TicTacToes::HardAI do
       board = generate_board(structure)
       draw_score = 0
 
-      expect(ai.minimax(board, :max, players)).to eql(draw_score)
+      expect(hard_ai.minimax(board, :max, players)).to eql(draw_score)
     end
   end
 
@@ -63,7 +63,7 @@ describe TicTacToes::HardAI do
                      x, nil, nil]
       board = generate_board(structure)
 
-      new_board = ai.generate_board(token, space, board)
+      new_board = hard_ai.generate_board(token, space, board)
       expect(new_board.space(space)).to eql(token)
     end
   end
@@ -77,7 +77,7 @@ describe TicTacToes::HardAI do
       board = generate_board(structure)
       win_score = 1
 
-      expect(ai.score(board, players)).to eql(win_score)
+      expect(hard_ai.score(board, players)).to eql(win_score)
     end
 
     it "returns the correct score when no one has won" do
@@ -87,7 +87,7 @@ describe TicTacToes::HardAI do
       board = generate_board(structure)
       draw_score = 0
 
-      expect(ai.score(board, players)).to eql(draw_score)
+      expect(hard_ai.score(board, players)).to eql(draw_score)
     end
 
     it "returns the correct score when the opponent has won" do
@@ -97,7 +97,7 @@ describe TicTacToes::HardAI do
       board = generate_board(structure)
       loss_score = -1
 
-      expect(ai.score(board, players)).to eql(loss_score)
+      expect(hard_ai.score(board, players)).to eql(loss_score)
     end
   end
 end

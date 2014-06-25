@@ -2,7 +2,7 @@ require 'tic_tac_toes/rules'
 
 module TicTacToes
   module HardAI
-    def self.make_move(board, players)
+    def self.move(board, players)
       open_spaces = Hash[board.open_spaces.map { |space| [space, nil] }]
 
       open_spaces.each do |space, score|

@@ -36,7 +36,7 @@ describe CommandLine::Menu do
       allow(io).to receive(:red) { |argument| argument }
     end
 
-    it "returns an array with a human (IO decider) player and a computer (AI decider) player" do
+    it "returns an array with a human (IO move_strategy) player and a computer (AI move_strategy) player" do
       first_token, second_token = "X", "O"
       difficulty = :medium
 
@@ -44,8 +44,8 @@ describe CommandLine::Menu do
       allow(io_interface).to receive(:get_difficulty).and_return(difficulty)
 
       human_player, computer_player = menu.get_players
-      expect(human_player.decider).to be_a TicTacToes::IOInterface
-      expect(computer_player.decider).to eq(TicTacToes::MediumAI)
+      expect(human_player.move_strategy).to be_a TicTacToes::IOInterface
+      expect(computer_player.move_strategy).to eq(TicTacToes::MediumAI)
     end
 
     context 'when given an invalid (non-single-character) token' do
@@ -96,7 +96,7 @@ describe CommandLine::Menu do
         allow(io_interface).to receive(:get_difficulty).and_return(invalid_difficulty, valid_difficulty)
 
         computer_player = menu.get_players.last
-        expect(computer_player.decider).to eq(TicTacToes::MediumAI)
+        expect(computer_player.move_strategy).to eq(TicTacToes::MediumAI)
       end
     end
   end

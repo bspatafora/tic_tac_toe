@@ -9,10 +9,10 @@ describe TicTacToes::IOInterface do
   let(:io_interface) { TicTacToes::IOInterface.new(io) }
 
 
-  describe '#make_move' do
+  describe '#move' do
     it "displays a move solicitation" do
       expect(io_interface).to receive(:move_solicitation)
-      io_interface.make_move("_board", "_players")
+      io_interface.move("board", "players")
     end
 
     context 'when given not-integer-like input' do
@@ -23,13 +23,13 @@ describe TicTacToes::IOInterface do
         allow(io).to receive(:solicit_input).and_return(not_integer_like, integer_like)
 
         expect(io_interface).to receive(:not_an_integer_error).once
-        io_interface.make_move("_board", "_players")
+        io_interface.move("board", "players")
       end
 
       it "only returns a move (converted to integer) once it gets integer-like input" do
         allow(io).to receive(:solicit_input).and_return(not_integer_like, integer_like)
 
-        expect(io_interface.make_move("_board", "_players")).to eq(100)
+        expect(io_interface.move("board", "players")).to eq(100)
       end
     end
   end

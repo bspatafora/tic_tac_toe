@@ -50,8 +50,8 @@ describe CommandLine::Runner do
   describe '#take_turn' do
     move = ["X", 0]
     let(:board) { double("board") }
-    let(:first_player) { double("first player", make_move: move, needs_to_think: true) }
-    let(:second_player) { double("second player", make_move: move, needs_to_think: false) }
+    let(:first_player) { double("first player", place_and_return_move: move, needs_to_think: true) }
+    let(:second_player) { double("second player", place_and_return_move: move, needs_to_think: false) }
     let(:players) { [first_player, second_player] }
 
     it "draws the board" do
@@ -67,8 +67,8 @@ describe CommandLine::Runner do
       runner.take_turn(board, players)
     end
 
-    it "asks the first player to make a move" do
-      expect(first_player).to receive(:make_move)
+    it "asks the first player to move" do
+      expect(first_player).to receive(:place_and_return_move)
       runner.take_turn(board, players)
     end
 
@@ -79,7 +79,7 @@ describe CommandLine::Runner do
 
     it "keeps track of the current player by rotating the players" do
       runner.take_turn(board, players)
-      expect(second_player).to receive(:make_move)
+      expect(second_player).to receive(:place_and_return_move)
       runner.take_turn(board, players)
     end
   end
