@@ -1,5 +1,5 @@
+require 'test_board_generator'
 require 'tic_tac_toes/move_strategies/medium_ai'
-require 'tic_tac_toes/spec_helper'
 
 describe TicTacToes::MoveStrategies::MediumAI do
   let(:medium_ai) { TicTacToes::MoveStrategies::MediumAI }
@@ -9,10 +9,9 @@ describe TicTacToes::MoveStrategies::MediumAI do
 
   describe '#move' do
     it "returns a valid move (based on either EasyAI or HardAI)" do
-      structure = [  o, o,   x,
-                   nil, x, nil,
-                   nil, x, nil]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([  o, o,   x,
+                                           nil, x, nil,
+                                           nil, x, nil])
       valid_moves = [3, 5, 6, 8]
 
       move = medium_ai.move(board, players)

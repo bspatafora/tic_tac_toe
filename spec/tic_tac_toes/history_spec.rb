@@ -1,4 +1,3 @@
-require 'tic_tac_toes/spec_helper'
 require 'tic_tac_toes/history'
 
 describe TicTacToes::History do

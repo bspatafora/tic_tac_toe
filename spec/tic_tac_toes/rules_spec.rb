@@ -1,5 +1,5 @@
+require 'test_board_generator'
 require 'tic_tac_toes/rules'
-require 'tic_tac_toes/spec_helper'
 
 describe TicTacToes::Rules do
   let(:rules) { TicTacToes::Rules }
@@ -60,28 +60,25 @@ describe TicTacToes::Rules do
 
   describe '#game_over?' do
     it "returns false if there is not yet a winner and the board is not full" do
-      structure = [x, x,   o,
-                   o, o, nil,
-                   x, o,   x]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([x, x,   o,
+                                           o, o, nil,
+                                           x, o,   x])
 
       expect(rules.game_over?(board, players)).to be false
     end
 
     it "returns true if any player has won" do
-      structure = [  x, nil, nil,
-                   nil,   x, nil,
-                   nil, nil,   x]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([  x, nil, nil,
+                                           nil,   x, nil,
+                                           nil, nil,   x])
 
       expect(rules.game_over?(board, players)).to be true
     end
 
     it "returns true if the board is full" do
-      structure = [x, x, o,
-                   o, o, x,
-                   x, o, x]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([x, x, o,
+                                           o, o, x,
+                                           x, o, x])
 
       expect(rules.game_over?(board, players)).to be true
     end
@@ -90,20 +87,18 @@ describe TicTacToes::Rules do
 
   describe '#determine_winner' do
     it "returns the winning token when there is a winner" do
-      structure = [  o, nil, nil,
-                   nil,   o, nil,
-                   nil, nil,   o]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([  o, nil, nil,
+                                           nil,   o, nil,
+                                           nil, nil,   o])
       winning_token = "o"
 
       expect(rules.determine_winner(board, players)).to eql(winning_token)
     end
 
     it "returns nil if there is not a winner" do
-      structure = [x, x,   o,
-                   o, o, nil,
-                   x, o,   x]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([x, x,   o,
+                                           o, o, nil,
+                                           x, o,   x])
 
       expect(rules.determine_winner(board, players)).to be_nil
     end
@@ -112,46 +107,41 @@ describe TicTacToes::Rules do
 
   describe '#win?' do
     it "returns false if the given token has not won" do
-      structure = [x, x,  o,
-                   o, o, nil,
-                   x, o,  x]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([x, x,  o,
+                                           o, o, nil,
+                                           x, o,  x])
 
       expect(rules.win?(board, x)).to be false
     end
 
     it "returns true if the given token has achieved a back diagonal win" do
-      structure = [  x, nil, nil,
-                   nil,   x, nil,
-                   nil, nil,   x]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([  x, nil, nil,
+                                           nil,   x, nil,
+                                           nil, nil,   x])
 
       expect(rules.win?(board, x)).to be true
     end
 
     it "returns true if the given token has achieved a front diagonal win" do
-      structure = [nil, nil,   x,
-                   nil,   x, nil,
-                     x, nil, nil]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([nil, nil,   x,
+                                           nil,   x, nil,
+                                             x, nil, nil])
 
       expect(rules.win?(board, x)).to be true
     end
 
     it "returns true if the given token has achieved a horizonatal win" do
-      structure = [nil, nil, nil,
-                     x,   x,   x,
-                   nil, nil, nil]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([nil, nil, nil,
+                                             x,   x,   x,
+                                           nil, nil, nil])
 
       expect(rules.win?(board, x)).to be true
     end
 
     it "returns true if the given token has achieved a vertical win" do
-      structure = [nil, x, nil,
-                   nil, x, nil,
-                   nil, x, nil]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([nil, x, nil,
+                                           nil, x, nil,
+                                           nil, x, nil])
 
       expect(rules.win?(board, x)).to be true
     end

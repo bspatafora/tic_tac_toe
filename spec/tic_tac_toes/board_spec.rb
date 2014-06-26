@@ -1,4 +1,4 @@
-require 'tic_tac_toes/spec_helper'
+require 'test_board_generator'
 require 'tic_tac_toes/board'
 
 describe TicTacToes::Board do
@@ -28,10 +28,9 @@ describe TicTacToes::Board do
 
   describe '#open_spaces' do
     it "returns an array of the board's nil spaces" do
-      structure = [:X, :O, nil,
-                   :O, :O,  :X,
-                   :X, :X, nil]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([:X, :O, nil,
+                                           :O, :O,  :X,
+                                           :X, :X, nil])
       open_spaces = [2, 8]
 
       expect(board.open_spaces).to eql(open_spaces)
@@ -41,11 +40,10 @@ describe TicTacToes::Board do
 
   describe '#rows' do
     it "returns an array of row arrays based on the board's spaces" do
-      structure = [ :X,  :X,  :X,  :X,
-                   nil, nil, nil, nil,
-                   nil, nil, nil, nil,
-                   nil, nil, nil, nil]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([ :X,  :X,  :X,  :X,
+                                           nil, nil, nil, nil,
+                                           nil, nil, nil, nil,
+                                           nil, nil, nil, nil])
       first_row = [:X, :X, :X, :X]
 
       expect(board.rows.size).to eq(4)
@@ -56,11 +54,10 @@ describe TicTacToes::Board do
 
   describe '#columns' do
     it "returns an array of column arrays based on the board's spaces" do
-      structure = [:X, nil, nil, nil,
-                   :X, nil, nil, nil,
-                   :X, nil, nil, nil,
-                   :X, nil, nil, nil]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([:X, nil, nil, nil,
+                                           :X, nil, nil, nil,
+                                           :X, nil, nil, nil,
+                                           :X, nil, nil, nil])
       first_column = [:X, :X, :X, :X]
 
       expect(board.columns.size).to eq(4)
@@ -71,12 +68,11 @@ describe TicTacToes::Board do
 
   describe '#diagonals' do
     it "returns an array of diagonal arrays based on the board's spaces" do
-      structure = [ :X, nil, nil,  :O,
-                   nil,  :X,  :O, nil,
-                   nil,  :O,  :X, nil,
-                    :O, nil, nil,  :X]
-      board = generate_board(structure)
-      back_diagonal = [:X, :X, :X, :X]
+      board = TestBoardGenerator.generate([ :X, nil, nil,  :O,
+                                           nil,  :X,  :O, nil,
+                                           nil,  :O,  :X, nil,
+                                            :O, nil, nil,  :X])
+      back_diagonal  = [:X, :X, :X, :X]
       front_diagonal = [:O, :O, :O, :O]
 
       expect(board.diagonals.size).to eq(2)
@@ -93,10 +89,9 @@ describe TicTacToes::Board do
     end
 
     it "returns true if all spaces are non-nil" do
-      structure = [:X, :O, :X,
-                   :O, :X, :O,
-                   :X, :O, :X]
-      board = generate_board(structure)
+      board = TestBoardGenerator.generate([:X, :O, :X,
+                                           :O, :X, :O,
+                                           :X, :O, :X])
 
       expect(board.full?).to be true
     end
