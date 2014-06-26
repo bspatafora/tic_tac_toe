@@ -1,6 +1,5 @@
 require 'database/pg_wrapper'
 require 'pg'
-require 'tic_tac_toes/spec_helper'
 
 describe Database::PGWrapper do
   database = "tic_tac_toes_test"

@@ -1,13 +1,9 @@
-require 'command_line/io'
-require 'tic_tac_toes/io_interface'
-require 'tic_tac_toes/medium_ai'
+require 'tic_tac_toes/move_strategies/human'
+require 'tic_tac_toes/move_strategies/medium_ai'
 require 'tic_tac_toes/player_factory'
-require 'tic_tac_toes/spec_helper'
 
 describe TicTacToes::PlayerFactory do
-  let(:io) { CommandLine::IO }
-  let(:io_interface) { TicTacToes::IOInterface.new(io) }
-  let(:player_factory) { TicTacToes::PlayerFactory.new(io_interface) }
+  let(:player_factory) { TicTacToes::PlayerFactory.new("io") }
 
 
   describe '#generate_human_player' do
@@ -15,7 +11,7 @@ describe TicTacToes::PlayerFactory do
       token = "X"
 
       human_player = player_factory.generate_human_player(token)
-      expect(human_player.move_strategy).to be_a TicTacToes::IOInterface
+      expect(human_player.move_strategy).to be_a TicTacToes::MoveStrategies::Human
       expect(human_player.token).to eq(token)
     end
   end
@@ -27,7 +23,7 @@ describe TicTacToes::PlayerFactory do
       difficulty = :medium
 
       computer_player = player_factory.generate_computer_player(token, difficulty)
-      expect(computer_player.move_strategy).to eql(TicTacToes::MediumAI)
+      expect(computer_player.move_strategy).to eq(TicTacToes::MoveStrategies::MediumAI)
       expect(computer_player.token).to eq(token)
     end
   end

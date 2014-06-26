@@ -2,8 +2,8 @@ require 'tic_tac_toes/spec_helper'
 require 'tic_tac_toes/history'
 
 describe TicTacToes::History do
-  let(:database_interface) { double("database interface", :record_game_history => true) }
-  let(:history) { TicTacToes::History.new(database_interface) }
+  let(:database_wrapper)  { double("database wrapper", :record_game_history => true) }
+  let(:history)           { TicTacToes::History.new(database_wrapper) }
 
   describe '#record_board_size' do
     it "records the passed board size" do
@@ -34,7 +34,7 @@ describe TicTacToes::History do
 
   describe '#persist' do
     it "sends the history instance to its database interface for storage" do
-      expect(database_interface).to receive(:record_game_history).with history
+      expect(database_wrapper).to receive(:record_game_history).with history
       history.persist
     end
   end

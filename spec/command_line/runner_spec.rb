@@ -1,10 +1,9 @@
 require 'command_line/runner'
 require 'tic_tac_toes/board'
 require 'tic_tac_toes/history'
-require 'tic_tac_toes/spec_helper'
 
 describe CommandLine::Runner do
-  let(:io_interface)        { double("io interface",
+  let(:io)                  { double("io",
                               :draw_board => true,
                               :thinking_notification => true,
                               :game_over_notification => true) }
@@ -15,10 +14,10 @@ describe CommandLine::Runner do
   let(:rules)               { double("rules",
                               :game_over? => true,
                               :determine_winner => "X") }
-  let(:database_interface)  { double("database interface", :record_game_history => true) }
-  let(:history)             { TicTacToes::History.new(database_interface) }
+  let(:database_wrapper)    { double("database wrapper", :record_game_history => true) }
+  let(:history)             { TicTacToes::History.new(database_wrapper) }
 
-  let(:runner)              { CommandLine::Runner.new(io_interface, menu, rules, history) }
+  let(:runner)              { CommandLine::Runner.new(io, menu, rules, history) }
 
 
   describe '#run' do
@@ -55,15 +54,15 @@ describe CommandLine::Runner do
     let(:players) { [first_player, second_player] }
 
     it "draws the board" do
-      expect(io_interface).to receive(:draw_board)
+      expect(io).to receive(:draw_board)
       runner.take_turn(board, players)
     end
 
     it "displays a thinking notification if the current player needs to think" do
-      expect(io_interface).to receive(:thinking_notification)
+      expect(io).to receive(:thinking_notification)
       runner.take_turn(board, players)
 
-      expect(io_interface).not_to receive(:thinking_notification)
+      expect(io).not_to receive(:thinking_notification)
       runner.take_turn(board, players)
     end
 
@@ -90,7 +89,7 @@ describe CommandLine::Runner do
     let(:players) { double("players") }
 
     it "draws the board" do
-      expect(io_interface).to receive(:draw_board)
+      expect(io).to receive(:draw_board)
       runner.end_game(board, players)
     end
 
@@ -102,7 +101,7 @@ describe CommandLine::Runner do
     it "displays the winner" do
       allow(rules).to receive(:determine_winner) { :winner }
 
-      expect(io_interface).to receive(:game_over_notification).with(:winner)
+      expect(io).to receive(:game_over_notification).with(:winner)
       runner.end_game(board, players)
     end
 

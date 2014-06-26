@@ -1,6 +1,5 @@
 require 'tic_tac_toes/board'
 require 'tic_tac_toes/rules'
-require 'tic_tac_toes/spec_helper'
 require 'tic_tac_toes/strings'
 
 describe TicTacToes::Strings do

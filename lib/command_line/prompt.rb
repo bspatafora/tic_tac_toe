@@ -1,5 +1,5 @@
 module CommandLine
-  module IO
+  module Prompt
     def self.solicit_input
       gets.chomp
     end

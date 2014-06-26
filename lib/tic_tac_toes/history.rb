@@ -2,8 +2,8 @@ module TicTacToes
   class History
     attr_reader :board_size, :moves, :winner
 
-    def initialize(database_interface)
-      @database_interface = database_interface
+    def initialize(database_wrapper)
+      @database_wrapper = database_wrapper
     end
 
     def record_board_size(size)
@@ -21,7 +21,7 @@ module TicTacToes
     end
 
     def persist
-      @database_interface.record_game_history(self)
+      @database_wrapper.record_game_history(self)
     end
   end
 end

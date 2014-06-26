@@ -1,3 +1,4 @@
+require 'command_line/prompt'
 require 'tic_tac_toes/rules'
 
 module TicTacToes
@@ -71,9 +72,9 @@ module TicTacToes
 
     def self.get_colored_token(player)
       if player.needs_to_think
-        return CommandLine::IO.red(player.token)
+        return CommandLine::Prompt.red(player.token)
       else
-        return CommandLine::IO.blue(player.token)
+        return CommandLine::Prompt.blue(player.token)
       end
     end
 

@@ -1,5 +1,5 @@
-require 'tic_tac_toes/spec_helper'
 require 'tic_tac_toes/rules'
+require 'tic_tac_toes/spec_helper'
 
 describe TicTacToes::Rules do
   let(:rules) { TicTacToes::Rules }
