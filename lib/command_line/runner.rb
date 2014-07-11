@@ -1,36 +1,36 @@
 module CommandLine
   class Runner
-    def initialize(io, menu, rules, history)
+    def initialize(io, menu, game_state_factory, rules)
       @io = io
       @menu = menu
+      @game_state_factory = game_state_factory
       @rules = rules
-      @history = history
     end
 
     def run
       board, players = @menu.get_board, @menu.get_players
-      @history.record_board_size(board.size)
+      game_state = @game_state_factory.generate_game_state(board, players)
 
-      take_turn(board, players) until @rules.game_over?(board, players)
-      end_game(board, players)
+      take_turn(game_state) until @rules.game_over?(game_state.board, game_state.players)
+      end_game(game_state)
     end
 
-    def take_turn(board, players)
-      @io.draw_board(board)
-      @io.thinking_notification if players.first.needs_to_think
+    private
 
-      move = players.first.place_and_return_move(board, players)
-      @history.record_move(move)
-      players.rotate!
+    def take_turn(game_state)
+      @io.draw_board(game_state.board)
+      @io.thinking_notification if game_state.current_player.needs_to_think
+
+      move = game_state.current_player.place_and_return_move(game_state.board, game_state.players)
+      game_state.turn_over(move)
     end
 
-    def end_game(board, players)
-      @io.draw_board(board)
+    def end_game(game_state)
+      @io.draw_board(game_state.board)
 
-      winner = @rules.determine_winner(board, players)
+      winner = @rules.determine_winner(game_state.board, game_state.players)
+      game_state.game_over(winner)
 
-      @history.record_winner(winner)
-      @history.persist
       @io.game_over_notification(winner)
     end
   end

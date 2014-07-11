@@ -1,16 +1,15 @@
-require 'tic_tac_toes/board'
-require 'tic_tac_toes/player_factory'
 require 'tic_tac_toes/rules'
 
 module CommandLine
   class Menu
-    def initialize(io)
+    def initialize(io, board_factory, player_factory)
       @io = io
-      @player_factory = TicTacToes::PlayerFactory.new(io)
+      @board_factory = board_factory
+      @player_factory = player_factory
     end
 
     def get_board
-      TicTacToes::Board.new(row_size: get_row_size)
+      @board_factory.generate_board(get_row_size)
     end
 
     def get_players

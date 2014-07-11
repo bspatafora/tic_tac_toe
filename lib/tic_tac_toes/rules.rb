@@ -16,7 +16,7 @@ module TicTacToes
     end
 
     def self.difficulty_valid?(difficulty)
-      PlayerFactory::AI_DIFFICULTIES.include? difficulty
+      PlayerFactory::AIS.include? difficulty
     end
 
     def self.game_over?(board, players)
