@@ -1,6 +1,6 @@
 module TicTacToes
   class Board
-    attr_reader :row_size, :size
+    attr_reader :row_size, :size, :spaces
 
     def initialize(row_size: 3)
       @row_size = row_size
