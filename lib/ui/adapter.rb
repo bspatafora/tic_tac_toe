@@ -3,16 +3,6 @@ require 'tic_tac_toes/game_state'
 require 'tic_tac_toes/player_factory'
 
 module UI
-  class NullHistory
-    def record_board_size(size)
-      nil
-    end
-
-    def record_move(move)
-      nil
-    end
-  end
-
   module Adapter
     def self.new_board_structure
       board = TicTacToes::Board.new
@@ -79,6 +69,16 @@ module UI
       end
 
       board
+    end
+  end
+
+  class NullHistory
+    def record_board_size(size)
+      nil
+    end
+
+    def record_move(move)
+      nil
     end
   end
 end
