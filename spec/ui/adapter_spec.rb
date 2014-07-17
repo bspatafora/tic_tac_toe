@@ -11,6 +11,16 @@ describe UI::Adapter do
     end
   end
 
+  describe '#move_made' do
+    it 'takes a move (as string) and a board structure and returns an updated board structure' do
+      board_structure = ["X", nil, nil, nil, "O", nil, nil, nil, nil]
+      move = "2"
+      updated_board_structure = ["X", "O", "X", nil, "O", nil, nil, nil, nil]
+
+      expect(UI::Adapter.move_made(board_structure, move)).to eq(updated_board_structure)
+    end
+  end
+
   describe '#game_state_from_board_structure' do
     it 'returns a game state object based on a board structure' do
       board_structure = [nil, nil, nil, nil, "X", nil, nil, nil, nil]

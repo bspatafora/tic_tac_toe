@@ -19,6 +19,20 @@ module UI
       board.spaces
     end
 
+    def self.move_made(board_structure, move)
+      move = move.to_i
+      game_state = UI::Adapter.game_state_from_board_structure(board_structure)
+
+      human_player = game_state.players.first
+      game_state.board.place(human_player, move)
+      game_state.turn_over(move)
+
+      computer_player = game_state.players.first
+      computer_player.place_and_return_move(game_state.board, game_state.players)
+
+      UI::Adapter.game_state_to_board_structure(game_state)
+    end
+
     def self.game_state_from_board_structure(board_structure)
       player_factory = TicTacToes::PlayerFactory.new('unused_io')
       human_player = player_factory.generate_human_player('X')
