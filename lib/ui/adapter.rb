@@ -1,6 +1,7 @@
 require 'tic_tac_toes/board'
 require 'tic_tac_toes/game_state'
 require 'tic_tac_toes/player_factory'
+require 'tic_tac_toes/rules'
 
 module UI
   module Adapter
@@ -9,18 +10,27 @@ module UI
       board.spaces
     end
 
-    def self.move_made(board_structure, move)
+    def self.move_made(board_structure, move, listener)
       move = move.to_i
-      game_state = UI::Adapter.game_state_from_board_structure(board_structure)
+      game_state = game_state_from_board_structure(board_structure)
 
       human_player = game_state.players.first
       game_state.board.place(human_player, move)
+
+      if TicTacToes::Rules.game_over?(game_state.board, game_state.players)
+        return listener.game_over(game_state_to_board_structure(game_state), "Game over")
+      end
+
       game_state.turn_over(move)
 
       computer_player = game_state.players.first
       computer_player.place_and_return_move(game_state.board, game_state.players)
 
-      UI::Adapter.game_state_to_board_structure(game_state)
+      if TicTacToes::Rules.game_over?(game_state.board, game_state.players)
+        return listener.game_over(game_state_to_board_structure(game_state), "Game over")
+      end
+
+      listener.valid(game_state_to_board_structure(game_state))
     end
 
     def self.game_state_from_board_structure(board_structure)
