@@ -18,6 +18,32 @@ describe TicTacToes::MoveStrategies::HardAI do
 
       expect(hard_ai.move(board, players)).to eql(best_move)
     end
+
+    context "when playing on a 3x3 board" do
+      it "returns 4 when the opponent’s first move was a corner" do
+        board = TestBoardGenerator.generate([nil, nil, nil,
+                                             nil, nil, nil,
+                                             nil, nil,   x])
+
+        expect(hard_ai.move(board, players)).to eq(4)
+      end
+      
+      it "returns 4 when the opponent’s first move was an edge" do
+        board = TestBoardGenerator.generate([nil, nil, nil,
+                                             nil, nil,   x,
+                                             nil, nil, nil])
+
+        expect(hard_ai.move(board, players)).to eq(4)
+      end
+
+      it "returns 0 when the opponent’s first move was the center" do
+        board = TestBoardGenerator.generate([nil, nil, nil,
+                                             nil,   x, nil,
+                                             nil, nil, nil])
+
+        expect(hard_ai.move(board, players)).to eq(0)
+      end
+    end
   end
 
 

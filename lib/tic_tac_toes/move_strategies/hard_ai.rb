@@ -4,6 +4,8 @@ module TicTacToes
   module MoveStrategies
     module HardAI
       def self.move(board, players)
+        return second_move(board) if nine_board_second_move?(board)
+
         open_spaces = Hash[board.open_spaces.map { |space| [space, nil] }]
 
         open_spaces.each do |space, score|
@@ -14,6 +16,8 @@ module TicTacToes
         best_score = open_spaces.values.max
         open_spaces.each { |space, score| return space if score == best_score }
       end
+
+      private
 
       def self.minimax(board, current_player, players)
         return score(board, players) if Rules.game_over?(board, players)
@@ -53,6 +57,30 @@ module TicTacToes
         else
           0
         end
+      end
+
+      def self.nine_board_second_move?(board)
+        board.size == 9 && board.open_spaces.count == 8
+      end
+
+      def self.second_move(board)
+        if nine_board_corner_occupied(board) || nine_board_side_occupied(board)
+          4
+        elsif nine_board_center_occupied(board)
+          0
+        end
+      end
+
+      def self.nine_board_corner_occupied(board)
+        board.space(0) || board.space(2) || board.space(6) || board.space(8)
+      end
+
+      def self.nine_board_side_occupied(board)
+        board.space(1) || board.space(3) || board.space(5) || board.space(7)
+      end
+
+      def self.nine_board_center_occupied(board)
+        board.space(4) ? true : false
       end
     end
   end
