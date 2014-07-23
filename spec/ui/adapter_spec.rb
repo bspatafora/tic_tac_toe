@@ -11,7 +11,7 @@ describe UI::Adapter do
     end
   end
 
-  describe '#move_made' do
+  describe '#make_move' do
     context 'when the game is still in progress' do
       it 'sends its listener a `valid` message with an updated board structure' do
         board_structure = ["X", nil, nil, nil, "O", nil, nil, nil, nil]
@@ -20,8 +20,8 @@ describe UI::Adapter do
 
         updated_board_structure = ["X", "O", "X", nil, "O", nil, nil, nil, nil]
 
-        expect(listener).to receive(:valid).with(updated_board_structure)
-        UI::Adapter.move_made(board_structure, move, listener)
+        expect(listener).to receive(:move_was_valid).with(updated_board_structure)
+        UI::Adapter.make_move(board_structure, move, listener)
       end
     end
 
@@ -34,8 +34,8 @@ describe UI::Adapter do
         updated_board_structure = ["X", "X", "X", nil, nil, nil, nil, nil, nil]
         game_over_message = "Game over"
 
-        expect(listener).to receive(:game_over).with(updated_board_structure, game_over_message)
-        UI::Adapter.move_made(board_structure, move, listener)
+        expect(listener).to receive(:game_is_over).with(updated_board_structure, game_over_message)
+        UI::Adapter.make_move(board_structure, move, listener)
       end
     end
   end
