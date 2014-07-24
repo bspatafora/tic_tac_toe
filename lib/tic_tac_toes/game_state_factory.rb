@@ -1,5 +1,6 @@
 require 'tic_tac_toes/game_state'
 require 'tic_tac_toes/history'
+require 'tic_tac_toes/rules'
 
 module TicTacToes
   class GameStateFactory

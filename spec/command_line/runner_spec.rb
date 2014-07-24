@@ -11,15 +11,14 @@ describe CommandLine::Runner do
                                        get_players: true) }
     let(:game_state)          { double(board: 'board',
                                        players: 'players',
-                                       game_over: true) }
-    let(:game_state_factory)  { double(generate_game_state: game_state) }
-    let(:rules)               { double(game_over?: true,
+                                       game_over: true,
+                                       game_over?: true,
                                        determine_winner: true) }
+    let(:game_state_factory)  { double(generate_game_state: game_state) }
 
     let(:runner)              { CommandLine::Runner.new(io,
                                                         menu,
-                                                        game_state_factory,
-                                                        rules) }
+                                                        game_state_factory) }
 
     it 'gets an initial game state' do
       expect(game_state_factory).to receive(:generate_game_state)
@@ -27,7 +26,7 @@ describe CommandLine::Runner do
     end
 
     it 'takes turns until the game is over' do
-      allow(rules).to receive(:game_over?).and_return(false, true)
+      allow(game_state).to receive(:game_over?).and_return(false, true)
 
       expect(runner).to receive(:take_turn).once
       runner.run

@@ -1,17 +1,16 @@
 module CommandLine
   class Runner
-    def initialize(io, menu, game_state_factory, rules)
+    def initialize(io, menu, game_state_factory)
       @io = io
       @menu = menu
       @game_state_factory = game_state_factory
-      @rules = rules
     end
 
     def run
       board, players = @menu.get_board, @menu.get_players
       game_state = @game_state_factory.generate_game_state(board, players)
 
-      take_turn(game_state) until @rules.game_over?(game_state.board, game_state.players)
+      take_turn(game_state) until game_state.game_over?
       end_game(game_state)
     end
 
@@ -28,7 +27,7 @@ module CommandLine
     def end_game(game_state)
       @io.draw_board(game_state.board)
 
-      winner = @rules.determine_winner(game_state.board, game_state.players)
+      winner = game_state.determine_winner
       game_state.game_over(winner)
 
       @io.game_over_notification(winner)

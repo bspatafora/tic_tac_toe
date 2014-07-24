@@ -9,8 +9,6 @@ require 'tic_tac_toes/board_factory'
 require 'tic_tac_toes/player_factory'
 require 'command_line/menu'
 
-require 'tic_tac_toes/rules'
-
 require 'database/pg_wrapper'
 require 'tic_tac_toes/history'
 require 'tic_tac_toes/game_state_factory'
@@ -30,6 +28,4 @@ database_wrapper = Database::PGWrapper.new(database)
 history = TicTacToes::History.new(database_wrapper)
 game_state_factory = TicTacToes::GameStateFactory.new(history)
 
-rules = TicTacToes::Rules
-
-CommandLine::Runner.new(io, menu, game_state_factory, rules).run
+CommandLine::Runner.new(io, menu, game_state_factory).run

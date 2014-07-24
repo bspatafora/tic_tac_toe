@@ -1,4 +1,5 @@
 require 'tic_tac_toes/game_state'
+require 'test_board_generator'
 
 describe TicTacToes::GameState do
   describe '@initialize' do
@@ -63,4 +64,66 @@ describe TicTacToes::GameState do
       game_state.game_over(winner)
     end
   end
+
+  describe '#game_over?' do
+    let(:x) { double("human player", token: "x") }
+    let(:o) { double("computer player", token: "o") }
+    let(:players) { [x, o] }
+
+    let(:history) { double(record_board_size: true) }
+
+    it "returns false if there is not yet a winner and the board is not full" do
+      board = TestBoardGenerator.generate([x, x,   o,
+                                           o, o, nil,
+                                           x, o,   x])
+      game_state = TicTacToes::GameState.new(board, players, history)
+      expect(game_state.game_over?).to be false
+    end
+
+    it "returns true if any player has won" do
+      board = TestBoardGenerator.generate([  x, nil, nil,
+                                           nil,   x, nil,
+                                           nil, nil,   x])
+
+      game_state = TicTacToes::GameState.new(board, players, history)
+
+      expect(game_state.game_over?).to be true
+    end
+
+    it "returns true if the board is full" do
+      board = TestBoardGenerator.generate([x, x, o,
+                                           o, o, x,
+                                           x, o, x])
+
+      game_state = TicTacToes::GameState.new(board, players, history)
+      expect(game_state.game_over?).to be true
+    end
+  end
+
+  describe '#determine_winner' do
+    let(:x) { double("human player", token: "x") }
+    let(:o) { double("computer player", token: "o") }
+    let(:players) { [x, o] }
+
+    let(:history) { double(record_board_size: true) }
+    it "returns the winning token when there is a winner" do
+      board = TestBoardGenerator.generate([  o, nil, nil,
+                                           nil,   o, nil,
+                                           nil, nil,   o])
+      winning_token = "o"
+      game_state = TicTacToes::GameState.new(board, players, history)
+
+      expect(game_state.determine_winner).to eql(winning_token)
+    end
+
+    it "returns nil if there is not a winner" do
+      board = TestBoardGenerator.generate([x, x,   o,
+                                           o, o, nil,
+                                           x, o,   x])
+      game_state = TicTacToes::GameState.new(board, players, history)
+
+      expect(game_state.determine_winner).to be_nil
+    end
+  end
+
 end
