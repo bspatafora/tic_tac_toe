@@ -22,6 +22,10 @@ module TicTacToes
         @players.first
       end
 
+      def next_player
+        @players[1]
+      end
+
       def turn_over(move)
         @history.record_move(move)
         @players.rotate!

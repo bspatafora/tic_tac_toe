@@ -13,7 +13,7 @@ module TicTacToes
           open_spaces = Hash[board.open_spaces.map { |space| [space, nil] }]
 
           open_spaces.each do |space, score|
-            score = minimax(generate_board(game_state.current_player, space, board), :min, game_state.players)
+            score = minimax(generate_game_state(space, game_state), :min)
             open_spaces[space] = score
           end
 
@@ -23,43 +23,41 @@ module TicTacToes
 
         private
 
-        def self.minimax(board, current_player, players)
-          return score(board, players) if Rules.game_over?(board, players)
+        def self.minimax(game_state, current_player)
+          return score(game_state) if game_state.game_over?
 
           if current_player == :max
             best_score = -1
-            board.open_spaces.each do |space|
-              score = minimax(generate_board(players.first, space, board), :min, players)
+            game_state.board.open_spaces.each do |space|
+              score = minimax(generate_game_state(space, game_state), :min)
               best_score = [best_score, score].max
             end
             best_score
-
           elsif current_player == :min
             best_score = 1
-            board.open_spaces.each do |space|
-              score = minimax(generate_board(players.last, space, board), :max, players)
+            game_state.board.open_spaces.each do |space|
+              score = minimax(generate_game_state(space, game_state), :max)
               best_score = [best_score, score].min
             end
             best_score
           end
         end
 
-        def self.generate_board(player, space, board)
-          new_board = Marshal.load(Marshal.dump(board))
-          new_board.place(player, space)
-          new_board
+        def self.generate_game_state(space, game_state)
+          new_game_state = Marshal.load(Marshal.dump(game_state))
+          new_game_state.place_move(space)
+          new_game_state.turn_over([])
+          new_game_state
         end
 
-        def self.score(board, players)
-          own_token, opponent_token = players.first.token, players.last.token
-
-          case Rules.determine_winner(board, players)
-          when own_token
-            1
-          when opponent_token
-            -1
-          else
+        def self.score(game_state)
+          winner = game_state.determine_winner
+          if winner.nil?
             0
+          elsif winner.move_strategy == self
+            1
+          else
+            -1
           end
         end
 

@@ -8,11 +8,10 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
   let(:x) { TicTacToes::Core::Player.new("human", "x", false, "io") }
   let(:o) { TicTacToes::Core::Player.new(hard_ai, "o", true, "io") }
   let(:players) { [o, x] }
-  let(:history) { double(record_board_size: true) }
-
+  let(:history) { TicTacToes::UI::NullHistory.new }
 
   describe '#move' do
-    it "returns the best move" do
+    it 'returns the best move' do
       board = TicTacToes::TestBoardGenerator.generate([x, nil, nil,
                                                        o,   o, nil,
                                                        x, nil,   x])
@@ -22,7 +21,7 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
       expect(hard_ai.move(game_state)).to eql(best_move)
     end
 
-    context "when playing on a 3x3 board" do
+    context 'when playing on a 3x3 board' do
       it 'returns 0 when making the first move' do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil, nil, nil,
@@ -32,7 +31,7 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
         expect(hard_ai.move(game_state)).to eq(0)
       end
 
-      it "returns 4 when the opponent’s first move was a corner" do
+      it 'returns 4 when the opponent’s first move was a corner' do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil, nil, nil,
                                                          nil, nil,   x])
@@ -41,7 +40,7 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
         expect(hard_ai.move(game_state)).to eq(4)
       end
       
-      it "returns 4 when the opponent’s first move was an edge" do
+      it 'returns 4 when the opponent’s first move was an edge' do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil, nil,   x,
                                                          nil, nil, nil])
@@ -50,7 +49,7 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
         expect(hard_ai.move(game_state)).to eq(4)
       end
 
-      it "returns 0 when the opponent’s first move was the center" do
+      it 'returns 0 when the opponent’s first move was the center' do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil,   x, nil,
                                                          nil, nil, nil])
@@ -63,74 +62,81 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
 
 
   describe '#minimax' do
-    it "returns the correct score for a pre-win board" do
+    it 'returns the correct score for a pre-win board' do
       board = TicTacToes::TestBoardGenerator.generate([x, nil, nil,
                                                        o,   o, nil,
                                                        x, nil,   x])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
       win_score = 1
 
-      expect(hard_ai.minimax(board, :max, players)).to eql(win_score)
+      expect(hard_ai.minimax(game_state, :max)).to eql(win_score)
     end
 
-    it "returns the correct score for a pre-loss board" do
+    it 'returns the correct score for a pre-loss board' do
       board = TicTacToes::TestBoardGenerator.generate([  o,   o,   x,
                                                        nil, nil, nil,
                                                          x, nil,   x])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
       loss_score = -1
 
-      expect(hard_ai.minimax(board, :max, players)).to eql(loss_score)
+      expect(hard_ai.minimax(game_state, :max)).to eql(loss_score)
     end
 
-    it "returns the correct score for a pre-draw board" do
+    it 'returns the correct score for a pre-draw board' do
       board = TicTacToes::TestBoardGenerator.generate([x,   x, o,
                                                        o, nil, x,
                                                        x,   o, x])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
       draw_score = 0
 
-      expect(hard_ai.minimax(board, :max, players)).to eql(draw_score)
+      expect(hard_ai.minimax(game_state, :max)).to eql(draw_score)
     end
   end
 
 
-  describe '#generate_board' do
-    it "returns a board based on a token, a space, and an existing board" do
-      token, space = o, 3
+  describe '#generate_game_state' do
+    it 'returns a game state based on a space and an existing game state' do
+      space, token = 3, 'o'
       board = TicTacToes::TestBoardGenerator.generate([  x, nil, nil,
                                                        nil,   o, nil,
                                                          x, nil, nil])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
 
-      new_board = hard_ai.generate_board(token, space, board)
-      expect(new_board.space(space)).to eql(token)
+      new_game_state = hard_ai.generate_game_state(space, game_state)
+      expect(new_game_state.board.space(space).token).to eq(token)
     end
   end
 
 
   describe '#score' do
-    it "returns the correct score when HardAI has won" do
+    it 'returns the correct score when HardAI has won' do
       board = TicTacToes::TestBoardGenerator.generate([  o, nil, nil,
                                                        nil,   o, nil,
                                                        nil, nil,   o])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
       win_score = 1
 
-      expect(hard_ai.score(board, players)).to eql(win_score)
+      expect(hard_ai.score(game_state)).to eq(win_score)
     end
 
-    it "returns the correct score when no one has won" do
+    it 'returns the correct score when no one has won' do
       board = TicTacToes::TestBoardGenerator.generate([o, o, x,
                                                        x, x, o,
                                                        o, x, o])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
       draw_score = 0
 
-      expect(hard_ai.score(board, players)).to eql(draw_score)
+      expect(hard_ai.score(game_state)).to eql(draw_score)
     end
 
-    it "returns the correct score when the opponent has won" do
+    it 'returns the correct score when the opponent has won' do
       board = TicTacToes::TestBoardGenerator.generate([  x, nil, nil,
                                                        nil,   x, nil,
                                                        nil, nil,   x])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
       loss_score = -1
 
-      expect(hard_ai.score(board, players)).to eql(loss_score)
+      expect(hard_ai.score(game_state)).to eql(loss_score)
     end
   end
 end

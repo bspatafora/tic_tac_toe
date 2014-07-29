@@ -23,11 +23,11 @@ describe TicTacToes::Core::History do
   end
 
   describe '#record_winner' do
-    it "records the passed winner" do
-      token = "O"
+    it "records the token of the passed winner" do
+      winner = double(token: 'O')
 
-      history.record_winner(token)
-      expect(history.winner).to eq(token)
+      history.record_winner(winner)
+      expect(history.winner).to eq(winner.token)
     end
   end
 

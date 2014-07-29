@@ -5,8 +5,7 @@ require 'tic_tac_toes/ui/adapter'
 
 describe TicTacToes::UI::Adapter do
   describe '#make_move' do
-    let(:history)    { double(record_board_size: true,
-                              record_move: true) }
+    let(:history)    { TicTacToes::UI::NullHistory.new }
 
     player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
     let(:x)          { player_factory.generate_human_player('x') }

@@ -26,13 +26,13 @@ module TicTacToes
       private
 
       def self.tell_listener_game_is_over(game_state, listener)
-        winning_token = game_state.determine_winner
+        winning_player = game_state.determine_winner
 
-        case winning_token
+        case winning_player
         when nil
           listener.game_ended_in_draw(game_state)
         else 
-          listener.game_ended_in_winner(game_state, winning_token)
+          listener.game_ended_in_winner(game_state, winning_player.token)
         end
       end
     end

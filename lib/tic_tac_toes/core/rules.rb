@@ -32,7 +32,7 @@ module TicTacToes
 
         players.each do |player|
           player_has_won = win?(board, player)
-          winner = player.token if player_has_won
+          winner = player if player_has_won
         end
 
         winner

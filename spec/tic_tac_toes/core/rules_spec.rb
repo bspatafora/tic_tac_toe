@@ -86,13 +86,14 @@ describe TicTacToes::Core::Rules do
 
 
   describe '#determine_winner' do
-    it "returns the winning token when there is a winner" do
+    it "returns the winning player when there is a winner" do
       board = TicTacToes::TestBoardGenerator.generate([  o, nil, nil,
                                                        nil,   o, nil,
                                                        nil, nil,   o])
       winning_token = "o"
 
-      expect(rules.determine_winner(board, players)).to eql(winning_token)
+      winning_player = rules.determine_winner(board, players)
+      expect(winning_player.token).to eql(winning_token)
     end
 
     it "returns nil if there is not a winner" do

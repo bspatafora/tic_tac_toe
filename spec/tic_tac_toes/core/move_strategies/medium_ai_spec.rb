@@ -15,7 +15,7 @@ describe TicTacToes::Core::MoveStrategies::MediumAI do
                                                        nil,  x, nil,
                                                        nil,  x, nil])
 
-      history = double(record_board_size: true)
+      history = TicTacToes::UI::NullHistory.new
       game_state = TicTacToes::Core::GameState.new(board, players, history)
       valid_moves = [3, 5, 6, 8]
 

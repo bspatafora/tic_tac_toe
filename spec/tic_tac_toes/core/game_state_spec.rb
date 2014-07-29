@@ -59,6 +59,17 @@ describe TicTacToes::Core::GameState do
     end
   end
 
+  describe '#next_player' do
+    it 'returns the second item of its players array' do
+      history = double(record_board_size: true)
+      players = ['first_player', 'second_player']
+      game_state = TicTacToes::Core::GameState.new('board', players, history)
+
+      next_player = game_state.next_player
+      expect(next_player).to eq('second_player')
+    end
+  end
+
   describe '#turn_over' do
     it 'records the last move' do
       move = double
@@ -82,21 +93,21 @@ describe TicTacToes::Core::GameState do
 
   describe '#game_over' do
     it 'records the winner' do
-      winner = double
+      winning_player = double
       history = double(record_board_size: true, persist: true)
       game_state = TicTacToes::Core::GameState.new('board', 'players', history)
 
-      expect(history).to receive(:record_winner).with(winner)
-      game_state.game_over(winner)
+      expect(history).to receive(:record_winner).with(winning_player)
+      game_state.game_over(winning_player)
     end
 
     it 'persists its history' do
-      winner = double
+      winning_player = double(token: 'x')
       history = double(record_board_size: true, record_winner: true)
       game_state = TicTacToes::Core::GameState.new('board', 'players', history)
 
       expect(history).to receive(:persist)
-      game_state.game_over(winner)
+      game_state.game_over(winning_player)
     end
   end
 
@@ -149,7 +160,8 @@ describe TicTacToes::Core::GameState do
       winning_token = "o"
       game_state = TicTacToes::Core::GameState.new(board, players, history)
 
-      expect(game_state.determine_winner).to eql(winning_token)
+      winning_player = game_state.determine_winner
+      expect(winning_player.token).to eq(winning_token)
     end
 
     it "returns nil if there is not a winner" do

@@ -18,6 +18,7 @@ module TicTacToes
 
       def record_winner(winner)
         winner = "Draw" if winner.nil?
+        winner = winner.token unless winner.is_a? String
         @winner = winner
       end
 
