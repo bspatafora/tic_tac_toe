@@ -10,10 +10,10 @@ module TicTacToes
         @io = io
       end
 
-      def place_and_return_move(board, players)
+      def place_and_return_move(game_state)
         loop do
-          space = @move_strategy.move(board, players)
-          break [@token, space] if board.place(self, space)
+          space = @move_strategy.move(game_state)
+          break [@token, space] if game_state.place_move(space)
           @io.invalid_move_error
         end
       end

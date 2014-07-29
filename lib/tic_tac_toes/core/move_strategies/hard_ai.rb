@@ -4,14 +4,16 @@ module TicTacToes
   module Core
     module MoveStrategies
       module HardAI
-        def self.move(board, players)
+        def self.move(game_state)
+          board = game_state.board
+
           return 0 if nine_board_first_move?(board)
           return second_move(board) if nine_board_second_move?(board)
 
           open_spaces = Hash[board.open_spaces.map { |space| [space, nil] }]
 
           open_spaces.each do |space, score|
-            score = minimax(generate_board(players.first, space, board), :min, players)
+            score = minimax(generate_board(game_state.current_player, space, board), :min, game_state.players)
             open_spaces[space] = score
           end
 

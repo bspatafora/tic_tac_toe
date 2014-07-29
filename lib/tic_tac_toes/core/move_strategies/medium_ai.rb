@@ -5,9 +5,9 @@ module TicTacToes
   module Core
     module MoveStrategies
       module MediumAI
-        def self.move(board, players)
+        def self.move(game_state)
           move_strategy = [EasyAI, HardAI, HardAI].sample
-          move_strategy.move(board, players)
+          move_strategy.move(game_state)
         end
       end
     end

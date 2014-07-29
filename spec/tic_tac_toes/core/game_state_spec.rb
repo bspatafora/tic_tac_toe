@@ -13,6 +13,41 @@ describe TicTacToes::Core::GameState do
     end
   end
 
+  describe '#place_move' do
+    let(:x) { double("human player", token: "x") }
+    let(:o) { double("computer player", token: "o") }
+    let(:players) { [x, o] }
+
+    let(:history) { double(record_board_size: true) }
+
+    it 'returns nil if the board’s space is not nil' do
+      board = TicTacToes::TestBoardGenerator.generate([  x, nil, nil,
+                                                       nil, nil, nil,
+                                                       nil, nil, nil])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
+
+      expect(game_state.place_move(0)).to eq(nil)
+    end
+
+    it 'returns nil if it isn’t in its board’s spaces range' do
+      board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
+                                                       nil, nil, nil,
+                                                       nil, nil, nil])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
+      expect(game_state.place_move(9)).to eq(nil)
+    end
+
+    it 'places the current player at the space if the space is nil and in the board’s spaces range' do
+      board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
+                                                       nil, nil, nil,
+                                                       nil, nil, nil])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
+
+      game_state.place_move(0)
+      expect(game_state.board.space(0)).to eq(game_state.current_player)
+    end
+  end
+
   describe '#current_player' do
     it 'returns the first item of its players array' do
       history = double(record_board_size: true)
@@ -76,6 +111,7 @@ describe TicTacToes::Core::GameState do
       board = TicTacToes::TestBoardGenerator.generate([x, x,   o,
                                                        o, o, nil,
                                                        x, o,   x])
+
       game_state = TicTacToes::Core::GameState.new(board, players, history)
       expect(game_state.game_over?).to be false
     end
@@ -125,5 +161,4 @@ describe TicTacToes::Core::GameState do
       expect(game_state.determine_winner).to be_nil
     end
   end
-
 end

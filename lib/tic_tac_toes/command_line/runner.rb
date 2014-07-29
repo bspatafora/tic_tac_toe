@@ -21,7 +21,7 @@ module TicTacToes
         @io.draw_board(game_state.board)
         @io.thinking_notification if game_state.current_player.needs_to_think
 
-        move = game_state.current_player.place_and_return_move(game_state.board, game_state.players)
+        move = game_state.current_player.place_and_return_move(game_state)
         game_state.turn_over(move)
       end
 

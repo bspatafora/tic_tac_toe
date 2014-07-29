@@ -14,6 +14,10 @@ module TicTacToes
         @history.record_board_size(@board.size)
       end
 
+      def place_move(space)
+        @board.place(current_player, space)
+      end
+
       def current_player
         @players.first
       end

@@ -4,7 +4,7 @@ module TicTacToes
       def self.make_move(game_state, move, listener)
         unless move.nil?
           move = move.to_i
-          game_state.board.place(game_state.current_player, move)
+          game_state.place_move(move)
         end
 
         if game_state.game_over?
@@ -13,7 +13,7 @@ module TicTacToes
         end
 
         game_state.turn_over(move)
-        game_state.current_player.place_and_return_move(game_state.board, game_state.players)
+        game_state.current_player.place_and_return_move(game_state)
 
         if game_state.game_over?
           tell_listener_game_is_over(game_state, listener)

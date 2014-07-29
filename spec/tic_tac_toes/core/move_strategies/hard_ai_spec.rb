@@ -1,5 +1,6 @@
 require 'tic_tac_toes/test_board_generator'
 require 'tic_tac_toes/core/move_strategies/hard_ai'
+require 'tic_tac_toes/core/game_state'
 require 'tic_tac_toes/core/player'
 
 describe TicTacToes::Core::MoveStrategies::HardAI do
@@ -7,6 +8,7 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
   let(:x) { TicTacToes::Core::Player.new("human", "x", false, "io") }
   let(:o) { TicTacToes::Core::Player.new(hard_ai, "o", true, "io") }
   let(:players) { [o, x] }
+  let(:history) { double(record_board_size: true) }
 
 
   describe '#move' do
@@ -14,9 +16,10 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
       board = TicTacToes::TestBoardGenerator.generate([x, nil, nil,
                                                        o,   o, nil,
                                                        x, nil,   x])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
       best_move = 5
 
-      expect(hard_ai.move(board, players)).to eql(best_move)
+      expect(hard_ai.move(game_state)).to eql(best_move)
     end
 
     context "when playing on a 3x3 board" do
@@ -24,32 +27,36 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil, nil, nil,
                                                          nil, nil, nil])
+        game_state = TicTacToes::Core::GameState.new(board, players, history)
         
-        expect(hard_ai.move(board, players)).to eq(0)
+        expect(hard_ai.move(game_state)).to eq(0)
       end
 
       it "returns 4 when the opponent’s first move was a corner" do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil, nil, nil,
                                                          nil, nil,   x])
+        game_state = TicTacToes::Core::GameState.new(board, players, history)
 
-        expect(hard_ai.move(board, players)).to eq(4)
+        expect(hard_ai.move(game_state)).to eq(4)
       end
       
       it "returns 4 when the opponent’s first move was an edge" do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil, nil,   x,
                                                          nil, nil, nil])
+        game_state = TicTacToes::Core::GameState.new(board, players, history)
 
-        expect(hard_ai.move(board, players)).to eq(4)
+        expect(hard_ai.move(game_state)).to eq(4)
       end
 
       it "returns 0 when the opponent’s first move was the center" do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil,   x, nil,
                                                          nil, nil, nil])
+        game_state = TicTacToes::Core::GameState.new(board, players, history)
 
-        expect(hard_ai.move(board, players)).to eq(0)
+        expect(hard_ai.move(game_state)).to eq(0)
       end
     end
   end

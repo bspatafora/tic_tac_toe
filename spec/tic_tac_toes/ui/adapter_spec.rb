@@ -5,12 +5,13 @@ require 'tic_tac_toes/ui/adapter'
 
 describe TicTacToes::UI::Adapter do
   describe '#make_move' do
-    let(:history) { double(record_board_size: true,
-                           record_move: true) }
+    let(:history)    { double(record_board_size: true,
+                              record_move: true) }
+
     player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
-    let(:x) { player_factory.generate_human_player('x') }
-    let(:o) { player_factory.generate_computer_player('o', :hard) }
-    let(:players) { [x, o] }
+    let(:x)          { player_factory.generate_human_player('x') }
+    let(:o)          { player_factory.generate_computer_player('o', :hard) }
+    let(:players)    { [x, o] }
 
     context 'when the game is still in progress' do
       it 'sends its listener #moves_were_made with the updated game state' do
@@ -25,8 +26,8 @@ describe TicTacToes::UI::Adapter do
         TicTacToes::UI::Adapter.make_move(game_state, move, listener)
 
         first_move, second_move = 2, 1
-        game_state.board.place(x, first_move)
-        game_state.board.place(o, second_move)
+        board.place(x, first_move)
+        board.place(o, second_move)
         expect(listener).to have_received(:moves_were_made).with(game_state)
       end
     end
@@ -44,7 +45,7 @@ describe TicTacToes::UI::Adapter do
         allow(listener).to receive(:game_ended_in_winner)
         TicTacToes::UI::Adapter.make_move(game_state, move, listener)
 
-        game_state.board.place(x, 2)
+        board.place(x, 2)
         expect(listener).to have_received(:game_ended_in_winner).with(game_state, winning_token)
       end
     end
@@ -61,7 +62,7 @@ describe TicTacToes::UI::Adapter do
         allow(listener).to receive(:game_ended_in_draw)
         TicTacToes::UI::Adapter.make_move(game_state, move, listener)
 
-        game_state.board.place(x, 8)
+        board.place(x, 8)
         expect(listener).to have_received(:game_ended_in_draw).with(game_state)
       end
     end

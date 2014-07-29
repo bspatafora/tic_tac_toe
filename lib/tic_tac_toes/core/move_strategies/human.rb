@@ -6,13 +6,13 @@ module TicTacToes
           @io = io
         end
 
-        def move(board, players)
+        def move(game_state)
           @io.move_solicitation
 
           Integer(@io.solicit_input)
           rescue ArgumentError
             @io.not_an_integer_error
-            move(board, players)
+            move(game_state)
         end
       end
     end

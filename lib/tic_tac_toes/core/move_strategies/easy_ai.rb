@@ -1,11 +1,9 @@
-require 'tic_tac_toes/core/board'
-
 module TicTacToes
   module Core
     module MoveStrategies
       module EasyAI
-        def self.move(board, players)
-          board.open_spaces.sample
+        def self.move(game_state)
+          game_state.board.open_spaces.sample
         end
       end
     end
