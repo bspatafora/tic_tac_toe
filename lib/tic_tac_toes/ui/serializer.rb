@@ -5,6 +5,9 @@ require 'tic_tac_toes/core/player_factory'
 module TicTacToes
   module UI
     module Serializer
+      X = 'X'
+      O = 'O'
+
       def self.new_board_structure
         board = Core::Board.new
         board.spaces
@@ -12,8 +15,8 @@ module TicTacToes
 
       def self.game_state_from_board_structure(board_structure)
         player_factory = Core::PlayerFactory.new('unused_io')
-        human_player = player_factory.generate_human_player('X')
-        computer_player = player_factory.generate_computer_player('O', :hard)
+        human_player = player_factory.generate_human_player(X)
+        computer_player = player_factory.generate_computer_player(O, :hard)
         players = [human_player, computer_player]
 
         board_structure_with_players = replace_tokens_with_players(board_structure, human_player, computer_player)
@@ -33,9 +36,9 @@ module TicTacToes
       def self.replace_tokens_with_players(board_structure, human_player, computer_player)
         board_structure.map do |space|
           case space
-          when 'X'
+          when X
             human_player
-          when 'O'
+          when O
             computer_player
           else
             nil

@@ -5,6 +5,7 @@ module TicTacToes
     module MoveStrategies
       module HardAI
         def self.move(board, players)
+          return 0 if nine_board_first_move?(board)
           return second_move(board) if nine_board_second_move?(board)
 
           open_spaces = Hash[board.open_spaces.map { |space| [space, nil] }]
@@ -58,6 +59,10 @@ module TicTacToes
           else
             0
           end
+        end
+
+        def self.nine_board_first_move?(board)
+          board.size == 9 && board.open_spaces.count == 9
         end
 
         def self.nine_board_second_move?(board)

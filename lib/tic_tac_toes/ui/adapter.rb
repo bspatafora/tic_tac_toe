@@ -1,30 +1,39 @@
-require 'tic_tac_toes/core/rules'
-require 'tic_tac_toes/ui/serializer'
-
 module TicTacToes
   module UI
     module Adapter
-      def self.make_move(board_structure, move, listener)
-        move = move.to_i
-        game_state = UI::Serializer.game_state_from_board_structure(board_structure)
+      def self.make_move(game_state, move, listener)
+        unless move.nil?
+          move = move.to_i
+          game_state.board.place(game_state.current_player, move)
+        end
 
-        human_player = game_state.players.first
-        game_state.board.place(human_player, move)
-
-        if Core::Rules.game_over?(game_state.board, game_state.players)
-          return listener.game_is_over(UI::Serializer.game_state_to_board_structure(game_state), "Game over")
+        if game_state.game_over?
+          tell_listener_game_is_over(game_state, listener)
+          return
         end
 
         game_state.turn_over(move)
+        game_state.current_player.place_and_return_move(game_state.board, game_state.players)
 
-        computer_player = game_state.players.first
-        computer_player.place_and_return_move(game_state.board, game_state.players)
-
-        if Core::Rules.game_over?(game_state.board, game_state.players)
-          return listener.game_is_over(UI::Serializer.game_state_to_board_structure(game_state), "Game over")
+        if game_state.game_over?
+          tell_listener_game_is_over(game_state, listener)
+          return
         end
 
-        listener.move_was_valid(UI::Serializer.game_state_to_board_structure(game_state))
+        listener.moves_were_made(game_state)
+      end
+
+      private
+
+      def self.tell_listener_game_is_over(game_state, listener)
+        winning_token = game_state.determine_winner
+
+        case winning_token
+        when nil
+          listener.game_ended_in_draw(game_state)
+        else 
+          listener.game_ended_in_winner(game_state, winning_token)
+        end
       end
     end
   end

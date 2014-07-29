@@ -20,6 +20,14 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
     end
 
     context "when playing on a 3x3 board" do
+      it 'returns 0 when making the first move' do
+        board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
+                                                         nil, nil, nil,
+                                                         nil, nil, nil])
+        
+        expect(hard_ai.move(board, players)).to eq(0)
+      end
+
       it "returns 4 when the opponent’s first move was a corner" do
         board = TicTacToes::TestBoardGenerator.generate([nil, nil, nil,
                                                          nil, nil, nil,
