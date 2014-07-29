@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tic_tac_toes (0.0.8)
+    tic_tac_toes (0.0.9)
       pg
 
 GEM
