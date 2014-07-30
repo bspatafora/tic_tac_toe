@@ -1,5 +1,4 @@
 require 'tic_tac_toes/command_line/menu'
-require 'tic_tac_toes/core/board_factory'
 require 'tic_tac_toes/core/player_factory'
 require 'tic_tac_toes/core/io'
 require 'tic_tac_toes/core/move_strategies/human'
@@ -7,9 +6,8 @@ require 'tic_tac_toes/core/move_strategies/medium_ai'
 
 describe TicTacToes::CommandLine::Menu do
   let(:io) { double }
-  let(:board_factory) { TicTacToes::Core::BoardFactory.new }
   let(:player_factory) { TicTacToes::Core::PlayerFactory.new(io) }
-  let(:menu) { TicTacToes::CommandLine::Menu.new(io, board_factory, player_factory) }
+  let(:menu) { TicTacToes::CommandLine::Menu.new(io, player_factory) }
 
   describe '#get_board' do
     let(:invalid_row_size) { 11 }

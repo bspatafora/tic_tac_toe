@@ -5,13 +5,11 @@ $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'tic_tac_toes/command_line/prompt'
 require 'tic_tac_toes/core/io'
 
-require 'tic_tac_toes/core/board_factory'
 require 'tic_tac_toes/core/player_factory'
 require 'tic_tac_toes/command_line/menu'
 
 require 'tic_tac_toes/database/pg_wrapper'
 require 'tic_tac_toes/core/history'
-require 'tic_tac_toes/core/game_state_factory'
 
 require 'tic_tac_toes/command_line/runner'
 
@@ -20,12 +18,10 @@ database = "tic_tac_toes"
 prompt = TicTacToes::CommandLine::Prompt
 io = TicTacToes::Core::IO.new(prompt)
 
-board_factory = TicTacToes::Core::BoardFactory.new
 player_factory = TicTacToes::Core::PlayerFactory.new(io)
-menu = TicTacToes::CommandLine::Menu.new(io, board_factory, player_factory)
+menu = TicTacToes::CommandLine::Menu.new(io, player_factory)
 
 database_wrapper = TicTacToes::Database::PGWrapper.new(database)
 history = TicTacToes::Core::History.new(database_wrapper)
-game_state_factory = TicTacToes::Core::GameStateFactory.new(history)
 
-TicTacToes::CommandLine::Runner.new(io, menu, game_state_factory).run
+TicTacToes::CommandLine::Runner.new(io, menu, history).run

@@ -1,15 +1,17 @@
+require 'tic_tac_toes/core/game_state'
+
 module TicTacToes
   module CommandLine
     class Runner
-      def initialize(io, menu, game_state_factory)
+      def initialize(io, menu, history)
         @io = io
         @menu = menu
-        @game_state_factory = game_state_factory
+        @history = history
       end
 
       def run
         board, players = @menu.get_board, @menu.get_players
-        game_state = @game_state_factory.generate_game_state(board, players)
+        game_state = TicTacToes::Core::GameState.new(board, players, @history)
 
         take_turn(game_state) until game_state.game_over?
         end_game(game_state)
