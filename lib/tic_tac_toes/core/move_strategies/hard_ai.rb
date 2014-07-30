@@ -4,6 +4,8 @@ module TicTacToes
   module Core
     module MoveStrategies
       module HardAI
+        ALPHA, BETA = -1, 1
+
         def self.move(game_state)
           board = game_state.board
 
@@ -13,7 +15,7 @@ module TicTacToes
           open_spaces = Hash[board.open_spaces.map { |space| [space, nil] }]
 
           open_spaces.each do |space, score|
-            score = minimax(generate_game_state(space, game_state), :min)
+            score = minimax(generate_game_state(space, game_state), :min, ALPHA, BETA)
             open_spaces[space] = score
           end
 
@@ -23,23 +25,21 @@ module TicTacToes
 
         private
 
-        def self.minimax(game_state, current_player)
+        def self.minimax(game_state, current_player, alpha, beta)
           return score(game_state) if game_state.game_over?
 
           if current_player == :max
-            best_score = -1
             game_state.board.open_spaces.each do |space|
-              score = minimax(generate_game_state(space, game_state), :min)
-              best_score = [best_score, score].max
+              alpha = [alpha, minimax(generate_game_state(space, game_state), :min, alpha, beta)].max
+              break if beta <= alpha
             end
-            best_score
+            alpha
           elsif current_player == :min
-            best_score = 1
             game_state.board.open_spaces.each do |space|
-              score = minimax(generate_game_state(space, game_state), :max)
-              best_score = [best_score, score].min
+              beta = [beta, minimax(generate_game_state(space, game_state), :max, alpha, beta)].min
+              break if beta <= alpha
             end
-            best_score
+            beta
           end
         end
 
