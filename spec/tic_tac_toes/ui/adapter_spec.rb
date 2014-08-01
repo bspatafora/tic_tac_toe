@@ -8,8 +8,8 @@ describe TicTacToes::UI::Adapter do
     let(:history)    { TicTacToes::UI::NullHistory.new }
 
     player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
-    let(:x)          { player_factory.generate_human_player('x') }
-    let(:o)          { player_factory.generate_computer_player('o', :hard) }
+    let(:x)          { player_factory.generate_player('x', TicTacToes::Core::PlayerFactory::HUMAN) }
+    let(:o)          { player_factory.generate_player('o', TicTacToes::Core::PlayerFactory::HARD_AI) }
     let(:players)    { [x, o] }
 
     context 'when the game is still in progress' do

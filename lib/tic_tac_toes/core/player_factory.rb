@@ -7,23 +7,29 @@ require 'tic_tac_toes/core/player'
 module TicTacToes
   module Core
     class PlayerFactory
+
+      HUMAN = :human
+      EASY_AI = :easy
+      MEDIUM_AI = :medium
+      HARD_AI = :hard
+
+      AIS = {
+        EASY_AI => MoveStrategies::EasyAI,
+        MEDIUM_AI => MoveStrategies::MediumAI,
+        HARD_AI => MoveStrategies::HardAI
+      }
+
       def initialize(io)
         @io = io
       end
 
-      AIS = {
-        easy:    ::TicTacToes::Core::MoveStrategies::EasyAI,
-        medium:  ::TicTacToes::Core::MoveStrategies::MediumAI,
-        hard:    ::TicTacToes::Core::MoveStrategies::HardAI }
-
-      def generate_human_player(token)
-        needs_to_think = false
-        Player.new(TicTacToes::Core::MoveStrategies::Human.new(@io), token, needs_to_think, @io)
-      end
-
-      def generate_computer_player(token, difficulty)
-        needs_to_think = true
-        Player.new(AIS[difficulty], token, needs_to_think, @io)
+      def generate_player(token, type)
+        case type
+        when HUMAN
+          Player.new(MoveStrategies::Human.new(@io), token, false, @io)
+        else
+          Player.new(AIS[type], token, true, @io)
+        end
       end
     end
   end

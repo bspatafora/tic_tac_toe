@@ -29,8 +29,8 @@ describe TicTacToes::UI::Serializer do
   describe '#game_state_to_board_structure' do
     it 'returns a board structure based on a game state object' do
       player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
-      first_player = player_factory.generate_human_player(TicTacToes::UI::Serializer::X)
-      second_player = player_factory.generate_computer_player(TicTacToes::UI::Serializer::O, :hard)
+      first_player = player_factory.generate_player(TicTacToes::UI::Serializer::X, TicTacToes::Core::PlayerFactory::HUMAN)
+      second_player = player_factory.generate_player(TicTacToes::UI::Serializer::O, TicTacToes::Core::PlayerFactory::HARD_AI)
       players = [first_player, second_player]
       board = TicTacToes::Core::Board.new
       board.place(first_player, 4)

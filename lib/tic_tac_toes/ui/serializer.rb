@@ -15,8 +15,8 @@ module TicTacToes
 
       def self.game_state_from_board_structure(board_structure)
         player_factory = Core::PlayerFactory.new('unused_io')
-        human_player = player_factory.generate_human_player(X)
-        computer_player = player_factory.generate_computer_player(O, :hard)
+        human_player = player_factory.generate_player(X, Core::PlayerFactory::HUMAN)
+        computer_player = player_factory.generate_player(O, Core::PlayerFactory::HARD_AI)
         players = [human_player, computer_player]
 
         board_structure_with_players = replace_tokens_with_players(board_structure, human_player, computer_player)

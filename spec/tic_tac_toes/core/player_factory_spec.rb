@@ -3,29 +3,25 @@ require 'tic_tac_toes/core/move_strategies/medium_ai'
 require 'tic_tac_toes/core/player_factory'
 
 describe TicTacToes::Core::PlayerFactory do
-  let(:player_factory) { TicTacToes::Core::PlayerFactory.new("io") }
+  describe '#generate_player' do
+    before { @player_factory = TicTacToes::Core::PlayerFactory.new('io') }
 
-  describe '#generate_human_player' do
-    it "returns a player with the correct token and move strategy" do
-      strategy = TicTacToes::Core::MoveStrategies::Human
-      token = 'X'
+    context 'when passed HUMAN' do
+      it "returns a player with the correct token and a Human move strategy" do
+        human_player = @player_factory.generate_player('X', TicTacToes::Core::PlayerFactory::HUMAN)
 
-      human_player = player_factory.generate_human_player(token)
-      expect(human_player.move_strategy).to be_a strategy
-      expect(human_player.token).to eq(token)
+        expect(human_player.token).to eq('X')
+        expect(human_player.move_strategy).to be_a TicTacToes::Core::MoveStrategies::Human
+      end
     end
-  end
 
-  describe '#generate_computer_player' do
-    it 'returns a player with the correct token and move strategy' do
-      token = 'O'
-      difficulty = :medium
-      strategy = TicTacToes::Core::MoveStrategies::MediumAI
+    context 'when passed EASY_AI, MEDIUM_AI, or HARD_AI' do
+      it 'returns a player with the correct token and correct AI move strategy' do
+        computer_player = @player_factory.generate_player('O', TicTacToes::Core::PlayerFactory::MEDIUM_AI)
 
-      computer_player = player_factory.generate_computer_player(token,
-                                                                difficulty)
-      expect(computer_player.move_strategy).to eq(strategy)
-      expect(computer_player.token).to eq(token)
+        expect(computer_player.move_strategy).to eq(TicTacToes::Core::MoveStrategies::MediumAI)
+        expect(computer_player.token).to eq('O')
+      end
     end
   end
 end

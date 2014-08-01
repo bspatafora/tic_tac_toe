@@ -1,5 +1,6 @@
 require 'tic_tac_toes/core/board'
 require 'tic_tac_toes/core/rules'
+require 'tic_tac_toes/core/player_factory'
 
 module TicTacToes
   module CommandLine
@@ -20,8 +21,8 @@ module TicTacToes
         computer_token = get_token(:computer, taken_tokens)
         difficulty = get_difficulty
 
-        human_player = @player_factory.generate_human_player(human_token)
-        computer_player = @player_factory.generate_computer_player(computer_token, difficulty)
+        human_player = @player_factory.generate_player(human_token, Core::PlayerFactory::HUMAN)
+        computer_player = @player_factory.generate_player(computer_token, difficulty)
         [human_player, computer_player]
       end
 

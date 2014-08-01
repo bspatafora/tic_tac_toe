@@ -7,8 +7,8 @@ describe TicTacToes::Core::MoveStrategies::EasyAI do
   describe '#move' do
     it "returns a randomly-selected valid move" do
       player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
-      x = player_factory.generate_human_player('x')
-      o = player_factory.generate_computer_player('o', :hard)
+      x = player_factory.generate_player('x', TicTacToes::Core::PlayerFactory::HUMAN)
+      o = player_factory.generate_player('o', TicTacToes::Core::PlayerFactory::EASY_AI)
       players = [x, o]
 
       board = TicTacToes::TestBoardGenerator.generate([  o, nil, nil,
