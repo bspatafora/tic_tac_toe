@@ -4,6 +4,31 @@ require 'tic_tac_toes/test_board_generator'
 require 'tic_tac_toes/ui/adapter'
 
 describe TicTacToes::UI::Adapter do
+  describe '#start_game' do
+    context 'when passed an order of “first”' do
+      it 'sends its listener #moves_were_made with the game state' do
+        order = 'first'
+        game_state = double
+        listener = double
+
+        expect(listener).to receive(:moves_were_made).with(game_state)
+        TicTacToes::UI::Adapter.start_game(order, game_state, listener)
+      end
+    end
+
+    context 'when passed an order of “second”' do
+      it 'sends its listener #moves_were_made with the game state' do
+        order = 'second'
+        computer_player = double(place_and_return_move: 0)
+        game_state = double(game_over?: false, turn_over: true, current_player: computer_player)
+        listener = double
+
+        expect(listener).to receive(:moves_were_made).with(game_state)
+        TicTacToes::UI::Adapter.start_game(order, game_state, listener)
+      end
+    end
+  end
+
   describe '#make_move' do
     let(:history)    { TicTacToes::UI::NullHistory.new }
 

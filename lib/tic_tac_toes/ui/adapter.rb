@@ -1,6 +1,15 @@
 module TicTacToes
   module UI
     module Adapter
+      def self.start_game(order, game_state, listener)
+        case order
+        when 'first'
+          listener.moves_were_made(game_state)
+        when 'second'
+          make_move(game_state, nil, listener)
+        end
+      end
+
       def self.make_move(game_state, move, listener)
         unless move.nil?
           move = move.to_i

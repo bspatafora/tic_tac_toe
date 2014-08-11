@@ -12,10 +12,12 @@ describe TicTacToes::UI::Serializer do
   end
 
   describe '#game_state_from_board_structure' do
-    it 'returns a game state object based on a board structure' do
+    it 'returns a game state object based on a board structure and computer type' do
       board_structure = [nil, nil, nil, nil, 'X', nil, nil, nil, nil]
+      computer_type = 'EASY_AI'
+      ai = TicTacToes::Core::PlayerFactory::AIS.fetch(TicTacToes::Core::PlayerFactory::EASY_AI)
 
-      game_state = TicTacToes::UI::Serializer.game_state_from_board_structure(board_structure)
+      game_state = TicTacToes::UI::Serializer.game_state_from_board_structure(board_structure, computer_type)
       middle_space = game_state.board.space(4)
       first_player = game_state.players.first
       second_player = game_state.players.last
@@ -23,10 +25,11 @@ describe TicTacToes::UI::Serializer do
       expect(middle_space.token).to eq(TicTacToes::UI::Serializer::X)
       expect(first_player.token).to eq(TicTacToes::UI::Serializer::X)
       expect(second_player.token).to eq(TicTacToes::UI::Serializer::O)
+      expect(second_player.move_strategy).to eq(ai)
     end
   end
 
-  describe '#game_state_to_board_structure' do
+  describe '#board_structure_from_game_state' do
     it 'returns a board structure based on a game state object' do
       player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
       first_player = player_factory.generate_player(TicTacToes::UI::Serializer::X, TicTacToes::Core::PlayerFactory::HUMAN)
@@ -37,7 +40,17 @@ describe TicTacToes::UI::Serializer do
 
       game_state = TicTacToes::Core::GameState.new(board, players, TicTacToes::UI::NullHistory.new)
       board_structure = [nil, nil, nil, nil, 'X', nil, nil, nil, nil]
-      expect(TicTacToes::UI::Serializer.game_state_to_board_structure(game_state)).to eq(board_structure)
+      expect(TicTacToes::UI::Serializer.board_structure_from_game_state(game_state)).to eq(board_structure)
+    end
+  end
+
+  describe '#computer_type_from_game_state' do
+    it 'returns the type of a game state’s computer player' do
+      move_strategy = TicTacToes::Core::PlayerFactory::AIS.fetch(TicTacToes::Core::PlayerFactory::EASY_AI)
+      computer_player = double(move_strategy: move_strategy)
+      players = [computer_player]
+      game_state = double(players: players)
+      expect(TicTacToes::UI::Serializer.computer_type_from_game_state(game_state)).to eq('EASY_AI')
     end
   end
 end

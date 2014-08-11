@@ -13,10 +13,10 @@ module TicTacToes
         board.spaces
       end
 
-      def self.game_state_from_board_structure(board_structure)
+      def self.game_state_from_board_structure(board_structure, computer_type)
         player_factory = Core::PlayerFactory.new('unused_io')
         human_player = player_factory.generate_player(X, Core::PlayerFactory::HUMAN)
-        computer_player = player_factory.generate_player(O, Core::PlayerFactory::HARD_AI)
+        computer_player = player_factory.generate_player(O, Core::PlayerFactory.const_get(computer_type))
         players = [human_player, computer_player]
 
         board_structure_with_players = replace_tokens_with_players(board_structure, human_player, computer_player)
@@ -25,10 +25,26 @@ module TicTacToes
         Core::GameState.new(board, players, NullHistory.new)
       end
 
-      def self.game_state_to_board_structure(game_state)
+      def self.board_structure_from_game_state(game_state)
         structure_with_players = game_state.board.spaces
 
         replace_players_with_tokens(structure_with_players)
+      end
+
+      def self.computer_type_from_game_state(game_state)
+        type = nil
+
+        game_state.players.each do |player|
+          if player.move_strategy == Core::PlayerFactory::AIS.fetch(Core::PlayerFactory::EASY_AI)
+            type = 'EASY_AI'
+          elsif player.move_strategy == Core::PlayerFactory::AIS.fetch(Core::PlayerFactory::MEDIUM_AI)
+            type = 'MEDIUM_AI'
+          elsif player.move_strategy == Core::PlayerFactory::AIS.fetch(Core::PlayerFactory::HARD_AI)
+            type = 'HARD_AI'
+          end
+        end
+
+        type
       end
 
       private
