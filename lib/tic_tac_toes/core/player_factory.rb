@@ -28,7 +28,7 @@ module TicTacToes
         when HUMAN
           Player.new(MoveStrategies::Human.new(@io), token, false, @io)
         else
-          Player.new(AIS[type], token, true, @io)
+          Player.new(AIS.fetch(type), token, true, @io)
         end
       end
     end
