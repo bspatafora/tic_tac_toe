@@ -91,4 +91,57 @@ describe TicTacToes::UI::Adapter do
       end
     end
   end
+
+  describe '#predictions' do
+    let(:history)    { TicTacToes::UI::NullHistory.new }
+
+    player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
+    let(:x)          { player_factory.generate_player('x', TicTacToes::Core::PlayerFactory::HUMAN) }
+    let(:o)          { player_factory.generate_player('o', TicTacToes::Core::PlayerFactory::HARD_AI) }
+    let(:players)    { [o, x] }   
+
+    it 'returns an array indicating which moves will result in a win' do
+      board = TicTacToes::TestBoardGenerator.generate([   x,   x, nil,
+                                                        nil, nil, nil,
+                                                        nil,   x,   x])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
+
+      expect(TicTacToes::UI::Adapter.predictions(game_state)).to eq([  nil,   nil, "win",
+                                                                       nil, "win",   nil,
+                                                                     "win",   nil,   nil])
+    end
+
+    it 'returns an array indicating which moves will result in an immediate tie' do
+      board = TicTacToes::TestBoardGenerator.generate([x, x,   o,
+                                                       o, o,   x,
+                                                       x, o, nil])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
+
+      expect(TicTacToes::UI::Adapter.predictions(game_state)).to eq([nil, nil,   nil,
+                                                                     nil, nil,   nil,
+                                                                     nil, nil, "tie"])
+    end
+
+    it 'returns an array indicating which moves will result in a tie after the subsequent move' do
+      board = TicTacToes::TestBoardGenerator.generate([o,   o,   x,
+                                                       x,   x,   o,
+                                                       o, nil, nil])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
+
+      expect(TicTacToes::UI::Adapter.predictions(game_state)).to eq([nil,   nil,   nil,
+                                                                     nil,   nil,   nil,
+                                                                     nil, "tie", "tie"])
+    end
+
+    it 'returns an array indicating which moves will result in a loss after the subsequent move' do
+      board = TicTacToes::TestBoardGenerator.generate([  o,   x,    o,
+                                                         x,   o,  nil,
+                                                       nil, nil,    x])
+      game_state = TicTacToes::Core::GameState.new(board, players, history)
+
+      expect(TicTacToes::UI::Adapter.predictions(game_state)).to eq([   nil,    nil,    nil,
+                                                                        nil,    nil, "loss",
+                                                                        nil, "loss",    nil])
+    end
+  end
 end

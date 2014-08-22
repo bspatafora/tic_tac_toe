@@ -1,13 +1,16 @@
 require 'tic_tac_toes/test_board_generator'
 require 'tic_tac_toes/core/move_strategies/hard_ai'
+require 'tic_tac_toes/core/move_strategies/human'
 require 'tic_tac_toes/core/game_state'
 require 'tic_tac_toes/core/player'
 
 describe TicTacToes::Core::MoveStrategies::HardAI do
   let(:alpha) { TicTacToes::Core::MoveStrategies::HardAI::ALPHA }
   let(:beta) { TicTacToes::Core::MoveStrategies::HardAI::BETA }
+  let(:depth) { TicTacToes::Core::MoveStrategies::HardAI::DEPTH }
   let(:hard_ai) { TicTacToes::Core::MoveStrategies::HardAI }
-  let(:x) { TicTacToes::Core::Player.new("human", "x", false, "io") }
+  let(:human) { TicTacToes::Core::MoveStrategies::Human.new('unused_io') }
+  let(:x) { TicTacToes::Core::Player.new(human, "x", false, "io") }
   let(:o) { TicTacToes::Core::Player.new(hard_ai, "o", true, "io") }
   let(:players) { [o, x] }
   let(:history) { TicTacToes::UI::NullHistory.new }
@@ -69,9 +72,9 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
                                                        o,   o, nil,
                                                        x, nil,   x])
       game_state = TicTacToes::Core::GameState.new(board, players, history)
-      win_score = 1
+      win_score = 99
 
-      expect(hard_ai.minimax(game_state, :max, alpha, beta)).to eql(win_score)
+      expect(hard_ai.minimax(game_state, :max, alpha, beta, depth)).to eql(win_score)
     end
 
     it 'returns the correct score for a pre-loss board' do
@@ -79,9 +82,9 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
                                                        nil, nil, nil,
                                                          x, nil,   x])
       game_state = TicTacToes::Core::GameState.new(board, players, history)
-      loss_score = -1
+      loss_score = -100
 
-      expect(hard_ai.minimax(game_state, :max, alpha, beta)).to eql(loss_score)
+      expect(hard_ai.minimax(game_state, :max, alpha, beta, depth)).to eql(loss_score)
     end
 
     it 'returns the correct score for a pre-draw board' do
@@ -91,7 +94,7 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
       game_state = TicTacToes::Core::GameState.new(board, players, history)
       draw_score = 0
 
-      expect(hard_ai.minimax(game_state, :max, alpha, beta)).to eql(draw_score)
+      expect(hard_ai.minimax(game_state, :max, alpha, beta, depth)).to eql(draw_score)
     end
   end
 
@@ -116,9 +119,9 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
                                                        nil,   o, nil,
                                                        nil, nil,   o])
       game_state = TicTacToes::Core::GameState.new(board, players, history)
-      win_score = 1
+      win_score = 100
 
-      expect(hard_ai.score(game_state)).to eq(win_score)
+      expect(hard_ai.score(game_state, depth)).to eq(win_score)
     end
 
     it 'returns the correct score when no one has won' do
@@ -128,7 +131,7 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
       game_state = TicTacToes::Core::GameState.new(board, players, history)
       draw_score = 0
 
-      expect(hard_ai.score(game_state)).to eql(draw_score)
+      expect(hard_ai.score(game_state, depth)).to eql(draw_score)
     end
 
     it 'returns the correct score when the opponent has won' do
@@ -136,9 +139,9 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
                                                        nil,   x, nil,
                                                        nil, nil,   x])
       game_state = TicTacToes::Core::GameState.new(board, players, history)
-      loss_score = -1
+      loss_score = -100
 
-      expect(hard_ai.score(game_state)).to eql(loss_score)
+      expect(hard_ai.score(game_state, depth)).to eql(loss_score)
     end
   end
 end

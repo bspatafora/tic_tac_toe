@@ -4,7 +4,7 @@ module TicTacToes
   module Core
     module MoveStrategies
       module HardAI
-        ALPHA, BETA = -1, 1
+        ALPHA, BETA, DEPTH = -100, 100, 0
 
         def self.move(game_state)
           board = game_state.board
@@ -15,7 +15,7 @@ module TicTacToes
           open_spaces = Hash[board.open_spaces.map { |space| [space, nil] }]
 
           open_spaces.each do |space, score|
-            score = minimax(generate_game_state(space, game_state), :min, ALPHA, BETA)
+            score = minimax(generate_game_state(space, game_state), :min, ALPHA, BETA, DEPTH)
             open_spaces[space] = score
           end
 
@@ -25,18 +25,18 @@ module TicTacToes
 
         private
 
-        def self.minimax(game_state, current_player, alpha, beta)
-          return score(game_state) if game_state.game_over?
+        def self.minimax(game_state, current_player, alpha, beta, depth)
+          return score(game_state, depth) if game_state.game_over?
 
           if current_player == :max
             game_state.board.open_spaces.each do |space|
-              alpha = [alpha, minimax(generate_game_state(space, game_state), :min, alpha, beta)].max
+              alpha = [alpha, minimax(generate_game_state(space, game_state), :min, alpha, beta, depth + 1)].max
               break if beta <= alpha
             end
             alpha
           elsif current_player == :min
             game_state.board.open_spaces.each do |space|
-              beta = [beta, minimax(generate_game_state(space, game_state), :max, alpha, beta)].min
+              beta = [beta, minimax(generate_game_state(space, game_state), :max, alpha, beta, depth + 1)].min
               break if beta <= alpha
             end
             beta
@@ -50,14 +50,14 @@ module TicTacToes
           new_game_state
         end
 
-        def self.score(game_state)
+        def self.score(game_state, depth)
           winner = game_state.determine_winner
           if winner.nil?
             0
-          elsif winner.move_strategy == self
-            1
+          elsif winner.move_strategy.is_a? Human
+            -100
           else
-            -1
+            100 - depth
           end
         end
 
