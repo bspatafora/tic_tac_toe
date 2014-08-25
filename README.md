@@ -12,4 +12,9 @@ The game Tic-tac-toe, featuring an unbeatable AI.
     * To drop the databases: `destroy_ttt_databases`
 4. Launch the game: `tic_tac_toes`
 
+## Rake tasks
+  * `rake` runs the specs
+  * `rake set_up_databases` sets up production and test databases
+  * `rake destroy_databases` tears down production and test databases
+
 [PostgreSQL]: http://www.postgresql.org

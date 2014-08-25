@@ -13,7 +13,7 @@ require 'tic_tac_toes/core/history'
 
 require 'tic_tac_toes/command_line/runner'
 
-database = "tic_tac_toes"
+database = 'tic_tac_toes'
 
 prompt = TicTacToes::CommandLine::Prompt
 io = TicTacToes::Core::IO.new(prompt)

@@ -1,6 +1,6 @@
 require 'pg'
 
-desc 'Drop tic_tac_toes databases'
+desc 'Drop Tic_tac_toes production and test databases'
 task :destroy_databases do
   connection = PG.connect(dbname: "postgres")
 
