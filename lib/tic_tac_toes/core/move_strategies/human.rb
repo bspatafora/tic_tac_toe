@@ -6,6 +6,10 @@ module TicTacToes
           @io = io
         end
 
+        def type
+          MoveStrategies::HUMAN
+        end
+
         def move(game_state)
           @io.move_solicitation
 

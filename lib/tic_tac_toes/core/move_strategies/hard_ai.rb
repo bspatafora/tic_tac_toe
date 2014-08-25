@@ -1,3 +1,4 @@
+require 'tic_tac_toes/core/move_strategies/types'
 require 'tic_tac_toes/core/rules'
 
 module TicTacToes
@@ -5,6 +6,18 @@ module TicTacToes
     module MoveStrategies
       module HardAI
         ALPHA, BETA, DEPTH = -100, 100, 0
+
+        def self.to_s
+          'Hard AI'
+        end
+
+        def self.type
+          MoveStrategies::COMPUTER
+        end
+
+        def self.ai_type
+          'HARD_AI'
+        end
 
         def self.move(game_state)
           board = game_state.board
@@ -54,10 +67,10 @@ module TicTacToes
           winner = game_state.determine_winner
           if winner.nil?
             0
-          elsif winner.move_strategy.is_a? Human
-            -100
-          else
+          elsif winner.move_strategy.type == MoveStrategies::COMPUTER
             100 - depth
+          else
+            -100
           end
         end
 

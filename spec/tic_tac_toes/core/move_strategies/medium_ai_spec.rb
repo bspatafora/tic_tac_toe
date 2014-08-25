@@ -4,6 +4,18 @@ require 'tic_tac_toes/core/move_strategies/medium_ai'
 require 'tic_tac_toes/core/player_factory'
 
 describe TicTacToes::Core::MoveStrategies::MediumAI do
+  describe '#type' do
+    it 'returns :computer' do
+      expect(TicTacToes::Core::MoveStrategies::MediumAI.type).to eq(:computer)
+    end
+  end
+
+  describe '#ai_type' do
+    it "returns 'MEDIUM_AI'" do
+      expect(TicTacToes::Core::MoveStrategies::MediumAI.ai_type).to eq('MEDIUM_AI')
+    end
+  end
+
   describe '#move' do
     it "returns a valid move (based on either EasyAI or HardAI)" do
       player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')

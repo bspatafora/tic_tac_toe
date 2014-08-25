@@ -15,6 +15,18 @@ describe TicTacToes::Core::MoveStrategies::HardAI do
   let(:players) { [o, x] }
   let(:history) { TicTacToes::UI::NullHistory.new }
 
+  describe '#type' do
+    it 'returns :computer' do
+      expect(TicTacToes::Core::MoveStrategies::HardAI.type).to eq(:computer)
+    end
+  end
+
+  describe '#ai_type' do
+    it "returns 'HARD_AI'" do
+      expect(TicTacToes::Core::MoveStrategies::HardAI.ai_type).to eq('HARD_AI')
+    end
+  end
+
   describe '#move' do
     it 'returns the best move' do
       board = TicTacToes::TestBoardGenerator.generate([x, nil, nil,

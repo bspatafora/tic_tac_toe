@@ -10,7 +10,7 @@ module TicTacToes
 
       def record_game_history(history)
         connection = establish_connection
-        record_board_size_and_winner(history, connection)
+        record_game_info(history, connection)
         record_moves(history, connection)
       end
 
@@ -22,7 +22,8 @@ module TicTacToes
         games_result.each_row do |row|
           game_id = row[0]
           board_size = row[1].to_i
-          winner = row[2]
+          difficulty = row[2]
+          winner = row[3]
           moves_result = connection.exec("SELECT * FROM moves WHERE game = #{game_id}")
 
           history = Core::History.new(self)
@@ -32,6 +33,7 @@ module TicTacToes
             history.record_move([token, space])
           end
           history.record_board_size(board_size)
+          history.record_difficulty(difficulty)
           history.record_winner(winner)
 
           games << history
@@ -46,9 +48,10 @@ module TicTacToes
         PG.connect(dbname: @database)
       end
 
-      def record_board_size_and_winner(history, connection)
-        connection.exec("INSERT INTO games (board_size, winner) VALUES (
+      def record_game_info(history, connection)
+        connection.exec("INSERT INTO games (board_size, difficulty, winner) VALUES (
           #{history.board_size},
+          '#{history.difficulty}',
           '#{history.winner}')")
       end
 

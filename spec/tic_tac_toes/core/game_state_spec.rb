@@ -1,15 +1,33 @@
 require 'tic_tac_toes/core/game_state'
+require 'tic_tac_toes/core/move_strategies/medium_ai'
+require 'tic_tac_toes/core/player_factory'
 require 'tic_tac_toes/test_board_generator'
 
 describe TicTacToes::Core::GameState do
-  describe '@initialize' do
-    it "records its board's size" do
+  describe '#start_game' do
+    it "records the board size" do
       size = 5
       board = double(size: size)
+      player = TicTacToes::Core::PlayerFactory.new('unused_io').generate_player('x', :medium)
+      players = [player]
       history = double
 
+      allow(history).to receive(:record_difficulty)
       expect(history).to receive(:record_board_size).with(size)
-      TicTacToes::Core::GameState.new(board, 'players', history)
+      TicTacToes::Core::GameState.new(board, players, history).start_game
+    end
+
+    it "records the AI difficulty" do
+      board = double(size: true)
+      computer_player = TicTacToes::Core::PlayerFactory.new('unused_io').generate_player('x', :medium)
+      human_player = TicTacToes::Core::PlayerFactory.new('unused_io').generate_player('o', :human)
+      players = [computer_player, human_player]
+      ai = TicTacToes::Core::MoveStrategies::MediumAI
+      history = double
+
+      allow(history).to receive(:record_board_size)
+      expect(history).to receive(:record_difficulty).with(ai)
+      TicTacToes::Core::GameState.new(board, players, history).start_game
     end
   end
 
@@ -91,14 +109,14 @@ describe TicTacToes::Core::GameState do
     end
   end
 
-  describe '#game_over' do
+  describe '#end_game' do
     it 'records the winner' do
       winning_player = double
       history = double(record_board_size: true, persist: true)
       game_state = TicTacToes::Core::GameState.new('board', 'players', history)
 
       expect(history).to receive(:record_winner).with(winning_player)
-      game_state.game_over(winning_player)
+      game_state.end_game(winning_player)
     end
 
     it 'persists its history' do
@@ -107,7 +125,7 @@ describe TicTacToes::Core::GameState do
       game_state = TicTacToes::Core::GameState.new('board', 'players', history)
 
       expect(history).to receive(:persist)
-      game_state.game_over(winning_player)
+      game_state.end_game(winning_player)
     end
   end
 

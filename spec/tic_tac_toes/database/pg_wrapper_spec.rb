@@ -7,10 +7,12 @@ describe TicTacToes::Database::PGWrapper do
   let(:pg_wrapper) { TicTacToes::Database::PGWrapper.new(database) }
   let(:history1)   { double("history 1",
                      :board_size => 9,
+                     :difficulty => 'Medium AI',
                      :moves => [["X", 1], ["O", 4]],
                      :winner => "X") }
   let(:history2)   { double("history 2",
                      :board_size => 16,
+                     :difficulty => 'Easy AI',
                      :moves => [["&", 14]],
                      :winner => "*") }
 
@@ -19,6 +21,7 @@ describe TicTacToes::Database::PGWrapper do
     connection.exec("CREATE TABLE games (
       id serial primary key,
       board_size integer,
+      difficulty varchar,
       winner varchar)")
     connection.exec("CREATE TABLE moves (
       game integer REFERENCES games (id),
@@ -34,6 +37,7 @@ describe TicTacToes::Database::PGWrapper do
       history_from_database = pg_wrapper.read_game_histories.first
 
       expect(history_from_database.board_size).to eq(9)
+      expect(history_from_database.difficulty).to eq('Medium AI')
       expect(history_from_database.moves[0]).to eq(["X", 1])
       expect(history_from_database.moves[1]).to eq(["O", 4])
       expect(history_from_database.winner).to eq("X")

@@ -1,6 +1,12 @@
 require 'tic_tac_toes/core/move_strategies/human'
 
 describe TicTacToes::Core::MoveStrategies::Human do
+  describe '#type' do
+    it 'returns :human' do
+      expect(TicTacToes::Core::MoveStrategies::Human.new('unused_io').type).to eq(:human)
+    end
+  end
+
   describe '#move' do
     let(:io)     { double('io', solicit_input: 0, move_solicitation: true, not_an_integer_error: true) }
     let(:human)  { TicTacToes::Core::MoveStrategies::Human.new(io) }

@@ -31,20 +31,10 @@ module TicTacToes
         replace_players_with_tokens(structure_with_players)
       end
 
-      def self.computer_type_from_game_state(game_state)
-        type = nil
-
-        game_state.players.each do |player|
-          if player.move_strategy == Core::PlayerFactory::AIS.fetch(Core::PlayerFactory::EASY_AI)
-            type = 'EASY_AI'
-          elsif player.move_strategy == Core::PlayerFactory::AIS.fetch(Core::PlayerFactory::MEDIUM_AI)
-            type = 'MEDIUM_AI'
-          elsif player.move_strategy == Core::PlayerFactory::AIS.fetch(Core::PlayerFactory::HARD_AI)
-            type = 'HARD_AI'
-          end
-        end
-
-        type
+      def self.ai_type_from_game_state(game_state)
+        computer = Core::MoveStrategies::COMPUTER
+        computer_player = game_state.players.detect { |player| player.move_strategy.type == computer }
+        computer_player.move_strategy.ai_type
       end
 
       private
@@ -80,6 +70,10 @@ module TicTacToes
 
     class NullHistory
       def record_board_size(size)
+        nil
+      end
+
+      def record_difficulty(difficulty)
         nil
       end
 

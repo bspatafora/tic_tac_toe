@@ -32,6 +32,7 @@ def create_production_tables_if_not_exist
   connection.exec("CREATE TABLE IF NOT EXISTS games (
     id serial primary key,
     board_size integer,
+    difficulty varchar,
     winner varchar)")
   connection.exec("CREATE TABLE IF NOT EXISTS moves (
     game integer REFERENCES games (id),

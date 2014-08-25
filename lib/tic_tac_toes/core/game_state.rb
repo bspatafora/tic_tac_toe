@@ -1,4 +1,5 @@
 require 'tic_tac_toes/core/rules'
+require 'tic_tac_toes/core/move_strategies/types'
 
 module TicTacToes
   module Core
@@ -9,9 +10,11 @@ module TicTacToes
         @board = board
         @players = players
         @history = history
-        @rules = Rules
+      end
 
-        @history.record_board_size(@board.size)
+      def start_game
+        record_board_size
+        record_difficulty
       end
 
       def place_move(space)
@@ -31,17 +34,28 @@ module TicTacToes
         @players.rotate!
       end
 
-      def game_over(winner)
+      def end_game(winner)
         @history.record_winner(winner)
         @history.persist
       end
 
       def game_over?
-        @rules.game_over?(@board, @players)
+        Rules.game_over?(@board, @players)
       end
 
       def determine_winner
-        @rules.determine_winner(@board, @players)
+        Rules.determine_winner(@board, @players)
+      end
+
+      private
+
+      def record_board_size
+        @history.record_board_size(@board.size)
+      end
+
+      def record_difficulty
+        computer_player = @players.detect { |player| player.move_strategy.type == MoveStrategies::COMPUTER }
+        @history.record_difficulty(computer_player.move_strategy)
       end
     end
   end

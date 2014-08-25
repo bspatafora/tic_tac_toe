@@ -52,6 +52,7 @@ module TicTacToes
 
       def game_over_notification(winner)
         winner = "Nobody" if winner.nil?
+        winner = winner.token unless winner.is_a? String
         @io_strategy.display(Strings.game_over_notification(winner))
       end
 

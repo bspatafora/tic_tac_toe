@@ -1,4 +1,5 @@
 require 'tic_tac_toes/core/history'
+require 'tic_tac_toes/core/move_strategies/medium_ai'
 
 describe TicTacToes::Core::History do
   let(:database_wrapper)  { double("database wrapper", :record_game_history => true) }
@@ -10,6 +11,15 @@ describe TicTacToes::Core::History do
 
       history.record_board_size(board_size)
       expect(history.board_size).to eq(board_size)
+    end
+  end
+
+  describe '#record_difficulty' do
+    it "records the passed difficulty" do
+      difficulty = TicTacToes::Core::MoveStrategies::MediumAI
+
+      history.record_difficulty(difficulty)
+      expect(history.difficulty).to eq('Medium AI')
     end
   end
 

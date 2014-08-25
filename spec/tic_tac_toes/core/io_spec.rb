@@ -121,7 +121,7 @@ describe TicTacToes::Core::IO do
 
   describe '#game_over_notification' do
     it "displays a game over message with the name of the winner" do
-      winner = :X
+      winner = 'X'
       game_over_message = strings.game_over_notification(winner)
 
       expect(prompt).to receive(:display).with(game_over_message)
