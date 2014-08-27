@@ -19,8 +19,8 @@ describe TicTacToes::UI::Adapter do
     context 'when passed an order of “second”' do
       it 'sends its listener #moves_were_made with the game state' do
         order = 'second'
-        computer_player = double(place_and_return_move: 0)
-        game_state = double(game_over?: false, turn_over: true, current_player: computer_player)
+        computer_player = double(place_and_return_move: 0, token: 'O')
+        game_state = double(game_over?: false, turn_over: true, computer_player: computer_player)
         listener = double
 
         expect(listener).to receive(:moves_were_made).with(game_state)
@@ -53,6 +53,21 @@ describe TicTacToes::UI::Adapter do
         board.place(x, first_move)
         board.place(o, second_move)
         expect(listener).to have_received(:moves_were_made).with(game_state)
+      end
+    end
+
+    context 'when the game is over' do
+      it 'records the game history' do
+        board = TicTacToes::TestBoardGenerator.generate([  x,   x, nil,
+                                                         nil, nil, nil,
+                                                         nil, nil, nil])
+        game_state = TicTacToes::Core::GameState.new(board, players, history)
+        move = '2'
+        listener = double(game_ended_in_winner: true)
+
+        expect(history).to receive(:persist)
+        TicTacToes::UI::Adapter.make_move(game_state, move, listener)
+        board.place(x, 2)
       end
     end
 
@@ -98,7 +113,7 @@ describe TicTacToes::UI::Adapter do
     player_factory = TicTacToes::Core::PlayerFactory.new('unused_io')
     let(:x)          { player_factory.generate_player('x', TicTacToes::Core::PlayerFactory::HUMAN) }
     let(:o)          { player_factory.generate_player('o', TicTacToes::Core::PlayerFactory::HARD_AI) }
-    let(:players)    { [o, x] }   
+    let(:players)    { [x, o] }   
 
     it 'returns an array indicating which moves will result in a win' do
       board = TicTacToes::TestBoardGenerator.generate([   x,   x, nil,
@@ -139,9 +154,9 @@ describe TicTacToes::UI::Adapter do
                                                        nil, nil,    x])
       game_state = TicTacToes::Core::GameState.new(board, players, history)
 
-      expect(TicTacToes::UI::Adapter.predictions(game_state)).to eq([   nil,    nil,    nil,
-                                                                        nil,    nil, "loss",
-                                                                        nil, "loss",    nil])
+      expect(TicTacToes::UI::Adapter.predictions(game_state)).to eq([nil,    nil,    nil,
+                                                                     nil,    nil, "loss",
+                                                                     nil, "loss",    nil])
     end
   end
 end

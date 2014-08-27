@@ -17,7 +17,7 @@ module TicTacToes
 
       def record_move(move)
         @moves ||= []
-        @moves << move
+        @moves << move unless move.nil?
       end
 
       def record_winner(winner)

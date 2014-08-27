@@ -88,6 +88,16 @@ describe TicTacToes::Core::GameState do
     end
   end
 
+  describe '#computer_player' do
+    it 'returns the game’s computer player' do
+      human_player = TicTacToes::Core::PlayerFactory.new('unused_io').generate_player('X', :human)
+      computer_player = TicTacToes::Core::PlayerFactory.new('unused_io').generate_player('O', :hard)
+      players = [human_player, computer_player]
+      game_state = TicTacToes::Core::GameState.new('board', players, 'history')
+      expect(game_state.computer_player).to eq(computer_player)
+    end
+  end
+
   describe '#turn_over' do
     it 'records the last move' do
       move = double
@@ -106,6 +116,15 @@ describe TicTacToes::Core::GameState do
 
       game_state.turn_over('move')
       expect(game_state.current_player).to eq('second_player')
+    end
+  end
+
+  describe '#moves' do
+    it 'returns it’s move history' do
+      moves = [['X', 0], ['O', 4]]
+      history = double(moves: moves)
+      game_state = TicTacToes::Core::GameState.new('board', 'players', history)
+      expect(game_state.moves).to eq(moves)
     end
   end
 

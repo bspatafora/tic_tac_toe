@@ -7,10 +7,9 @@ module TicTacToes
         @wrapper = wrapper
       end
 
-      def display_game_histories
+      def game_history_strings
         game_histories = @wrapper.read_game_histories
-        game_histories.each { |history| Prompt.display(game_history_string(history)) }
-        nil
+        game_histories.map { |history| game_history_string(history) }
       end
 
       def game_history_string(history)

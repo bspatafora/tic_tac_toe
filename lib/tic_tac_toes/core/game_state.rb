@@ -29,9 +29,17 @@ module TicTacToes
         @players[1]
       end
 
+      def computer_player
+        @players.detect { |player| player.move_strategy.type == MoveStrategies::COMPUTER }
+      end
+
       def turn_over(move)
         @history.record_move(move)
         @players.rotate!
+      end
+
+      def moves
+        @history.moves
       end
 
       def end_game(winner)
@@ -54,7 +62,6 @@ module TicTacToes
       end
 
       def record_difficulty
-        computer_player = @players.detect { |player| player.move_strategy.type == MoveStrategies::COMPUTER }
         @history.record_difficulty(computer_player.move_strategy)
       end
     end

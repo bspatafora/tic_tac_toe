@@ -9,13 +9,12 @@ describe TicTacToes::CommandLine::HistoryReader do
                              moves: [['A', 0], ['B', 4]])
   end
 
-  describe '#display_game_histories' do
-    it 'Displays something for each game history' do
+  describe '#game_history_strings' do
+    it 'Returns an array with a string for each game history' do
       histories_array = [@history_double, @history_double]
       wrapper = double('wrapper', read_game_histories: histories_array)
       
-      expect(TicTacToes::CommandLine::Prompt).to receive(:display).twice
-      TicTacToes::CommandLine::HistoryReader.new(wrapper).display_game_histories
+      expect(TicTacToes::CommandLine::HistoryReader.new(wrapper).game_history_strings.count).to eq(2)
     end
   end
 

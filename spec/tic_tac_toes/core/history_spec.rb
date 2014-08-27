@@ -28,7 +28,14 @@ describe TicTacToes::Core::History do
       move = ["X", 0]
 
       history.record_move(move)
-      expect(history.moves.first).to eql(move)
+      expect(history.moves.first).to eq(move)
+    end
+
+    it "doesn’t record anything if move is nil" do
+      move = nil
+
+      history.record_move(move)
+      expect(history.moves).to eq([])
     end
   end
 

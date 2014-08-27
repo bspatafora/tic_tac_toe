@@ -4,10 +4,11 @@ $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 
 require 'tic_tac_toes/database/pg_wrapper'
 require 'tic_tac_toes/command_line/history_reader'
+require 'tic_tac_toes/command_line/prompt'
 
 database = 'tic_tac_toes'
 
 wrapper = TicTacToes::Database::PGWrapper.new(database)
 reader = TicTacToes::CommandLine::HistoryReader.new(wrapper)
 
-reader.display_game_histories
+reader.game_history_strings.each { |history| TicTacToes::CommandLine::Prompt.display(history) }
