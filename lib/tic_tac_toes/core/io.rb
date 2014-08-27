@@ -1,4 +1,4 @@
-require 'tic_tac_toes/core/strings'
+require 'tic_tac_toes/core/presenter'
 
 module TicTacToes
   module Core
@@ -27,41 +27,41 @@ module TicTacToes
       end
 
       def draw_board(board)
-        @io_strategy.display(Strings.board(board))
+        @io_strategy.display(Presenter.board(board))
       end
 
       def invalid_row_size_error
-        @io_strategy.display_red(Strings::INVALID_ROW_SIZE)
+        @io_strategy.display_red(Presenter::INVALID_ROW_SIZE)
       end
 
       def invalid_token_error
-        @io_strategy.display_red(Strings::INVALID_TOKEN)
+        @io_strategy.display_red(Presenter::INVALID_TOKEN)
       end
 
       def invalid_difficulty_error
-        @io_strategy.display_red(Strings::INVALID_DIFFICULTY)
+        @io_strategy.display_red(Presenter::INVALID_DIFFICULTY)
       end
 
       def invalid_move_error
-        @io_strategy.display_red(Strings::INVALID_MOVE)
+        @io_strategy.display_red(Presenter::INVALID_MOVE)
       end
 
       def thinking_notification
-        @io_strategy.display_red(Strings::THINKING)
+        @io_strategy.display_red(Presenter::THINKING)
       end
 
       def game_over_notification(winner)
         winner = "Nobody" if winner.nil?
         winner = winner.token unless winner.is_a? String
-        @io_strategy.display(Strings.game_over_notification(winner))
+        @io_strategy.display(Presenter.game_over_notification(winner))
       end
 
       def move_solicitation
-        @io_strategy.display(Strings::MOVE_SOLICITATION)
+        @io_strategy.display(Presenter::MOVE_SOLICITATION)
       end
 
       def not_an_integer_error
-        @io_strategy.display_red(Strings::NOT_AN_INTEGER)
+        @io_strategy.display_red(Presenter::NOT_AN_INTEGER)
       end
 
       def solicit_input
@@ -79,15 +79,15 @@ module TicTacToes
       private
 
       def row_size_solicitation
-        @io_strategy.display(Strings::ROW_SIZE_SOLICITATION)
+        @io_strategy.display(Presenter::ROW_SIZE_SOLICITATION)
       end
 
       def token_solicitation(player)
-        @io_strategy.display(Strings.token_solicitation(player))
+        @io_strategy.display(Presenter.token_solicitation(player))
       end
 
       def difficulty_solicitation
-        @io_strategy.display(Strings::DIFFICULTY_SOLICITATION)
+        @io_strategy.display(Presenter::DIFFICULTY_SOLICITATION)
       end
     end
   end

@@ -3,7 +3,7 @@ require 'tic_tac_toes/core/rules'
 
 module TicTacToes
   module Core
-    module Strings
+    module Presenter
       smallest_row_size = Rules::ROW_SIZE_RANGE.min
       largest_row_size = Rules::ROW_SIZE_RANGE.max
 
@@ -100,6 +100,22 @@ module TicTacToes
         truncated_length = raw_length - extra_units_per_row
         truncated_length.times { horizontal_divider << divider_unit }
         horizontal_divider
+      end
+
+      def self.game_history_strings(wrapper)
+        game_histories = wrapper.read_game_histories
+        game_histories.map { |history| game_history_string(history) }
+      end
+
+      def self.game_history_string(history)
+        history_string = ''
+        history_string << "Board size: #{history.board_size.to_s}\n"
+        history_string << "Difficulty: #{history.difficulty}\n"
+        history_string << "Winner: #{history.winner}\n"
+        history_string << "Move history:\n"
+        history.moves.each { |move| history_string << "  #{move.join(' -> ')}\n" }
+        history_string << "\n"
+        history_string
       end
     end
   end

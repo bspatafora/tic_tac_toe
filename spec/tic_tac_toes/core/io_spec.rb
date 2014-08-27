@@ -1,9 +1,9 @@
 require 'tic_tac_toes/core/board'
 require 'tic_tac_toes/core/io'
-require 'tic_tac_toes/core/strings'
+require 'tic_tac_toes/core/presenter'
 
 describe TicTacToes::Core::IO do
-  let(:strings)  { TicTacToes::Core::Strings }
+  let(:strings)  { TicTacToes::Core::Presenter }
   let(:prompt)   { double("prompt", solicit_input: 0, display: true, display_red: true) }
   let(:io)       { TicTacToes::Core::IO.new(prompt) }
 

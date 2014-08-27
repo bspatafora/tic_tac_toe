@@ -1,9 +1,6 @@
 require 'tic_tac_toes/core/player_factory'
 require 'tic_tac_toes/core/move_strategies/hard_ai'
 require 'tic_tac_toes/core/move_strategies/types'
-require 'tic_tac_toes/database/pg_wrapper'
-
-require 'tic_tac_toes/command_line/history_reader'
 
 module TicTacToes
   module UI
