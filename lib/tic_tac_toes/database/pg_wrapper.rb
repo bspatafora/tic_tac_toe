@@ -4,19 +4,17 @@ require 'tic_tac_toes/core/history'
 module TicTacToes
   module Database
     class PGWrapper
-      def initialize(database)
-        @database = database
+      def initialize(connection)
+        @connection = connection
       end
 
       def record_game_history(history)
-        connection = establish_connection
-        record_game_info(history, connection)
-        record_moves(history, connection)
+        record_game_info(history, @connection)
+        record_moves(history, @connection)
       end
 
       def read_game_histories
-        connection = establish_connection
-        games_result = connection.exec("SELECT * FROM games")
+        games_result = @connection.exec("SELECT * FROM games")
         games = []
 
         games_result.each_row do |row|
@@ -24,7 +22,7 @@ module TicTacToes
           board_size = row[1].to_i
           difficulty = row[2]
           winner = row[3]
-          moves_result = connection.exec("SELECT * FROM moves WHERE game = #{game_id}")
+          moves_result = @connection.exec("SELECT * FROM moves WHERE game = #{game_id}")
 
           history = Core::History.new(self)
 
@@ -43,10 +41,6 @@ module TicTacToes
       end
 
       private
-
-      def establish_connection
-        PG.connect(dbname: @database)
-      end
 
       def record_game_info(history, connection)
         connection.exec("INSERT INTO games (board_size, difficulty, winner) VALUES (

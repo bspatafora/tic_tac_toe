@@ -4,6 +4,7 @@ require 'tic_tac_toes/core/move_strategies/types'
 module TicTacToes
   module Core
     class GameState
+      attr_writer :history
       attr_reader :board, :players
 
       def initialize(board, players, history)
@@ -34,7 +35,7 @@ module TicTacToes
       end
 
       def turn_over(move)
-        @history.record_move(move)
+        @history.record_move(move) unless move.nil?
         @players.rotate!
       end
 
@@ -53,6 +54,14 @@ module TicTacToes
 
       def determine_winner
         Rules.determine_winner(@board, @players)
+      end
+
+      def marshal_dump
+        [@board, @players]
+      end
+
+      def marshal_load(array)
+        @board, @players = array
       end
 
       private

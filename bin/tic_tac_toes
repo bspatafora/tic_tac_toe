@@ -13,7 +13,11 @@ require 'tic_tac_toes/core/history'
 
 require 'tic_tac_toes/command_line/runner'
 
-database = 'tic_tac_toes'
+connection = PG.connect(dbname: ENV['TTT_DATABASE'],
+                        host: ENV['TTT_HOST'],
+                        port: ENV['TTT_PORT'],
+                        user: ENV['TTT_USER'],
+                        password: ENV['TTT_PASSWORD'])
 
 prompt = TicTacToes::CommandLine::Prompt
 io = TicTacToes::Core::IO.new(prompt)
@@ -21,7 +25,7 @@ io = TicTacToes::Core::IO.new(prompt)
 player_factory = TicTacToes::Core::PlayerFactory.new(io)
 menu = TicTacToes::CommandLine::Menu.new(io, player_factory)
 
-database_wrapper = TicTacToes::Database::PGWrapper.new(database)
-history = TicTacToes::Core::History.new(database_wrapper)
+storage_wrapper = TicTacToes::Database::PGWrapper.new(connection)
+history = TicTacToes::Core::History.new(storage_wrapper)
 
 TicTacToes::CommandLine::Runner.new(io, menu, history).run

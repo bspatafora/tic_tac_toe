@@ -14,7 +14,7 @@ module TicTacToes
         board.spaces
       end
 
-      def self.game_state(board_structure, computer_type, move_history)
+      def self.game_state(board_structure, computer_type, move_history, connection)
         player_factory = Core::PlayerFactory.new('unused_io')
         human_player = player_factory.generate_player(X, Core::PlayerFactory::HUMAN)
         computer_player = player_factory.generate_player(O, Core::PlayerFactory.const_get(computer_type))
@@ -23,7 +23,7 @@ module TicTacToes
         board_structure_with_players = replace_tokens_with_players(board_structure, human_player, computer_player)
         board = board(board_structure_with_players)
 
-        history = history(move_history)
+        history = history(move_history, connection)
 
         Core::GameState.new(board, players, history)
       end
@@ -73,8 +73,8 @@ module TicTacToes
         board
       end
 
-      def self.history(move_history)
-        storage_wrapper = Database::PGWrapper.new('tic_tac_toes')
+      def self.history(move_history, connection)
+        storage_wrapper = Database::PGWrapper.new(connection)
         history = Core::History.new(storage_wrapper)
         if move_history
           moves = move_history.split(//).each_slice(2).to_a

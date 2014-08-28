@@ -1,23 +1,29 @@
 require 'pg'
 
-PRODUCTION_DATABASE = 'tic_tac_toes'
-TEST_DATABASE = 'tic_tac_toes_test'
-
-desc 'Set up tic_tac_toes production and test databases'
+desc 'Set up Tic_tac_toes production and test databases'
 task :set_up_databases do
   create_databases
+  create_production_tables
+end
+
+desc 'Set up just Tic_tac_toes production tables'
+task :set_up_tables do
   create_production_tables
 end
 
 def create_databases
   connection = PG.connect(dbname: "postgres")
 
-  connection.exec("CREATE DATABASE #{PRODUCTION_DATABASE}")
-  connection.exec("CREATE DATABASE #{TEST_DATABASE}")
+  connection.exec("CREATE DATABASE #{ENV['TTT_DATABASE']}")
+  connection.exec("CREATE DATABASE #{ENV['TTT_TEST_DATABASE']}")
 end
 
 def create_production_tables
-  connection = PG.connect(dbname: "#{PRODUCTION_DATABASE}")
+  connection = PG.connect(dbname: ENV['TTT_DATABASE'],
+                          host: ENV['TTT_HOST'],
+                          port: ENV['TTT_PORT'],
+                          user: ENV['TTT_USER'],
+                          password: ENV['TTT_PASSWORD'])
 
   connection.exec("CREATE TABLE games (
     id serial primary key,

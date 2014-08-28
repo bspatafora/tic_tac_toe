@@ -17,8 +17,9 @@ describe TicTacToes::UI::Serializer do
       ai_type = 'EASY_AI'
       move_history = 'X0O4'
       ai = TicTacToes::Core::PlayerFactory::AIS.fetch(TicTacToes::Core::PlayerFactory::EASY_AI)
+      connection = double
 
-      game_state = TicTacToes::UI::Serializer.game_state(board_structure, ai_type, move_history)
+      game_state = TicTacToes::UI::Serializer.game_state(board_structure, ai_type, move_history, connection)
       middle_space = game_state.board.space(4)
       first_player = game_state.players.first
       second_player = game_state.players.last

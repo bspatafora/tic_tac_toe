@@ -59,7 +59,7 @@ module TicTacToes
         def self.generate_game_state(space, game_state)
           new_game_state = Marshal.load(Marshal.dump(game_state))
           new_game_state.place_move(space)
-          new_game_state.turn_over([])
+          new_game_state.turn_over(nil)
           new_game_state
         end
 
