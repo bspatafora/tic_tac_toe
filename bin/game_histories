@@ -3,12 +3,16 @@
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 
 require 'tic_tac_toes/database/pg_wrapper'
-require 'tic_tac_toes/command_line/history_reader'
+require 'tic_tac_toes/core/presenter'
 require 'tic_tac_toes/command_line/prompt'
 
-database = 'tic_tac_toes'
+connection = PG.connect(dbname: ENV['TTT_DATABASE'],
+                        host: ENV['TTT_HOST'],
+                        port: ENV['TTT_PORT'],
+                        user: ENV['TTT_USER'],
+                        password: ENV['TTT_PASSWORD'])
 
-wrapper = TicTacToes::Database::PGWrapper.new(database)
-reader = TicTacToes::CommandLine::HistoryReader.new(wrapper)
+storage_wrapper = TicTacToes::Database::PGWrapper.new(connection)
+game_history_strings = TicTacToes::Core::Presenter.game_history_strings(storage_wrapper)
 
-reader.game_history_strings.each { |history| TicTacToes::CommandLine::Prompt.display(history) }
+game_history_strings.each { |history| TicTacToes::CommandLine::Prompt.display(history) }
